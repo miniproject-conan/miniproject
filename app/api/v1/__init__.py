@@ -1,6 +1,7 @@
 # API 버전별 라우터 묶음
 from fastapi import APIRouter
-from app.api.v1 import auth, diary, quote, bookmark, question
+
+from app.api.v1 import auth, bookmark, diary, question, quote
 
 router = APIRouter()
 router.include_router(auth.router, prefix="/auth", tags=["Auth"])

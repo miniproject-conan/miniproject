@@ -1,19 +1,21 @@
-# 회원가입 / 로그인 / 현재 사용자 조회 
+# 회원가입 / 로그인 / 현재 사용자 조회
 
-from fastapi import APIRouter, HTTPException, Depends
+from fastapi import APIRouter, Depends, HTTPException
 from tortoise.exceptions import DoesNotExist
 
-from app.models.user import User
-from app.schemas.user import UserCreate, UserLogin, UserResponse
-from app.schemas.token import TokenResponse, TokenRefreshRequest
-from app.core.security import (
-    hash_password, verify_password,
-    create_access_token, create_refresh_token,
-    decode_token, get_current_user
-)
 from app.core.config import settings
+from app.core.security import (
+    create_access_token,
+    create_refresh_token,
+    decode_token,
+    get_current_user,
+)
+from app.models.user import User
+from app.schemas.token import TokenRefreshRequest, TokenResponse
+from app.schemas.user import UserCreate, UserLogin, UserResponse
 
 router = APIRouter(prefix="/auth", tags=["auth"])
+
 
 @router.post("/signup", response_model=UserResponse)
 async def signup(user_data: UserCreate):
@@ -24,6 +26,7 @@ async def signup(user_data: UserCreate):
     user.set_password(user_data.password)
     await user.save()
     return UserResponse(id=user.id, username=user.username, number_of_posts=user.number_of_posts)
+
 
 @router.post("/login", response_model=TokenResponse)
 async def login(user_data: UserLogin):
@@ -46,8 +49,9 @@ async def login(user_data: UserLogin):
         access_token=access_token,
         refresh_token=refresh_token,
         expires_in=settings.JWT_ACCESS_MINUTES * 60,
-        refresh_expires_in=settings.JWT_REFRESH_DAYS * 24 * 60 * 60
+        refresh_expires_in=settings.JWT_REFRESH_DAYS * 24 * 60 * 60,
     )
+
 
 @router.post("/refresh", response_model=TokenResponse)
 async def refresh_token(request: TokenRefreshRequest):
@@ -58,9 +62,10 @@ async def refresh_token(request: TokenRefreshRequest):
         access_token=access_token,
         refresh_token=refresh_token,
         expires_in=settings.JWT_ACCESS_MINUTES * 60,
-        refresh_expires_in=settings.JWT_REFRESH_DAYS * 24 * 60 * 60
+        refresh_expires_in=settings.JWT_REFRESH_DAYS * 24 * 60 * 60,
     )
 
+
 @router.get("/me", response_model=UserResponse)
-async def get_me(user = Depends(get_current_user)):
+async def get_me(user=Depends(get_current_user)):
     return UserResponse(id=user.id, username=user.username, number_of_posts=user.number_of_posts)

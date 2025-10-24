@@ -1,8 +1,10 @@
+
 from fastapi import APIRouter
-from typing import List
+
 from app.models.quote import Quote
 
 router = APIRouter(prefix="/quote", tags=["quote"])
+
 
 @router.get("/random")
 async def random_quote():
@@ -10,6 +12,7 @@ async def random_quote():
     if not q:
         return {"id": 0, "content": "샘플 명언이 없습니다.", "author": None}
     return {"id": q.id, "content": q.content, "author": q.author}
+
 
 @router.get("/")
 async def list_quotes():

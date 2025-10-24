@@ -1,12 +1,14 @@
-from fastapi import APIRouter, Depends, HTTPException
-from typing import List
 from datetime import date
+from typing import List
 
+from fastapi import APIRouter, Depends, HTTPException
+
+from app.core.security import get_current_user
 from app.models.diary import Post
 from app.models.user import User
-from app.core.security import get_current_user
 
 router = APIRouter(prefix="/diary", tags=["diary"])
+
 
 @router.post("/", response_model=dict)
 async def create_diary(title: str, content: str, user: User = Depends(get_current_user)):
@@ -16,10 +18,12 @@ async def create_diary(title: str, content: str, user: User = Depends(get_curren
     await user.save()
     return {"id": post.id, "title": post.title, "content": post.content}
 
+
 @router.get("/", response_model=List[dict])
 async def get_diaries():
     posts = await Post.all().prefetch_related("author")
     return [{"id": p.id, "title": p.title, "author": p.author.username} for p in posts]
+
 
 @router.get("/{diary_id}", response_model=dict)
 async def get_diary(diary_id: int):
@@ -27,6 +31,7 @@ async def get_diary(diary_id: int):
     if not post:
         raise HTTPException(status_code=404, detail="Diary not found")
     return {"id": post.id, "title": post.title, "content": post.content}
+
 
 @router.put("/{diary_id}")
 async def update_diary(diary_id: int, title: str, content: str, user: User = Depends(get_current_user)):
@@ -39,6 +44,7 @@ async def update_diary(diary_id: int, title: str, content: str, user: User = Dep
     post.content = content
     await post.save()
     return {"message": "updated"}
+
 
 @router.delete("/{diary_id}")
 async def delete_diary(diary_id: int, user: User = Depends(get_current_user)):

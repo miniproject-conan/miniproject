@@ -3,21 +3,19 @@
 
 from pydantic import BaseSettings
 
+
 class Settings(BaseSettings):
-    
+
     PROJECT_NAME: str = "Diary API"
 
-    
     DATABASE_URL: str = "sqlite://db.sqlite3"
 
-    
     PASSWORD_SALT: str = ""
     JWT_SECRET_KEY: str = ""
     JWT_ALGORITHM: str = "HS256"
     JWT_ACCESS_MINUTES: int = 60
     JWT_REFRESH_DAYS: int = 14
 
-    
     DEBUG_MODE: bool = False
     HOST: str = "0.0.0.0"
     PORT: int = 8000
@@ -25,5 +23,6 @@ class Settings(BaseSettings):
     class Config:
         env_file = ".env"
         env_file_encoding = "utf-8"
+
 
 settings = Settings()
