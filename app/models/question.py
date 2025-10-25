@@ -1,8 +1,9 @@
-from tortoise import fields
-from tortoise.models import Model
+from sqlalchemy import Column, Integer, String
+from app.db.base import Base
 
 
-class Question(Model):
-    id = fields.IntField(pk=True)
-    question_text = fields.CharField(max_length=255)
-    created_at = fields.DatetimeField(auto_now_add=True)
+class Question(Base):
+    __tablename__ = "questions"
+
+    id = Column(Integer, primary_key=True, index=True)
+    content = Column(String(500), nullable=False)
