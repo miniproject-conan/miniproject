@@ -8,8 +8,21 @@ class Settings(BaseSettings):
 
     PROJECT_NAME: str = "Diary API"
 
-    DATABASE_URL: str = "sqlite://db.sqlite3"
+    # MySQL 연결 문자열
+    # TORTOISE MYSQL 설치 후 사용 : pip install tortoise-orm[aiomysql]
+    DB_USER: str = "root"
+    DB_PASSWORD: str = "1234"
+    DB_HOST: str = "localhost"
+    DB_PORT: str = "3306"
+    DB_NAME: str = "diary_db"
 
+    @property
+    def DATABASE_URL(self) -> str:
+        return f"mysql+aiomysql://{self.DB_USER}:{self.DB_PASSWORD}@{self.DB_HOST}:{self.DB_PORT}/{self.DB_NAME}"
+
+
+    # SQLITE 연결
+    # DATABASE_URL: str = "sqlite://db.sqlite3"
     PASSWORD_SALT: str = ""
     JWT_SECRET_KEY: str = ""
     JWT_ALGORITHM: str = "HS256"
