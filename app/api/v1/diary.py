@@ -7,7 +7,7 @@ from app.core.security import get_current_user
 from app.models.diary import Post
 from app.models.user import User
 
-router = APIRouter(prefix="/diary", tags=["diary"])
+router = APIRouter( tags=["Diary"])
 
 
 @router.post("/", response_model=dict)

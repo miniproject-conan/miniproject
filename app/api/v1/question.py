@@ -4,7 +4,7 @@ from fastapi import APIRouter
 
 from app.models.question import Question
 
-router = APIRouter(prefix="/question", tags=["question"])
+router = APIRouter(tags=["Question"])
 
 
 @router.get("/random")
