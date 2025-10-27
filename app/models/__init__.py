@@ -4,3 +4,6 @@ from .diary import Post
 from .question import Question
 from .quote import Quote
 from .user import User
+from .bookmark import Bookmark
+
+__all__ = ["User", "Post", "Quote", "Bookmark", "Question"]
