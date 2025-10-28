@@ -1,22 +1,48 @@
-import httpx
+import asyncio
+import time
 from bs4 import BeautifulSoup
+from selenium import webdriver
+from selenium.webdriver.chrome.service import Service
+from webdriver_manager.chrome import ChromeDriverManager
+
+from tortoise import Tortoise
 from app.models.question import Question
-from app.db.session import get_session
+from app.core.config import settings
 
-async def scrape_question():
+async def scrape_questions():
+
+    # db 초기화 먼저
+    await Tortoise.init(
+        db_url=settings.DATABASE_URL,
+        modules={"models": ["app.models.question"]},
+    )
+    await Tortoise.generate_schemas()
+
+    driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()))
+
     url = "https://my-life-question.vercel.app/"
+    driver.get(url)
+    time.sleep(2)
 
-    async with httpx.AsyncClient() as client:
-        response = await client.get(url)
-        response.raise_for_status()
-    
-    soup = BeautifulSoup(response.text, "html.parser")
+    soup = BeautifulSoup(driver.page_source, "html.parser")
+    driver.quit()
 
-    question_texts = [q.get_text(strip=True) for q in soup.select("li") if q.get_text(strip=True)]
+    questions = [li.get_text(strip=True) for li in soup.select("li") if li.get_text(strip=True)]
 
-    async for session in get_session():
-        for text in question_texts:
-            session.add(Question(content=text))
-        await session.commit()
+    inserted, skipped = 0, 0
+    for text in questions:
+        _, created = await Question.get_or_create(content=text)
+        if created:
+            inserted += 1
+        else:
+            skipped += 1
+
+    print(f"Inserted {inserted} questions")
+
+    await Tortoise.close_connections()
+
+
+if __name__ == "__main__":
+    asyncio.run(scrape_questions())
 
 # 1. 외부 사이트에서 질문 긁어와서 DB에 저장하는 코드

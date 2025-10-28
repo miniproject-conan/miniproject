@@ -7,7 +7,7 @@ class Question(Model):
     content = fields.TextField()
     
     class Meta:
-        table = "qusetion"
+        table = "question"
     
     def __str__(self):
-        return self.question_text[:30]
+        return self.content[:30]
