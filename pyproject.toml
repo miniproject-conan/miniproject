@@ -2,7 +2,7 @@
 name = "miniproject"
 version = "0.1.0"
 description = ""
-authors = ["jimin <k.jimin2002@goole.com>"]
+authors = ["Minju <you@example.com>"]
 #readme = "README.md"         # README 만들었으니 OK
 package-mode = false          # 패키징 안 할 거면 편해요
 
@@ -15,10 +15,6 @@ pydantic-settings = "^2.11.0"
 python-dotenv = "^1.0.0"
 tortoise-orm = "^0.25.1"
 aiosqlite = "^0.21.0"
-aerich = "^0.9.2"
-beautifulsoup4 = "^4.14.2"
-selenium = "^4.38.0"
-webdriver-manager = "^4.0.2"
 
 [tool.poetry.group.dev.dependencies]
 pytest = "^8.0.0"
@@ -26,8 +22,3 @@ pytest = "^8.0.0"
 [build-system]
 requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"
-
-[tool.aerich]
-tortoise_orm = "app.db.config.TORTOISE_ORM"
-location = "./migrations"
-src_folder = "./."

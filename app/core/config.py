@@ -8,7 +8,7 @@ class Settings(BaseSettings):
     DATABASE_URL: str
 
     PASSWORD_SALT: str = ""
-    JWT_SECRET_KEY: str = ""
+    JWT_SECRET_KEY: str = "your_jwt_secret"
     JWT_ALGORITHM: str = "HS256"
     JWT_ACCESS_MINUTES: int = 60
     JWT_REFRESH_DAYS: int = 14
