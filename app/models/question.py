@@ -1,9 +1,13 @@
-from sqlalchemy import Column, Integer, String
-from app.db.base import Base
+from tortoise import field
+from tortoise.models import Model
 
 
-class Question(Base):
-    __tablename__ = "questions"
-
-    id = Column(Integer, primary_key=True, index=True)
-    content = Column(String(500), nullable=False)
+class Question(Model):
+    id = field.IntField(pk=True)
+    content = field.TextField()
+    
+    class Meta:
+        table = "qusetion"
+    
+    def __str__(self):
+        return self.question_text[:30]
