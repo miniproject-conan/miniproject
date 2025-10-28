@@ -1,21 +1,22 @@
-from typing import List
-
-from fastapi import APIRouter
-
-from app.models.question import Question
+from fastapi import APIRouter, Depends, HTTPException
+from app.services.question_service import get_random_question
 
 router = APIRouter(tags=["Question"])
 
-
 @router.get("/random")
-async def random_question():
-    q = await Question.first()
-    if not q:
-        return {"id": 0, "question_text": "샘플 질문이 없습니다."}
-    return {"id": q.id, "question_text": q.question_text}
+async def get_random_self_reflection_question():
+    question = await get_random_question()
+    if not question:
+        raise HTTPException(status_code=404, detail="질문이 존재 하지않음.")
+    return {"question": question.content}
 
+
+from typing import List
+from app.services.question_service import get_all_questions
 
 @router.get("/me", response_model=List[dict])
 async def my_questions():
-    qs = await Question.all()
-    return [{"id": q.id, "question_text": q.question_text} for q in qs]
+    qs = await get_all_questions()
+    return [{"id": q.id, "question_text": q.content} for q in qs]
+
+# 4. 랜덤 자기성찰 질문을 1개 반환함.

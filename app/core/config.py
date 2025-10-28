@@ -1,7 +1,5 @@
-# 환경 변수들을 pydantic BaseSettings로 관리하게 했습니다..
-# .env 파일을 프로젝트 루트에 두면 자동으로 읽어오게 했습니다.
-
 from pydantic_settings import BaseSettings, SettingsConfigDict
+
 
 
 class Settings(BaseSettings):
