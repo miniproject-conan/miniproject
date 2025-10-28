@@ -13,7 +13,7 @@ from app.core.security import (
 )
 from app.core.config import settings
 
-router = APIRouter(prefix="/auth", tags=["auth"])
+router = APIRouter(tags=["Auth"])
 
 @router.post("/signup", response_model=UserResponse)
 async def signup(user_data: UserCreate):
@@ -62,5 +62,6 @@ async def refresh_token(request: TokenRefreshRequest):
     )
 
 @router.get("/me", response_model=UserResponse)
-async def get_me(user = Depends(get_current_user)):
-    return UserResponse(id=user.id, username=user.username, number_of_posts=user.number_of_posts)
+async def get_me(current_user = Depends(get_current_user)):
+    return current_user
+    # return UserResponse(id=user.id, username=user.username, number_of_posts=user.number_of_posts)
