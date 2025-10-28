@@ -13,7 +13,7 @@ from app.core.security import (
 )
 from app.core.config import settings
 
-router = APIRouter(prefix="/auth", tags=["auth"])
+router = APIRouter(tags=["Auth"])
 
 @router.post("/signup", response_model=UserResponse)
 async def signup(user_data: UserCreate):
