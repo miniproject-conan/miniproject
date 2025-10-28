@@ -1,5 +1,3 @@
-# 일기모델
-
 from tortoise import fields
 from tortoise.models import Model
 
@@ -11,6 +9,9 @@ class Post(Model):
     content = fields.TextField()
     created_at = fields.DatetimeField(auto_now_add=True)
     author = fields.ForeignKeyField("models.User", related_name="posts")
+
+    class Meta:
+        table = "post"
 
     def __str__(self):
         return self.title

@@ -1,3 +1,1 @@
-from sqlalchemy.orm import declarative_base
-
-Base = declarative_base()
+# 이 파일은 sqlalchemy을 쓸 때 필요한 거라서 우린 지워도 될 것 같아요.
