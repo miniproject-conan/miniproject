@@ -14,7 +14,7 @@ from app.models.user import User
 from app.schemas.token import TokenRefreshRequest, TokenResponse
 from app.schemas.user import UserCreate, UserLogin, UserResponse
 
-router = APIRouter(prefix="/auth", tags=["auth"])
+router = APIRouter(tags=["Auth"])
 
 
 @router.post("/signup", response_model=UserResponse)

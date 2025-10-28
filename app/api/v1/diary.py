@@ -6,7 +6,7 @@ from app.repositories.diary_repo import create_diary, get_diary, get_diaries, up
 from app.models.user import User
 from app.core.security import get_current_user
 
-router = APIRouter(prefix="/diary", tags=["diary"])
+router = APIRouter( tags=["Diary"])
 
 # 일기 작성
 @router.post("/", response_model=DiaryResponse)

@@ -1,7 +1,7 @@
 from fastapi import APIRouter, Depends, HTTPException
 from app.services.question_service import get_random_question
 
-router = APIRouter(prefix="/question", tags=["question"])
+router = APIRouter(tags=["Question"])
 
 @router.get("/random")
 async def get_random_self_reflection_question():

@@ -1,7 +1,1 @@
-from sqlalchemy.orm import declarative_base
-from app.models.user import User
-from app.models.diary import Post
-
-Base = declarative_base()
-
-__all__ = ["User", "Post"]      # ORM에서 모든 파일 한번에 불러오기
+# 이 파일은 sqlalchemy을 쓸 때 필요한 거라서 우린 지워도 될 것 같아요.
