@@ -4,6 +4,7 @@ from app.core.config import settings
 from app.db.session import init_db, close_db
 from app.api.v1 import router as api_v1_router
 
+init_db(settings.DATABASE_URL)
 app = FastAPI(title=settings.PROJECT_NAME, version="1.0.0")
 app.include_router(api_v1_router, prefix="/api/v1")
 

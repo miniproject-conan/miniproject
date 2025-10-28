@@ -1,11 +1,6 @@
 # 힘들다
 # 가상환경
 .venv/
-pyproject.toml
-poetry.toml
-poetry.lock
-requirements.txt
-
 .gitignore
 
 
