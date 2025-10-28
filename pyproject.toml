@@ -2,7 +2,7 @@
 name = "miniproject"
 version = "0.1.0"
 description = "FastAPI mini project with JWT auth"
-authors = ["minju-kim-1901717 <your@email.com>"]
+authors = ["minju-kim-1901717 <minjuju0518@naver.com>"]
 readme = "README.md"
 
 [tool.poetry.dependencies]
