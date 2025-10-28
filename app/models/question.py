@@ -1,10 +1,10 @@
-from tortoise import field
+from tortoise import fields
 from tortoise.models import Model
 
 
 class Question(Model):
-    id = field.IntField(pk=True)
-    content = field.TextField()
+    id = fields.IntField(pk=True)
+    content = fields.TextField()
     
     class Meta:
         table = "qusetion"
