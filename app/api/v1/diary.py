@@ -9,13 +9,13 @@ from app.core.security import get_current_user
 router = APIRouter( tags=["Diary"])
 
 # 일기 작성
-@router.post("/", response_model=DiaryResponse)
+@router.post("", response_model=DiaryResponse)
 async def create_diary_endpoint(diary: DiaryCreate, current_user: User = Depends(get_current_user)):
     post = await create_diary(current_user, diary.title, diary.content)
     return post
 
 # 일기 목록 조회 (월별/주별)
-@router.get("/", response_model=List[DiaryResponse])
+@router.get("", response_model=List[DiaryResponse])
 async def get_diaries_endpoint(
     current_user: User = Depends(get_current_user),
     month: Optional[int] = Query(None, ge=1, le=12),
