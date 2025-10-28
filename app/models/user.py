@@ -4,6 +4,7 @@ from tortoise import fields
 from tortoise.models import Model
 from passlib.context import CryptContext
 from hashlib import sha256
+
 from app.core.config import settings
 
 pwd_context = CryptContext(schemes=["pbkdf2_sha256"], deprecated="auto")
@@ -21,8 +22,7 @@ class User(Model):
         return self.username
 
     def _salt_password(self, password: str) -> str:
-        
-        salted = f"{password}{settings.PASSWORD_SALT}".encode("utf-8")
+        salted = f"{password}{settings.PASSWORD_SALT or ' '}".encode("utf-8")
         return sha256(salted).hexdigest()
 
     def set_password(self, password: str) -> None:

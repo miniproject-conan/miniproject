@@ -14,3 +14,7 @@ class UserResponse(BaseModel):
     id: int
     username: str
     number_of_posts: int = 0
+
+class Token(BaseModel):
+    access_token: str
+    token_type: str = "bearer"

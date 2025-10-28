@@ -1,3 +1,5 @@
+from multiprocessing.resource_tracker import register
+
 from fastapi import FastAPI
 import uvicorn
 from tortoise import Tortoise
@@ -23,3 +25,11 @@ async def close_orm() -> None:
 
 if __name__ == "__main__":
     uvicorn.run("app.main:app", host=settings.HOST, port=settings.PORT, reload=settings.DEBUG_MODE)
+
+register_tortoise(
+    app,
+    db_url=settings.DATABASE_URL,
+    modules={"models": ["app.models.user"]},
+    generate_schemas=True,
+    add_exception_handlers=True,
+)

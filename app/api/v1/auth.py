@@ -1,19 +1,21 @@
 # 회원가입 / 로그인 / 현재 사용자 조회 
 
 from fastapi import APIRouter, HTTPException, Depends
+from fastapi.security import OAuth2PasswordRequestForm, OAuth2PasswordBearer
 from tortoise.exceptions import DoesNotExist
 
 from app.models.user import User
 from app.schemas.user import UserCreate, UserLogin, UserResponse
 from app.schemas.token import TokenResponse, TokenRefreshRequest
+from app.services.auth_service import AuthService
 from app.core.security import (
-    hash_password, verify_password,
     create_access_token, create_refresh_token,
     decode_token, get_current_user
 )
 from app.core.config import settings
 
 router = APIRouter(prefix="/auth", tags=["auth"])
+auth_service = AuthService()
 
 @router.post("/signup", response_model=UserResponse)
 async def signup(user_data: UserCreate):
@@ -23,7 +25,12 @@ async def signup(user_data: UserCreate):
     user = User(username=user_data.username, login_id=user_data.login_id)
     user.set_password(user_data.password)
     await user.save()
-    return UserResponse(id=user.id, username=user.username, number_of_posts=user.number_of_posts)
+
+    return UserResponse(
+        id=user.id,
+        username=user.username,
+        number_of_posts=user.number_of_posts
+    )
 
 @router.post("/login", response_model=TokenResponse)
 async def login(user_data: UserLogin):
@@ -62,5 +69,9 @@ async def refresh_token(request: TokenRefreshRequest):
     )
 
 @router.get("/me", response_model=UserResponse)
-async def get_me(user = Depends(get_current_user)):
-    return UserResponse(id=user.id, username=user.username, number_of_posts=user.number_of_posts)
+async def get_me(user: User = Depends(get_current_user)):
+    return UserResponse(
+        id=user.id,
+        username=user.username,
+        number_of_posts=user.number_of_posts
+    )
