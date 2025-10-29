@@ -13,15 +13,22 @@ async def init():
 
 
 async def load_quotes_from_json(file_path: str):
-    with open(file_path, "r", encoding="utf-8") as f:
+    with open(file_path, "r", encoding="utf-8-sig") as f:
         quotes = json.load(f)
 
+    inserted, skipped = 0, 0
+
     for q in quotes:
-        await Quote.get_or_create(
-            author=q["author"],
-            author_profile=q.get("authorProfile", ""),
-            message=q["message"]
+        quote, created = await Quote.get_or_create(
+            author=q["author"].strip(),
+            author_profile=q.get("authorProfile", "").strip(),
+            message=q["message"].strip()
         )
+
+        if created:
+            inserted += 1
+        else:
+            skipped += 1
 
     print(f"[success] {len(quotes)} quotes inserted or verified.")
 
