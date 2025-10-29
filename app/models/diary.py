@@ -1,5 +1,6 @@
 from tortoise import fields
 from tortoise.models import Model
+from tortoise.fields import CharField, IntField, ForeignKeyField, DatetimeField
 
 
 class Post(Model):
