@@ -13,7 +13,7 @@ templates = Jinja2Templates(directory="app/templates")
 
 
 # HTML 렌더링 추가 -----------------------
-@router.get("", response_model=List[DiaryResponse])
+@router.get("", name=List[DiaryResponse])
 async def get_diaries_endpoint(current_user: User = Depends(get_current_user)):
     posts = await get_diaries(current_user)
     return posts
@@ -30,10 +30,10 @@ async def render_diary_detail(request: Request, diary_id: int, current_user: Use
 
 # -----------------------------------
 # 일기 작성
-@router.post("", response_model=DiaryResponse)
+@router.post("", name="render_write", response_model=DiaryResponse)
 async def create_diary_endpoint(diary: DiaryCreate, current_user: User = Depends(get_current_user)):
     post = await create_diary(current_user, diary.title, diary.content)
-    return post
+    return templates.TemplateResponse("write.html", {"request": request, "post": post})
 
 # 일기 목록 조회 (월별/주별)
 @router.get("", response_model=List[DiaryResponse])

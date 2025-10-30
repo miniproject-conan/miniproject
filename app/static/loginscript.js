@@ -56,7 +56,7 @@ async function handleLogin(e) {
       method: 'POST',
       headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
       credentials: 'include', // 백엔드가 쿠키로 토큰 관리한다 했으니 필수
-      body: JSON.stringify({ name: name, login_id: id, password: pw }),
+      body: JSON.stringify({ login_id: id, password: pw }),
     });
 
     const body = await readBodySafely(res);
