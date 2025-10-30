@@ -3,6 +3,7 @@
 from fastapi import APIRouter, HTTPException, Depends, Request
 from fastapi.responses import HTMLResponse
 from fastapi.templating import Jinja2Templates
+from starlette.responses import RedirectResponse
 from tortoise.exceptions import DoesNotExist
 
 from app.models.user import User
@@ -57,12 +58,28 @@ async def login(user_data: UserLogin):
 
     access_token = create_access_token(user.id)
     refresh_token = create_refresh_token(user.id)
-    return TokenResponse(
-        access_token=access_token,
-        refresh_token=refresh_token,
-        expires_in=settings.JWT_ACCESS_MINUTES * 60,
-        refresh_expires_in=settings.JWT_REFRESH_DAYS * 24 * 60 * 60
+    response = RedirectResponse(url="/", status_code=303)
+    response.set_cookie(
+        key="access_token",
+        value=access_token,
+        httponly=True,
+        max_age=settings.JWT_ACCESS_MINUTES * 60,
+        samesite="lax"
     )
+    response.set_cookie(
+        key="refresh_token",
+        value=refresh_token,
+        httponly=True,
+        max_age=settings.JWT_REFRESH_DAYS * 60,
+        samesite="lax"
+    )
+    return response
+    # return TokenResponse(
+    #     access_token=access_token,
+    #     refresh_token=refresh_token,
+    #     expires_in=settings.JWT_ACCESS_MINUTES * 60,
+    #     refresh_expires_in=settings.JWT_REFRESH_DAYS * 24 * 60 * 60
+    # )
 
 @router.post("/refresh", response_model=TokenResponse)
 async def refresh_token(request: TokenRefreshRequest):

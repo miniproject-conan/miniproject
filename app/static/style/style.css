@@ -114,6 +114,16 @@ body{
 
 .band>div{background:var(--panel);border:2px solid var(--stroke);border-radius:12px;height:60px;box-shadow:inset 0 0 0 3px var(--panel-soft)}
 
+.band .diary_title {
+  font-weight: 800;
+  color: #fff;
+  font-size: 18px;
+  display: inline-block;
+  line-height: 60px;
+  padding-left: 16px;
+  letter-spacing: 1px;
+}
+
 /* pages grid: left | rings | right | month sidebar */
 .pages{position:relative;display:grid;grid-template-columns: 1fr 24px 1fr calc(var(--tabs-w) + 8px);height:calc(100% - 90px)}
 
@@ -264,7 +274,7 @@ body{
 .tab-btn:hover{filter:brightness(1.06)}
 .tab-btn:active{transform:translateY(1px)}
 
-/* active tab �� much brighter, protruding, with indicator bar */
+/* active tab much brighter, protruding, with indicator bar */
 .tab-btn.active{
   background:var(--tab-active);
   color:#fff;

@@ -1,4 +1,6 @@
-from fastapi import APIRouter, Depends, HTTPException, Query
+from fastapi import APIRouter, Depends, HTTPException, Query, Request
+from fastapi.responses import HTMLResponse
+from fastapi.templating import Jinja2Templates
 from typing import List, Optional
 
 from app.schemas.diary import DiaryCreate, DiaryUpdate, DiaryResponse
@@ -7,7 +9,26 @@ from app.models.user import User
 from app.core.security import get_current_user
 
 router = APIRouter( tags=["Diary"])
+templates = Jinja2Templates(directory="app/templates")
 
+
+# HTML 렌더링 추가 -----------------------
+@router.get("", response_model=List[DiaryResponse])
+async def get_diaries_endpoint(current_user: User = Depends(get_current_user)):
+    posts = await get_diaries(current_user)
+    return posts
+
+@router.get("/read/{diary_id}", response_class=HTMLResponse)
+async def render_diary_detail(request: Request, diary_id: int, current_user: User = Depends(get_current_user)):
+    post = await get_diary(diary_id, current_user)
+    if not post:
+        raise HTTPException(status_code=404, detail="해당 일기를 찾을 수 없습니다.")
+    return templates.TemplateResponse(
+        "diary_read.html",
+        {"request": request, "post": post, "username": current_user.username},
+    )
+
+# -----------------------------------
 # 일기 작성
 @router.post("", response_model=DiaryResponse)
 async def create_diary_endpoint(diary: DiaryCreate, current_user: User = Depends(get_current_user)):

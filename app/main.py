@@ -1,8 +1,11 @@
-from fastapi import FastAPI, Request
+from fastapi import FastAPI, Request, Depends
 from fastapi.responses import HTMLResponse
+from starlette.responses import RedirectResponse
 from starlette.staticfiles import StaticFiles
 from starlette.templating import Jinja2Templates
 import uvicorn
+
+from app.api.v1.auth import get_current_user
 
 from app.core.config import settings
 from app.db.session import init_db, close_db
@@ -10,6 +13,7 @@ from app.api.v1 import router as api_v1_router
 
 from fastapi.openapi.utils import get_openapi
 
+from app.models import User
 
 app = FastAPI(title=settings.PROJECT_NAME, version="1.0.0")
 app.include_router(api_v1_router, prefix="/api/v1")
@@ -31,8 +35,11 @@ async def shutdown():
     await close_db()
 
 @app.get("/", response_class=HTMLResponse)
-async def render_index(request: Request):
-    return templates.TemplateResponse("index.html", {"request": request})
+async def render_index(request: Request, current_user = Depends(get_current_user)):
+    token = request.cookies.get("access_token")
+    if not token:
+        return RedirectResponse(url="/api/v1/auth/login")
+    return templates.TemplateResponse("index.html", {"request": request, "username": current_user.username})
 
 
 def custom_openapi():

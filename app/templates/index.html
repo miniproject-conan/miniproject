@@ -3,8 +3,9 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Team Conan - Diary Page</title>
+  <title>{% block title %}My name is CONAN - DiARy{% endblock %}</title>
   <link rel="stylesheet" href="{{ url_for('static', path='style/style.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', path='style/diary.css') }}">
   <script src="https://kit.fontawesome.com/2271afb610.js" crossorigin="anonymous"></script>
 </head>
 <body data-theme="pink">
@@ -21,13 +22,11 @@
 
       <div class="desk">
         <div class="notebook">
-          <div class="band"><div></div></div>
+            <div class="band"><span class="diary_title">{{ username }}의 일기장</span></div>
           <div class="pages">
             <section class="page left">
               <div class="inner" id="leftPane">
-                <div class="pane" data-year="2025" data-month="1">왼쪽 · 2025년 1월</div>
-                <div class="pane" data-year="2025" data-month="2">왼쪽 · 2025년 2월</div>
-                <div class="pane" data-year="2024" data-month="1">왼쪽 · 2024년 1월</div>
+                <div class="diary-area">{% include 'diary_list.html' %}</div>
               </div>
             </section>
 
