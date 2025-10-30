@@ -1,0 +1,42 @@
+{% extends "index.html" %}
+{% block title %}일기 보기 | Team Conan{% endblock %}
+
+{% block content %}
+  <div class="title_box">
+    <div class="title_ment">제목 :</div>
+    <div class="read_title">{{ post.title }}</div>
+  </div>
+
+  <div class="time_box">
+    <div class="time_ment">날짜 :</div>
+    <div class="read_time">{{ post.created_at.strftime('%Y-%m-%d') }}</div>
+  </div>
+
+  <div class="content_ment">내용</div>
+  <div class="content_box">
+    <div class="read_content">{{ post.content }}</div>
+  </div>
+
+  <div class="btn_to_diary">
+    <button class="back-btn" onclick="window.location.href='/api/v1/diary/list'">← 목록으로</button>
+  </div>
+{% endblock %}
+
+<script>
+  const params = new URLSearchParams(window.location.search);
+  const date = params.get("date");
+  const title = params.get("title");
+  const content = params.get("content");
+
+  if (title && date && content) {
+    document.querySelector(".read_title").innerText = title;
+    document.querySelector(".read_time").innerText = date;
+    document.querySelector(".read_content").innerText = content;
+  }
+</script>
+
+<script>
+  document.querySelector('.back-btn').addEventListener('click', () => {
+    window.history.back();
+  });
+</script>
