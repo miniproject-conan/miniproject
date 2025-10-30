@@ -23,3 +23,4 @@ async def remove_bookmark(quote_id: int, current_user: User = Depends(get_curren
     ok = await BookmarkService.remove(current_user.id, quote_id)
     if not ok:
         raise HTTPException(status_code=404, detail="Bookmark not found")
+    return await BookmarkService.remove(current_user.id, quote_id)

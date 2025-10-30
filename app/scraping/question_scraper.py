@@ -3,6 +3,7 @@ import time
 from bs4 import BeautifulSoup
 from selenium import webdriver
 from selenium.webdriver.chrome.service import Service
+from selenium.webdriver.chrome.options import Options
 from webdriver_manager.chrome import ChromeDriverManager
 
 from tortoise import Tortoise
@@ -18,7 +19,16 @@ async def scrape_questions():
     )
     await Tortoise.generate_schemas()
 
-    driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()))
+    # EC2용 headless Chrome 옵션 추가
+    options = Options()
+    options.add_argument("--headless")
+    options.add_argument("--no-sandbox")
+    options.add_argument("--disable-dev-shm-usage")
+
+    driver = webdriver.Chrome(
+        service=Service(ChromeDriverManager().install()),
+        options=options,
+    )
 
     url = "https://my-life-question.vercel.app/"
     driver.get(url)

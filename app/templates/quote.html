@@ -1,0 +1,28 @@
+<div class="quotes-header">
+  <h2>오늘의 명언</h2>
+  <div class="quote-actions">
+    <button id="refreshBtn" class="icon-btn" title="새로고침">
+      <i class="fa-solid fa-arrows-rotate"></i>
+    </button>
+    <button id="bookmarkBtn" class="icon-btn bookmark-btn" title="북마크">
+      <i class="fa-regular fa-heart heart-icon"></i>
+    </button>
+  </div>
+</div>
+
+<div class="quote-box">
+  <p id="quoteMessage" class="quote-message">
+    <span class="loading-text"><i class="fa-solid fa-spinner fa-spin"></i> 불러오는 중...</span>
+  </p>
+  <p id="quoteAuthor" class="quote-author"></p>
+</div>
+
+<style>
+.quotes-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px}
+.quote-actions{display:flex;align-items:center;gap:10px;position:absolute;top:10px;right:10px;}
+.icon-btn{width:42px;height:42px;border-radius:50%;border:2px solid var(--tab-border);background:color-mix(in oklab,var(--paper),var(--panel-soft) 25%);display:flex;align-items:center;justify-content:center;cursor:pointer;transition:all .2s ease;box-shadow:0 2px 6px rgba(0,0,0,.15)}
+.icon-btn:hover{transform:scale(1.07);box-shadow:0 4px 10px rgba(0,0,0,.25)}
+.icon-btn i{font-size:18px;color:var(--tab-border)}
+.bookmark-btn.active i{color:var(--tab-active)}
+.loading-text{display:flex;align-items:center;gap:6px;color:var(--stroke)}
+</style>

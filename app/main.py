@@ -1,5 +1,9 @@
-from fastapi import FastAPI
+from fastapi import FastAPI, Request
+from fastapi.responses import HTMLResponse
+from starlette.staticfiles import StaticFiles
+from starlette.templating import Jinja2Templates
 import uvicorn
+
 from app.core.config import settings
 from app.db.session import init_db, close_db
 from app.api.v1 import router as api_v1_router
@@ -25,6 +29,10 @@ app.add_middleware(  # ##수정
 )
 app.include_router(api_v1_router, prefix="/api/v1")
 
+app.mount("/static", StaticFiles(directory="app/static"), name="static")
+
+templates = Jinja2Templates(directory="app/templates")
+
 @app.get("/health")
 async def health_check():
     return {"status": "ok"}
@@ -37,15 +45,10 @@ async def startup():
 async def shutdown():
     await close_db()
 
-# def custom_openapi():
-#     if app.openapi_schema:
-#         return app.openapi_schema
-#
-#     openapi_schema = get_openapi(
-#         title=settings.PROJECT_NAME,
-#         version="1.0.0",
-#         routes=app.routes,
-#     )
+@app.get("/", response_class=HTMLResponse)
+async def render_index(request: Request):
+    return templates.TemplateResponse("index.html", {"request": request})
+
 
 def custom_openapi():
     if app.openapi_schema:
