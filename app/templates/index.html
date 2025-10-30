@@ -13,12 +13,15 @@
       <div class="titlebar">
         <div class="traffic"><span class="dot"></span><span class="dot"></span><span class="dot"></span></div>
         <div>My name is Conan, and I'm a detective.</div>
+        <div style="margin-left:auto;display:flex;align-items:center;gap:10px;">
+          <span id="userDisplay" style="font-weight:600;"></span>
+          <button id="logoutBtn" style="padding:4px 10px;border:none;border-radius:6px;cursor:pointer;">로그아웃</button>
+        </div>
       </div>
+
       <div class="desk">
         <div class="notebook">
-          <div class="band">
-            <div></div>
-          </div>
+          <div class="band"><div></div></div>
           <div class="pages">
             <section class="page left">
               <div class="inner" id="leftPane">
@@ -27,23 +30,21 @@
                 <div class="pane" data-year="2024" data-month="1">왼쪽 · 2024년 1월</div>
               </div>
             </section>
+
             <div class="rings" aria-hidden="true">
               <span class="ring"></span><span class="ring"></span><span class="ring"></span>
             </div>
+
             <section class="page right">
               <div class="inner" id="rightPane">
-                <div class="quote-area">
-                  {% include 'quote.html' %}
-                </div>
-
-                <div class="bookmark-area">
-                  {% include 'bookmark.html' %}
-                </div>
+                <div class="quote-area">{% include 'quote.html' %}</div>
+                <div class="bookmark-area">{% include 'bookmark.html' %}</div>
                 <div class="diary-button-area">
                   <button id="writeDiaryBtn" class="diary-btn">일기 작성하기</button>
                 </div>
               </div>
             </section>
+
             <aside class="righttabs" aria-label="연도 및 월 선택">
               <select class="year-select" id="yearSelect">
                 <option value="2024">2024</option>
@@ -56,18 +57,55 @@
             </aside>
           </div>
         </div>
+
         <div class="theme-switcher">
           <button class="theme-btn" data-theme="pink">핑크톤</button>
           <button class="theme-btn" data-theme="blue">블루톤</button>
           <button class="theme-btn" data-theme="black">블랙톤</button>
         </div>
       </div>
+
       <div class="statusbar"></div>
     </div>
   </div>
+
   <script src="{{ url_for('static', path='script.js') }}"></script>
   <script src="{{ url_for('static', path='quote.js') }}"></script>
   <script src="{{ url_for('static', path='bookmark.js') }}"></script>
 
+  <script>
+    // ===== 로그인 상태 확인 =====
+    const TOKEN = localStorage.getItem("access_token");
+
+    async function checkLogin() {
+      if (!TOKEN) {
+        window.location.href = "/api/v1/auth/login";
+        return;
+      }
+
+      try {
+        const res = await fetch("/api/v1/auth/me", {
+          headers: { Authorization: `Bearer ${TOKEN}` },
+        });
+        if (!res.ok) throw new Error();
+        const user = await res.json();
+        document.getElementById("userDisplay").textContent = `${user.username}님`;
+      } catch {
+        localStorage.removeItem("access_token");
+        localStorage.removeItem("refresh_token");
+        window.location.href = "/api/v1/auth/login";
+      }
+    }
+
+    // ===== 로그아웃 =====
+    document.getElementById("logoutBtn").addEventListener("click", () => {
+      localStorage.removeItem("access_token");
+      localStorage.removeItem("refresh_token");
+      alert("로그아웃 되었습니다.");
+      window.location.href = "/api/v1/auth/login";
+    });
+
+    checkLogin();
+  </script>
 </body>
 </html>

@@ -1,6 +1,8 @@
 # 회원가입 / 로그인 / 현재 사용자 조회 
 
-from fastapi import APIRouter, HTTPException, Depends
+from fastapi import APIRouter, HTTPException, Depends, Request
+from fastapi.responses import HTMLResponse
+from fastapi.templating import Jinja2Templates
 from tortoise.exceptions import DoesNotExist
 
 from app.models.user import User
@@ -14,7 +16,20 @@ from app.core.security import (
 from app.core.config import settings
 
 router = APIRouter(tags=["Auth"])
+templates = Jinja2Templates(directory="app/templates")
 
+
+#  로그인 / 회원가입 화면 렌더링 --------------------------
+@router.get("/login", response_class=HTMLResponse)
+async def render_login(request: Request):
+    return templates.TemplateResponse("login.html", {"request": request})
+
+@router.get("/signin", response_class=HTMLResponse)
+async def render_signin(request: Request):
+    return templates.TemplateResponse("signin.html", {"request": request})
+
+
+#  회원가입 / 로그인 / 토큰 --------------------------
 @router.post("/signup", response_model=UserResponse)
 async def signup(user_data: UserCreate):
     if await User.filter(username=user_data.username).exists():
