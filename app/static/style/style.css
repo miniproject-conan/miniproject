@@ -197,7 +197,7 @@ body{
 }
 .bookmark-area h2 {font-size:18px;margin-bottom:4px;}
 .bookmark-area hr {
-  width:80%;
+  width:90%;
   border:none;
   border-top:1.5px dashed var(--inner-stroke);
   margin:6px auto;
@@ -208,9 +208,10 @@ body{
 .bookmarks-section {
   flex:1;
   width:100%;
-  max-height:100px;
+  max-height:150px;
   overflow-y:auto;
-  padding-right:6px;
+  padding-right: 0;
+  margin-right: -4px;
 }
 .bookmarks-section::-webkit-scrollbar { width:8px; }
 .bookmarks-section::-webkit-scrollbar-thumb {
@@ -219,7 +220,8 @@ body{
 }
 .bookmarks-section::-webkit-scrollbar-track {
   background:var(--panel-soft);
-  border-radius:6px;
+  /*border-radius:6px;*/
+  margin-left: 4px;
 }
 
 /* 일기 버튼 */

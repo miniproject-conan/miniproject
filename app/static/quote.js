@@ -24,33 +24,47 @@ async function fetchRandomQuote() {
   }
 }
 
-async function toggleBookmark() {
-  if (!TOKEN) return alert("로그인이 필요합니다.");
+async function toggleBookmark(e) {
+
   const icon = bookmarkBtn.querySelector(".heart-icon");
   const isActive = bookmarkBtn.classList.contains("active");
 
   try {
     if (!isActive) {
+      // ✅ 북마크 추가 (백엔드 라우터 실행)
       const res = await fetch(`${API_BASE}/bookmark`, {
         method: "POST",
-        headers: { "Content-Type": "application/json", Authorization: `Bearer ${TOKEN}` },
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${TOKEN}`,
+        },
         body: JSON.stringify({ quote_id: currentQuote.id }),
       });
+
       if (res.status === 201) {
+        // ✅ UI 업데이트 (페이지 이동 없음)
         bookmarkBtn.classList.add("active");
         icon.classList.replace("fa-regular", "fa-solid");
       }
+
     } else {
+      // ✅ 북마크 취소 (백엔드 라우터 실행)
       const res = await fetch(`${API_BASE}/bookmark/${currentQuote.id}`, {
         method: "DELETE",
-        headers: { Authorization: `Bearer ${TOKEN}` },
+        headers: {
+          Authorization: `Bearer ${TOKEN}`,
+        },
       });
+
       if (res.status === 204) {
+        // ✅ UI 업데이트
         bookmarkBtn.classList.remove("active");
         icon.classList.replace("fa-solid", "fa-regular");
       }
     }
-  } catch {}
+  } catch (err) {
+    console.error(err);
+  }
 }
 
 async function checkIfBookmarked() {
