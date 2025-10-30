@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Retro Notebook UI — Year & Month Tabs + Themes (75%)</title>
+  <link rel="stylesheet" href="style/style.css">
+</head>
+<body data-theme="pink">
+  <div class="stage">
+    <div class="window">
+      <div class="titlebar">
+        <div class="traffic"><span class="dot"></span><span class="dot"></span><span class="dot"></span></div>
+        <div>My name is Conan, and I'm a detective.</div>
+      </div>
+      <div class="desk">
+        <div class="notebook">
+          <div class="band">
+            <div></div>
+          </div>
+          <div class="pages">
+            <section class="page left">
+              <div class="inner" id="leftPane">
+                  <div class="title_box">
+                      <div class="title_ment">제목 : </div>
+                      <div class="read_title">AWS포기</div>
+                  </div>
+                  <div class="time_box">
+                      <div class="time_ment">날짜 :</div>
+                      <div class="read_time">2025-01-25</div>
+                  </div>
+                  <div class="content_ment">오늘의 일기 내용</div>
+                  <div class="content_box">
+                      <div class="read_content">
+                          <p>안녕히계세요 여러분. 저는 이제 자유를 찾아 떠나 갑니다.</p>
+                      </div>
+                  </div>
+                  <div class="btn_to_diary">
+                      <button class="back-btn">일기 목록으로 돌아가기</button>
+                  </div>
+              </div>
+            </section>
+            <div class="rings" aria-hidden="true">
+              <span class="ring"></span><span class="ring"></span><span class="ring"></span>
+            </div>
+            <section class="page right">
+              <div class="inner" id="rightPane">
+                <div class="pane" data-year="2025" data-month="1">오른쪽 · 2025년 1월</div>
+                <div class="pane" data-year="2025" data-month="2">오른쪽 · 2025년 2월</div>
+                <div class="pane" data-year="2024" data-month="1">오른쪽 · 2024년 1월</div>
+              </div>
+            </section>
+            <aside class="righttabs" aria-label="연도 및 월 선택">
+              <select class="year-select" id="yearSelect">
+                <option value="2024">2024</option>
+                <option value="2025" selected>2025</option>
+                <option value="2026">2026</option>
+              </select>
+              <button class="tab-btn" data-month-btn="1">1월</button>
+              <button class="tab-btn" data-month-btn="2">2월</button>
+              <button class="tab-btn" data-month-btn="3">3월</button>
+              <button class="tab-btn" data-month-btn="4">4월</button>
+              <button class="tab-btn" data-month-btn="5">5월</button>
+              <button class="tab-btn" data-month-btn="6">6월</button>
+              <button class="tab-btn" data-month-btn="7">7월</button>
+              <button class="tab-btn" data-month-btn="8">8월</button>
+              <button class="tab-btn" data-month-btn="9">9월</button>
+              <button class="tab-btn" data-month-btn="10">10월</button>
+              <button class="tab-btn" data-month-btn="11">11월</button>
+              <button class="tab-btn" data-month-btn="12">12월</button>
+            </aside>
+          </div>
+        </div>
+        <div class="theme-switcher">
+          <button class="theme-btn" data-theme="pink">핑크톤</button>
+          <button class="theme-btn" data-theme="blue">블루톤</button>
+          <button class="theme-btn" data-theme="black">블랙톤</button>
+        </div>
+      </div>
+      <div class="statusbar"></div>
+    </div>
+  </div>
+  <script src="script.js"></script>
+</body>
+</html>
+
+<script>
+  const params = new URLSearchParams(window.location.search);
+  const date = params.get("date");
+  const title = params.get("title");
+  const content = params.get("content");
+
+  if (title && date && content) {
+    document.querySelector(".read_title").innerText = title;
+    document.querySelector(".read_time").innerText = date;
+    document.querySelector(".read_content").innerText = content;
+  }
+</script>
+
+<script>
+  document.querySelector('.back-btn').addEventListener('click', () => {
+    window.history.back();
+  });
+</script>

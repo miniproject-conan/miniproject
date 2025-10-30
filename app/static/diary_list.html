@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Retro Notebook UI — Year & Month Tabs + Themes (75%)</title>
+  <link rel="stylesheet" href="style/style.css">
+</head>
+<body data-theme="pink">
+  <div class="stage">
+    <div class="window">
+      <div class="titlebar">
+        <div class="traffic"><span class="dot"></span><span class="dot"></span><span class="dot"></span></div>
+        <div>My name is Conan, and I'm a detective.</div>
+      </div>
+      <div class="desk">
+        <div class="notebook">
+          <div class="band">
+            <div></div>
+          </div>
+          <div class="pages">
+            <section class="page left">
+              <div class="inner" id="leftPane">
+                  <div class="head-container">
+                      <div class="diary-header">이달의 일기</div>
+                  </div>
+                <div class="pane" data-year="2025" data-month="1">
+                    <div class="my-diary-list">
+                        <div class="diary-items">
+                            <div class="diary-date">2025-01-25</div>
+                            <div class="diary-title">AWS포기</div>
+                            <div class="diary-content">안녕히계세요</div>
+                        </div>
+                        <div class="diary-items">
+                            <div class="diary-date">2025-01-29</div>
+                            <div class="diary-title">집에 가고 싶어요</div>
+                            <div class="diary-content">보내주세요.</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="pane" data-year="2025" data-month="2">
+                    <div class="my-diary-list">
+                        <div class="diary-items">
+                            <div class="diary-date">2025-02-14</div>
+                            <div class="diary-title">발렌타인데이</div>
+                            <div class="diary-content">그거 좀 없애주세요.</div>
+                        </div>
+                        <div class="diary-items">
+                            <div class="diary-date">2025-02-22</div>
+                            <div class="diary-title">안녕하세요</div>
+                            <div class="diary-content">콩진호 입니다.</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="pane" data-year="2024" data-month="1">
+                    <div class="my-diary-list">
+                        <div class="diary-items">
+                            <div class="diary-date">2024-01-01</div>
+                            <div class="diary-title">해보러 갔는데</div>
+                            <div class="diary-content">눈치없는 구름....</div>
+                        </div>
+                        <div class="diary-items">
+                            <div class="diary-date">2025-01-12</div>
+                            <div class="diary-title">생일선물</div>
+                            <div class="diary-content">그런거 읎음.</div>
+                        </div>
+                    </div>
+                </div>
+              </div>
+            </section>
+            <div class="rings" aria-hidden="true">
+              <span class="ring"></span><span class="ring"></span><span class="ring"></span>
+            </div>
+            <section class="page right">
+              <div class="inner" id="rightPane">
+                <div class="pane" data-year="2025" data-month="1">오른쪽 · 2025년 1월</div>
+                <div class="pane" data-year="2025" data-month="2">오른쪽 · 2025년 2월</div>
+                <div class="pane" data-year="2024" data-month="1">오른쪽 · 2024년 1월</div>
+              </div>
+            </section>
+            <aside class="righttabs" aria-label="연도 및 월 선택">
+              <select class="year-select" id="yearSelect">
+                <option value="2024">2024</option>
+                <option value="2025" selected>2025</option>
+                <option value="2026">2026</option>
+              </select>
+              <button class="tab-btn" data-month-btn="1">1월</button>
+              <button class="tab-btn" data-month-btn="2">2월</button>
+              <button class="tab-btn" data-month-btn="3">3월</button>
+              <button class="tab-btn" data-month-btn="4">4월</button>
+              <button class="tab-btn" data-month-btn="5">5월</button>
+              <button class="tab-btn" data-month-btn="6">6월</button>
+              <button class="tab-btn" data-month-btn="7">7월</button>
+              <button class="tab-btn" data-month-btn="8">8월</button>
+              <button class="tab-btn" data-month-btn="9">9월</button>
+              <button class="tab-btn" data-month-btn="10">10월</button>
+              <button class="tab-btn" data-month-btn="11">11월</button>
+              <button class="tab-btn" data-month-btn="12">12월</button>
+            </aside>
+          </div>
+        </div>
+        <div class="theme-switcher">
+          <button class="theme-btn" data-theme="pink">핑크톤</button>
+          <button class="theme-btn" data-theme="blue">블루톤</button>
+          <button class="theme-btn" data-theme="black">블랙톤</button>
+        </div>
+      </div>
+      <div class="statusbar"></div>
+    </div>
+  </div>
+  <script src="script.js"></script>
+</body>
+</html>
+
+<script>
+  /*---- diary_read.html 이동 ----*/
+  document.querySelectorAll(".diary-items").forEach(item => {
+    item.addEventListener("click", () => {
+      const date = item.querySelector(".diary-date").innerText;
+      const title = item.querySelector(".diary-title").innerText;
+      const content = item.querySelector(".diary-content").innerText;
+
+      const params = new URLSearchParams({
+        date,
+        title,
+        content
+      });
+      window.location.href = `diary_read.html?${params.toString()}`;
+    });
+  });
+</script>
