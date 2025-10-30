@@ -4,7 +4,7 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Team Conan - Diary Page</title>
-  <link rel="stylesheet" href="{{ url_for('static', path='/style/style.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', path='style/style.css') }}">
   <script src="https://kit.fontawesome.com/2271afb610.js" crossorigin="anonymous"></script>
 </head>
 <body data-theme="pink">
@@ -32,9 +32,18 @@
             </div>
             <section class="page right">
               <div class="inner" id="rightPane">
-                {% include 'quote.html' %}
+                <div class="quote-area">
+                  {% include 'quote.html' %}
+                </div>
+
                 <hr />
-                {% include 'bookmark.html' %}
+
+                <div class="bookmark-area">
+                  {% include 'bookmark.html' %}
+                </div>
+                <div class="diary-button-area">
+                  <button id="writeDiaryBtn" class="diary-btn">일기 작성하기</button>
+                </div>
               </div>
             </section>
             <aside class="righttabs" aria-label="연도 및 월 선택">
@@ -58,6 +67,9 @@
       <div class="statusbar"></div>
     </div>
   </div>
-  <script src="{{ url_for('static', path='/script.js') }}"></script>
+  <script src="{{ url_for('static', path='script.js') }}"></script>
+  <script src="{{ url_for('static', path='quote.js') }}"></script>
+  <script src="{{ url_for('static', path='bookmark.js') }}"></script>
+
 </body>
 </html>

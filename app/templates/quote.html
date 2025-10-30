@@ -1,106 +1,21 @@
-{% extends "index.html" %}
-{% block content %}
-<section class="page right">
-  <div class="inner">
-    <div class="quotes-header">
-      <h2>오늘의 명언</h2>
-      <div class="quote-actions">
-        <button id="refreshBtn" class="icon-btn" title="새로고침">
-          <i class="fa-solid fa-arrows-rotate"></i>
-        </button>
-        <button id="bookmarkBtn" class="icon-btn bookmark-btn" title="북마크">
-          <i class="fa-regular fa-heart heart-icon"></i>
-        </button>
-      </div>
-    </div>
-
-    <div class="quote-box">
-      <p id="quoteMessage" class="quote-message">
-        <span class="loading-text"><i class="fa-solid fa-spinner fa-spin"></i> 불러오는 중...</span>
-      </p>
-      <p id="quoteAuthor" class="quote-author"></p>
-    </div>
+<div class="quotes-header">
+  <h2>오늘의 명언</h2>
+  <div class="quote-actions">
+    <button id="refreshBtn" class="icon-btn" title="새로고침">
+      <i class="fa-solid fa-arrows-rotate"></i>
+    </button>
+    <button id="bookmarkBtn" class="icon-btn bookmark-btn" title="북마크">
+      <i class="fa-regular fa-heart heart-icon"></i>
+    </button>
   </div>
-</section>
+</div>
 
-<script src="https://kit.fontawesome.com/2271afb610.js" crossorigin="anonymous"></script>
-<script>
-const API_BASE = "/api/v1";
-const TOKEN = localStorage.getItem("access_token") || "";
-const quoteMessage = document.getElementById("quoteMessage");
-const quoteAuthor  = document.getElementById("quoteAuthor");
-const bookmarkBtn  = document.getElementById("bookmarkBtn");
-const refreshBtn   = document.getElementById("refreshBtn");
-
-let currentQuote = null;
-
-async function fetchRandomQuote() {
-  try {
-    quoteMessage.innerHTML = '<span class="loading-text"><i class="fa-solid fa-spinner fa-spin"></i> 불러오는 중...</span>';
-    quoteAuthor.textContent = "";
-    const res = await fetch(`${API_BASE}/quote/random`);
-    const data = await res.json();
-    currentQuote = data;
-    quoteMessage.textContent = `"${data.message}"`;
-    quoteAuthor.textContent = `– ${data.author}`;
-    await checkIfBookmarked();
-  } catch {
-    quoteMessage.textContent = "명언을 불러오지 못했습니다.";
-  }
-}
-
-async function toggleBookmark() {
-  if (!TOKEN) return alert("로그인이 필요합니다.");
-  const icon = bookmarkBtn.querySelector(".heart-icon");
-  const isActive = bookmarkBtn.classList.contains("active");
-
-  try {
-    if (!isActive) {
-      const res = await fetch(`${API_BASE}/bookmark`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json", Authorization: `Bearer ${TOKEN}` },
-        body: JSON.stringify({ quote_id: currentQuote.id }),
-      });
-      if (res.status === 201) {
-        bookmarkBtn.classList.add("active");
-        icon.classList.replace("fa-regular", "fa-solid");
-      }
-    } else {
-      const res = await fetch(`${API_BASE}/bookmark/${currentQuote.id}`, {
-        method: "DELETE",
-        headers: { Authorization: `Bearer ${TOKEN}` },
-      });
-      if (res.status === 204) {
-        bookmarkBtn.classList.remove("active");
-        icon.classList.replace("fa-solid", "fa-regular");
-      }
-    }
-  } catch {}
-}
-
-async function checkIfBookmarked() {
-  if (!TOKEN || !currentQuote) return;
-  try {
-    const res = await fetch(`${API_BASE}/bookmark`, {
-      headers: { Authorization: `Bearer ${TOKEN}` },
-    });
-    const data = await res.json();
-    const found = data.some(b => b.quote.id === currentQuote.id);
-    const icon = bookmarkBtn.querySelector(".heart-icon");
-    if (found) {
-      bookmarkBtn.classList.add("active");
-      icon.classList.replace("fa-regular", "fa-solid");
-    } else {
-      bookmarkBtn.classList.remove("active");
-      icon.classList.replace("fa-solid", "fa-regular");
-    }
-  } catch {}
-}
-
-refreshBtn.addEventListener("click", fetchRandomQuote);
-bookmarkBtn.addEventListener("click", toggleBookmark);
-window.addEventListener("DOMContentLoaded", fetchRandomQuote);
-</script>
+<div class="quote-box">
+  <p id="quoteMessage" class="quote-message">
+    <span class="loading-text"><i class="fa-solid fa-spinner fa-spin"></i> 불러오는 중...</span>
+  </p>
+  <p id="quoteAuthor" class="quote-author"></p>
+</div>
 
 <style>
 .quotes-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px}
@@ -111,4 +26,3 @@ window.addEventListener("DOMContentLoaded", fetchRandomQuote);
 .bookmark-btn.active i{color:var(--tab-active)}
 .loading-text{display:flex;align-items:center;gap:6px;color:var(--stroke)}
 </style>
-{% endblock %}

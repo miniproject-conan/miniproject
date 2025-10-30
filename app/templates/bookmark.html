@@ -1,47 +1,12 @@
-{% extends "index.html" %}
-{% block content %}
-<section class="page right">
-  <div class="inner">
     <div class="bookmarks-section">
       <h2>내 북마크</h2>
       <ul id="bookmarkList">
         <li><i class="fa-solid fa-spinner fa-spin"></i> 불러오는 중...</li>
       </ul>
     </div>
-  </div>
-</section>
-
-<script src="https://kit.fontawesome.com/2271afb610.js" crossorigin="anonymous"></script>
-<script>
-const API_BASE = "/api/v1";
-const TOKEN = localStorage.getItem("access_token") || "";
-const bookmarkList = document.getElementById("bookmarkList");
-
-async function fetchBookmarks() {
-  if (!TOKEN) {
-    bookmarkList.innerHTML = "<li>로그인이 필요합니다.</li>";
-    return;
-  }
-  try {
-    const res = await fetch(`${API_BASE}/bookmark`, {
-      headers: { Authorization: `Bearer ${TOKEN}` },
-    });
-    const data = await res.json();
-    bookmarkList.innerHTML =
-      data.length === 0
-        ? "<li>북마크가 없습니다.</li>"
-        : data.map(b => `<li>“${b.quote.message}” – ${b.quote.author}</li>`).join("");
-  } catch {
-    bookmarkList.innerHTML = "<li>북마크 목록을 불러오지 못했습니다.</li>";
-  }
-}
-
-window.addEventListener("DOMContentLoaded", fetchBookmarks);
-</script>
 
 <style>
 .bookmarks-section h2{margin-bottom:12px}
 .bookmarks-section ul{list-style:none;padding:0;margin:0}
 .bookmarks-section li{padding:6px 0;border-bottom:1px dashed var(--dash)}
 </style>
-{% endblock %}
