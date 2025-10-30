@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>My name in Conan - login</title>
+  <link rel="stylesheet" href="../style/loginstyle.css">
+  <script src="../script.js" defer></script>
+</head>
+<body data-theme="pink">
+  <div class="stage">
+    <div class="window">
+      <div class="titlebar">
+        <div class="traffic"><span class="dot"></span><span class="dot"></span><span class="dot"></span></div>
+        <div>My name is Conan, and I'm a detective.</div>
+      </div>
+
+      <div class="desk">
+        <div class="notebook">
+          <div class="band">
+            <span class="diary_title">누군가의 일기장</span>
+          </div>
+
+          <div class="pages">
+            <section class="page">
+              <div class="inner" id="singlePane">
+                <form onsubmit="return checkInput()" method="post">
+                  <div class="input_row">
+                    <label for="name">이름 </label>
+                    <input type="text" id="name" placeholder="이름을 입력해주세요" />
+                  </div>
+                  <div class="input_row">
+                    <label for="id">아이디 </label>
+                    <input type="text" id="id" placeholder="아이디를 입력해주세요" />
+                  </div>
+                  <div class="input_row">
+                    <label>비밀번호</label>
+                    <input type="password" id="pw" placeholder="비밀번호를 입력해주세요" />
+                  </div>
+                  <input type="submit" value="로그인">
+                  <input type="button" value="회원가입" onclick="location.href='signin.html'">
+                </form>
+              </div>
+            </section>
+          </div>
+        </div>
+
+        <div class="theme-switcher">
+          <button class="theme-btn" data-theme="pink">핑크톤</button>
+          <button class="theme-btn" data-theme="blue">블루톤</button>
+          <button class="theme-btn" data-theme="black">블랙톤</button>
+        </div>
+      </div>
+
+      <div class="statusbar"></div>
+    </div>
+  </div>
+</body>
+</html>

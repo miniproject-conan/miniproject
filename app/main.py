@@ -5,9 +5,24 @@ from app.db.session import init_db, close_db
 from app.api.v1 import router as api_v1_router
 
 from fastapi.openapi.utils import get_openapi
-
+from fastapi.middleware.cors import CORSMiddleware
 
 app = FastAPI(title=settings.PROJECT_NAME, version="1.0.0")
+
+app.add_middleware(  # ##수정
+    CORSMiddleware,
+    allow_origins=[
+        "http://127.0.0.1",
+        "http://127.0.0.1:5500",
+        "http://localhost",
+        "http://localhost:5500",
+        "null",
+    ],
+    allow_origin_regex=".*",
+    allow_credentials=False,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 app.include_router(api_v1_router, prefix="/api/v1")
 
 @app.get("/health")
@@ -42,7 +57,7 @@ def custom_openapi():
         routes=app.routes,
     )
 
-    openapi_schema.setdefault("components", {}).setdefault("securitySchemes", {})["BearerAuth"] = {
+    openapi_schema.setdefault("components", {}).setdefault("securitySchemes", {})["HTTPBearer"] = {
         "type": "http",
         "scheme": "bearer",
         "bearerFormat": "JWT",
