@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>My name in Conan - login</title>
   <link rel="stylesheet" href="../style/loginstyle.css">
-  <script src="../script.js" defer></script>
+  <script src="../loginscript.js" defer></script>
 </head>
 <body data-theme="pink">
   <div class="stage">
@@ -37,12 +37,8 @@
                     <label>비밀번호</label>
                     <input type="password" id="pw" placeholder="비밀번호를 입력해주세요" />
                   </div>
-                  <div class="input_row">
-                    <label>비밀번호확인</label>
-                    <input type="password" id="pw2" placeholder="비밀번호를 입력해주세요" />
-                  </div>
-                  <input type="button" value="Back" onclick="location.href='login.html'">
-                  <input type="submit" value="회원가입 완료">
+                  <input type="submit" value="로그인">
+                  <input type="button" value="회원가입" onclick="location.href='signin.html'">
                 </form>
               </div>
             </section>
