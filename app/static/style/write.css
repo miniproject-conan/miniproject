@@ -1,0 +1,315 @@
+/* ===================== THEME VARIABLES (Default: Pink) ===================== */
+:root{
+  --bg:#f8f5f7; --grid:#e7dfe4;
+  --window-bg:#f2eef1; --window-border:#cbb9c3;
+  --chrome:#4a2b3a; --chrome-text:#ffeaf2;
+  --traffic-dot:#f2ccd8; --traffic-dot-border:#8a6a78;
+
+  --panel:#ff9dbd; --panel-soft:#ffd2e3;
+  --paper:#ffffff; --stroke:#b56784; --inner-stroke:#c28aa1;
+  --dash:#d6a2b5;
+
+  --tab:#ff6b9b; --tab-active:#ff3d82; --tab-border:#a94a71; --tab-text:#fff7fb;
+
+  --ring-dark:#8b5d72; --ring-mid:#b57d95; --ring-fill:#e8c5d3; --ring-spine:#e5c3d2;
+
+  --shadow:0 10px 26px rgba(80,25,45,.18);
+  --text:#3b2530;
+
+
+  --ui-scale:.75;
+  --tabs-w:192px;
+}
+
+
+body[data-theme="blue"]{
+  --bg:#f0f6fa; --grid:#d9e2e8;
+  --window-bg:#eef4f9; --window-border:#b8c8d6;
+  --chrome:#2b4a6b; --chrome-text:#e9f0ff;
+  --traffic-dot:#c3d7ea; --traffic-dot-border:#6c8aa5;
+
+  --panel:#7ec0df; --panel-soft:#cce7f5;
+  --paper:#ffffff; --stroke:#6c8aa5; --inner-stroke:#8aa6bd;
+  --dash:#9fb6c8;
+
+  --tab:#2c5d8a; --tab-active:#4683bb; --tab-border:#204767; --tab-text:#e9f0ff;
+
+  --ring-dark:#566c7e; --ring-mid:#788b9c; --ring-fill:#aebdca; --ring-spine:#9fb6c8;
+
+  --shadow:0 10px 26px rgba(20,30,40,.18);
+  --text:#1e2a33;
+}
+
+
+body[data-theme="black"]{
+  --bg:#1f1f1f; --grid:#2a2a2a;
+  --window-bg:#1a1a1a; --window-border:#333;
+  --chrome:#111; --chrome-text:#eee;
+  --traffic-dot:#444; --traffic-dot-border:#666;
+
+  --panel:#2d2d2d; --panel-soft:#444;
+  --paper:#121212; --stroke:#555; --inner-stroke:#666;
+  --dash:#505050;
+
+  --tab:#3a3a3a; --tab-active:#777; --tab-border:#555; --tab-text:#f5f5f5;
+
+  --ring-dark:#3d3d3d; --ring-mid:#5a5a5a; --ring-fill:#2c2c2c; --ring-spine:#4a4a4a;
+
+  --shadow:0 10px 26px rgba(0,0,0,.4);
+  --text:#ddd;
+}
+
+/* ===================== BASE ===================== */
+*{box-sizing:border-box}
+html,body{height:100%}
+body{
+  margin:0;
+  background:
+    repeating-linear-gradient(0deg,var(--grid) 0 1px,transparent 1px 24px),
+    repeating-linear-gradient(90deg,var(--grid) 0 1px,transparent 1px 24px),
+    var(--bg);
+  font-family: ui-sans-serif, system-ui, "Pretendard","Noto Sans KR",sans-serif;
+  color:var(--text);
+}
+
+/* ===================== STAGE / WINDOW ===================== */
+.stage{
+  min-height:100vh; display:flex; align-items:flex-start; justify-content:center;
+  padding:16px; overflow:auto;
+}
+.window{
+  width:1380px; height:900px;            /* original design size */
+  transform:scale(var(--ui-scale));      /* 75% scale */
+  transform-origin:top center;
+  background:var(--window-bg);
+  border:2px solid var(--window-border); border-radius:8px;
+  box-shadow:var(--shadow);
+  display:grid; grid-template-rows:44px 1fr 26px;
+  overflow:hidden;
+}
+
+/* Top bar */
+.titlebar{background:var(--chrome); color:var(--chrome-text); display:flex; align-items:center; gap:10px; padding:0 12px; font-weight:600}
+.traffic{display:flex; gap:6px; margin-right:8px}
+.dot{width:14px;height:14px;border-radius:50%;background:var(--traffic-dot);border:1px solid var(--traffic-dot-border)}
+.statusbar{background:color-mix(in oklab,var(--window-bg),#000 6%); border-top:2px solid color-mix(in oklab,var(--window-border),#000 10%)}
+
+/* ===================== NOTEBOOK ===================== */
+.desk{background:color-mix(in oklab,var(--window-bg),#fff 30%); padding:18px 18px 10px}
+.notebook{position:relative;height:100%;width:100%;border:3px solid color-mix(in oklab,var(--stroke),#fff 20%);border-radius:12px;background:var(--paper);padding:18px 18px 12px;overflow:hidden}
+.notebook:before{content:"";position:absolute;inset:12px;border:2px dashed var(--dash);border-radius:12px;pointer-events:none}
+
+.band {
+
+  display: block;
+  height: 60px;
+
+
+  width: calc(100% - var(--tabs-w) - 20px);
+  margin-bottom: 12px;
+  margin-right: auto;
+
+
+  background: var(--panel);
+  border: 2px solid var(--stroke);
+  border-radius: 12px;
+  box-shadow: inset 0 0 0 3px var(--panel-soft);
+}
+
+.band>div{background:var(--panel);border:2px solid var(--stroke);border-radius:12px;height:60px;box-shadow:inset 0 0 0 3px var(--panel-soft)}
+
+
+.pages{position:relative;display:grid;grid-template-columns:1fr 24px 1fr var(--tabs-w);height:calc(100% - 90px)}
+
+.page{background:var(--paper);border:3px solid var(--stroke);border-radius:16px;position:relative;overflow:hidden;box-shadow:inset 0 0 0 4px var(--panel-soft);margin:0 6px}
+.page .inner{position:absolute;inset:16px;border:2px solid var(--inner-stroke);border-radius:10px;background:var(--paper);overflow:auto;padding:16px}
+
+.pane{display:none}
+.pane.active{display:block}
+
+
+.rings{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:70px}
+.ring{width:24px;height:12px;border:3px solid var(--ring-mid);border-bottom:6px solid var(--ring-dark);border-radius:10px 10px 16px 16px/10px 10px 18px 18px;background:var(--ring-fill)}
+.rings:before,.rings:after{content:"";width:3px;flex:1;background:var(--ring-spine)}
+
+/* ===================== RIGHT SIDEBAR (Year + Month Tabs) ===================== */
+.righttabs{display:flex;flex-direction:column;gap:8px;padding-left:10px;width:var(--tabs-w)}
+.year-select,.tab-btn{width:100%;box-sizing:border-box}
+
+.year-select{
+  margin-bottom:8px;padding:8px;border-radius:6px;
+  border:2px solid var(--tab-border);
+  background:var(--tab);color:var(--tab-text);
+  font-weight:700;cursor:pointer
+}
+
+
+.tab-btn{
+  position:relative;
+  padding:10px 10px;
+  border:2px solid var(--tab-border); border-right-width:6px;
+  border-radius:14px 10px 10px 14px;
+  background:var(--tab); color:var(--tab-text); font-weight:700;
+  cursor:pointer; text-align:left;
+  box-shadow:0 2px 0 color-mix(in oklab,var(--tab-border),#000 10%);
+  transition:background .2s, transform .06s, box-shadow .2s, color .2s, border-color .2s;
+}
+.tab-btn:hover{filter:brightness(1.06)}
+.tab-btn:active{transform:translateY(1px)}
+
+
+.tab-btn.active{
+  background:var(--tab-active);
+  color:#fff;
+  border-color:color-mix(in oklab,var(--tab-border),#fff 25%);
+  box-shadow:
+    0 0 0 2px color-mix(in oklab,var(--paper),var(--tab-active) 40%),
+    0 6px 14px color-mix(in oklab,var(--tab-active),#000 70% / 18%);
+  transform:translateX(-2px);
+  font-weight:800;
+}
+.tab-btn.active::before{
+  content:""; position:absolute; left:-6px; top:6px; bottom:6px;
+  width:4px; border-radius:2px;
+  background:var(--tab-active);
+  box-shadow:0 0 0 2px var(--paper);
+}
+
+
+.tab-btn:focus-visible{
+  outline:3px solid color-mix(in oklab,var(--tab-active),#fff 35%);
+  outline-offset:2px;
+}
+
+/* ===================== THEME SWITCHER ===================== */
+.theme-switcher{position:absolute;top:8px;right:12px;display:flex;gap:8px}
+.theme-btn{padding:6px 10px;border:none;border-radius:6px;cursor:pointer;font-weight:600}
+.theme-btn[data-theme="pink"]{background:#ff9dbd;color:white}
+.theme-btn[data-theme="blue"]{background:#7ec0df;color:white}
+.theme-btn[data-theme="black"]{background:#444;color:white}
+
+/* ===================== RESPONSIVE (sidebar hides under ~980px) ===================== */
+@media (max-width:980px){
+  .pages{grid-template-columns:1fr 24px 1fr}
+  .righttabs{display:none}
+}
+
+/* ===================== LEFT PANE — 일기장 ===================== */
+.diary-container {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  justify-content: flex-start;
+}
+
+.diary-input{
+    border: 2px solid var(--inner-stroke);
+  border-radius: 10px;
+  padding: 10px;
+  font-size: 1rem;
+}
+
+.diary-header {
+  text-align: center;
+  font-size: 1.4rem;
+  font-weight: 800;
+  background: var(--panel);
+  border-radius: 10px;
+  padding: 10px 0;
+  margin-bottom: 10px;
+  border: 2px solid var(--stroke);
+  color: var(--text);
+}
+
+.diary-field {
+  display: flex;
+  flex-direction: column;
+  margin-top: 10px;
+}
+
+.diary-label {
+  font-weight: 700;
+  margin-bottom: 6px;
+}
+
+.diary-title-input {
+  border: 2px solid var(--inner-stroke);
+  border-radius: 8px;
+  padding: 8px;
+  font-size: 1rem;
+}
+
+.diary-content-input {
+  border: 2px solid var(--inner-stroke);
+  border-radius: 10px;
+  padding: 10px;
+  font-size: 1rem;
+  min-height: 400px;
+  resize: none;
+  margin-bottom: 20px; /* 맨 아래 여백 확보 */
+}
+
+/* ===================== RIGHT PANE — 오늘의 질문 ===================== */
+.question-container {
+  display: flex;
+  flex-direction: column;
+  height: 200px;
+}
+
+.question-header {
+  text-align: center;
+  font-size: 1.4rem;
+  font-weight: 800;
+  background: var(--panel);
+  border-radius: 10px;
+  padding: 10px 0;
+  margin-bottom: 10px;
+  border: 2px solid var(--stroke);
+  color: var(--text);
+}
+
+.question-field {
+  margin-top: 50px;
+  margin-bottom: 10px;
+  text-align: center;
+}
+
+
+.question-text {
+  font-size: 1.05rem;
+  font-weight: 600;
+  padding: 12px;
+  background: none;
+}
+
+.question-answer-area {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+}
+
+.question-answer-input {
+  width: 100%;
+  border: 2px solid var(--inner-stroke);
+  border-radius: 10px;
+  padding: 10px;
+  font-size: 1rem;
+  resize: none;
+  min-height: 300px;
+  margin-bottom: 12px;
+}
+
+.upload-btn {
+  background: var(--tab-active);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  padding: 10px 20px;
+  font-weight: 700;
+  cursor: pointer;
+  align-self: flex-end;
+}
+
+.upload-btn:hover {
+  filter: brightness(1.1);
+}

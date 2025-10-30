@@ -1,6 +1,3 @@
-const API_BASE = "/api/v1";
-const TOKEN = localStorage.getItem("access_token") || "";
-
 const panes = document.querySelectorAll('.pane');
 const monthButtons = document.querySelectorAll('[data-month-btn]');
 const yearSelect = document.getElementById('yearSelect');
@@ -36,12 +33,3 @@ document.querySelectorAll('.theme-btn').forEach(btn => {
     document.body.dataset.theme = btn.dataset.theme;
   });
 });
-//
-// const writeBtn = document.getElementById('writeDiaryBtn');
-//
-// if (writeBtn) {
-//   writeBtn.addEventListener('click', () => {
-//
-//     window.location.href = '/api/v1/diary';
-//   });
-// }

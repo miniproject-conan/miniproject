@@ -38,7 +38,8 @@
                 <div class="quote-area">{% include 'quote.html' %}</div>
                 <div class="bookmark-area">{% include 'bookmark.html' %}</div>
                 <div class="diary-button-area">
-                  <button id="writeDiaryBtn" class="diary-btn">일기 작성하기</button>
+                  <input type="button" id="writeDiaryBtn" class="diary-btn"
+                         value="일기 작성하러가기" onclick="window.location.href='{{ url_for('render_write') }}'">
                 </div>
               </div>
             </section>
