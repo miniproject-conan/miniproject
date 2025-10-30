@@ -13,12 +13,14 @@ from app.core.security import (
 )
 from app.core.config import settings
 
-router = APIRouter(tags=["Auth"])
+router = APIRouter(prefix="", tags = ["Auth"])
 
 @router.post("/signup", response_model=UserResponse)
 async def signup(user_data: UserCreate):
     if await User.filter(username=user_data.username).exists():
-        raise HTTPException(status_code=400, detail="Username already taken")
+        raise HTTPException(status_code=409, detail="Username already taken")  # ##수정
+    if user_data.login_id and await User.filter(login_id=user_data.login_id).exists():  # ##수정
+        raise HTTPException(status_code=409, detail="Login ID already taken")  # ##수정
 
     user = User(username=user_data.username, login_id=user_data.login_id)
     user.set_password(user_data.password)
@@ -45,6 +47,7 @@ async def login(user_data: UserLogin):
     return TokenResponse(
         access_token=access_token,
         refresh_token=refresh_token,
+        token_type="bearer",
         expires_in=settings.JWT_ACCESS_MINUTES * 60,
         refresh_expires_in=settings.JWT_REFRESH_DAYS * 24 * 60 * 60
     )
@@ -57,11 +60,15 @@ async def refresh_token(request: TokenRefreshRequest):
     return TokenResponse(
         access_token=access_token,
         refresh_token=refresh_token,
+        token_type="bearer",
         expires_in=settings.JWT_ACCESS_MINUTES * 60,
         refresh_expires_in=settings.JWT_REFRESH_DAYS * 24 * 60 * 60
     )
 
 @router.get("/me", response_model=UserResponse)
-async def get_me(current_user = Depends(get_current_user)):
-    return current_user
-    # return UserResponse(id=user.id, username=user.username, number_of_posts=user.number_of_posts)
+async def get_me(current_user : User = Depends(get_current_user)):
+    return UserResponse(
+        id=current_user.id,
+        username=current_user.username,
+        number_of_posts=current_user.number_of_posts
+    )
