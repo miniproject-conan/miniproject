@@ -5,7 +5,7 @@ from starlette.staticfiles import StaticFiles
 from starlette.templating import Jinja2Templates
 import uvicorn
 
-from app.api.v1.auth import get_current_user
+from app.api.v1.auth import login
 
 from app.core.config import settings
 from app.db.session import init_db, close_db
@@ -35,11 +35,13 @@ async def shutdown():
     await close_db()
 
 @app.get("/", response_class=HTMLResponse)
-async def render_index(request: Request, current_user = Depends(get_current_user)):
+async def render_index(request: Request):
     token = request.cookies.get("access_token")
     if not token:
+        print("no token")
         return RedirectResponse(url="/api/v1/auth/login")
-    return templates.TemplateResponse("index.html", {"request": request, "username": current_user.username})
+    print("token", token)
+    return templates.TemplateResponse("index.html", {"request": request})
 
 
 def custom_openapi():

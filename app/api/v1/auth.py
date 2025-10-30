@@ -1,4 +1,4 @@
-# 회원가입 / 로그인 / 현재 사용자 조회 
+# 회원가입 / 로그인 / 현재 사용자 조회
 
 from fastapi import APIRouter, HTTPException, Depends, Request
 from fastapi.responses import HTMLResponse
@@ -80,6 +80,14 @@ async def login(user_data: UserLogin):
     #     expires_in=settings.JWT_ACCESS_MINUTES * 60,
     #     refresh_expires_in=settings.JWT_REFRESH_DAYS * 24 * 60 * 60
     # )
+
+@router.get("/logout")
+async def logout():
+    response = RedirectResponse(url="/", status_code=303)
+    response.delete_cookie(key="access_token")
+    response.delete_cookie(key="refresh_token")
+    return response
+
 
 @router.post("/refresh", response_model=TokenResponse)
 async def refresh_token(request: TokenRefreshRequest):
