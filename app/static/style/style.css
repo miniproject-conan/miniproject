@@ -133,10 +133,9 @@ body{
   display:flex;
   flex-direction:column;
   justify-content:space-between;
-  height:100%;
-  padding:24px 28px 80px;
+  padding:24px 28px;
   box-sizing:border-box;
-  overflow:visible;
+  overflow:hidden;
 }
 
 .right-content {
@@ -153,6 +152,7 @@ body{
 
 /* 명언 */
 .quote-area {
+  position: relative;
   border:2px solid var(--inner-stroke);
   border-radius:12px;
   background:color-mix(in oklab,var(--paper),var(--panel-soft) 10%);
@@ -163,7 +163,7 @@ body{
   justify-content:center;
   align-items:center;
   text-align:center;
-  min-height:250px;
+  min-height:220px;
 }
 .quote-area h2 {font-size:20px;margin-bottom:16px;font-weight:700;}
 .quote-area p {font-size:17px;line-height:1.8;margin:8px 0;}
@@ -182,7 +182,7 @@ body{
   align-items:center;
   text-align:center;
   gap:8px;
-  min-height:250px;
+  min-height:220px;
   flex-shrink: 0;
 }
 .bookmark-area h2 {font-size:18px;margin-bottom:4px;}
@@ -198,7 +198,7 @@ body{
 .bookmarks-section {
   flex:1;
   width:100%;
-  max-height:180px;
+  max-height:100px;
   overflow-y:auto;
   padding-right:6px;
 }
