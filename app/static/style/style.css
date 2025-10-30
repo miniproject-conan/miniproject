@@ -1,0 +1,387 @@
+/* ===================== THEME VARIABLES (Default: Pink) ===================== */
+:root{
+  --bg:#f8f5f7; --grid:#e7dfe4;
+  --window-bg:#f2eef1; --window-border:#cbb9c3;
+  --chrome:#4a2b3a; --chrome-text:#ffeaf2;
+  --traffic-dot:#f2ccd8; --traffic-dot-border:#8a6a78;
+
+  --panel:#ff9dbd; --panel-soft:#ffd2e3;
+  --paper:#ffffff; --stroke:#b56784; --inner-stroke:#c28aa1;
+  --dash:#d6a2b5;
+
+  --tab:#ff6b9b; --tab-active:#ff3d82; --tab-border:#a94a71; --tab-text:#fff7fb;
+
+  --ring-dark:#8b5d72; --ring-mid:#b57d95; --ring-fill:#e8c5d3; --ring-spine:#e5c3d2;
+
+  --shadow:0 10px 26px rgba(80,25,45,.18);
+  --text:#3b2530;
+
+  /* layout */
+  --ui-scale:.75;
+  --tabs-w:192px; /* sidebar width (fix for cutting) */
+}
+
+/* Blue Theme */
+body[data-theme="blue"]{
+  --bg:#f0f6fa; --grid:#d9e2e8;
+  --window-bg:#eef4f9; --window-border:#b8c8d6;
+  --chrome:#2b4a6b; --chrome-text:#e9f0ff;
+  --traffic-dot:#c3d7ea; --traffic-dot-border:#6c8aa5;
+
+  --panel:#7ec0df; --panel-soft:#cce7f5;
+  --paper:#ffffff; --stroke:#6c8aa5; --inner-stroke:#8aa6bd;
+  --dash:#9fb6c8;
+
+  --tab:#2c5d8a; --tab-active:#4683bb; --tab-border:#204767; --tab-text:#e9f0ff;
+
+  --ring-dark:#566c7e; --ring-mid:#788b9c; --ring-fill:#aebdca; --ring-spine:#9fb6c8;
+
+  --shadow:0 10px 26px rgba(20,30,40,.18);
+  --text:#1e2a33;
+}
+
+/* Black Theme */
+body[data-theme="black"]{
+  --bg:#1f1f1f; --grid:#2a2a2a;
+  --window-bg:#1a1a1a; --window-border:#333;
+  --chrome:#111; --chrome-text:#eee;
+  --traffic-dot:#444; --traffic-dot-border:#666;
+
+  --panel:#2d2d2d; --panel-soft:#444;
+  --paper:#121212; --stroke:#555; --inner-stroke:#666;
+  --dash:#505050;
+
+  --tab:#3a3a3a; --tab-active:#777; --tab-border:#555; --tab-text:#f5f5f5;
+
+  --ring-dark:#3d3d3d; --ring-mid:#5a5a5a; --ring-fill:#2c2c2c; --ring-spine:#4a4a4a;
+
+  --shadow:0 10px 26px rgba(0,0,0,.4);
+  --text:#ddd;
+}
+
+/* ===================== BASE ===================== */
+*{box-sizing:border-box}
+html,body{height:100%}
+body{
+  margin:0;
+  background:
+    repeating-linear-gradient(0deg,var(--grid) 0 1px,transparent 1px 24px),
+    repeating-linear-gradient(90deg,var(--grid) 0 1px,transparent 1px 24px),
+    var(--bg);
+  font-family: ui-sans-serif, system-ui, "Pretendard","Noto Sans KR",sans-serif;
+  color:var(--text);
+}
+
+/* ===================== STAGE / WINDOW ===================== */
+.stage{
+  min-height:100vh; display:flex; align-items:flex-start; justify-content:center;
+  padding:16px; overflow:auto;
+}
+.window{
+  width:1380px; height:900px;            /* original design size */
+  transform:scale(var(--ui-scale));      /* 75% scale */
+  transform-origin:top center;
+  background:var(--window-bg);
+  border:2px solid var(--window-border); border-radius:8px;
+  box-shadow:var(--shadow);
+  display:grid; grid-template-rows:44px 1fr 26px;
+  overflow:hidden;
+}
+
+/* Top bar */
+.titlebar{background:var(--chrome); color:var(--chrome-text); display:flex; align-items:center; gap:10px; padding:0 12px; font-weight:600}
+.traffic{display:flex; gap:6px; margin-right:8px}
+.dot{width:14px;height:14px;border-radius:50%;background:var(--traffic-dot);border:1px solid var(--traffic-dot-border)}
+.statusbar{background:color-mix(in oklab,var(--window-bg),#000 6%); border-top:2px solid color-mix(in oklab,var(--window-border),#000 10%)}
+
+/* ===================== NOTEBOOK ===================== */
+.desk{background:color-mix(in oklab,var(--window-bg),#fff 30%); padding:18px 18px 10px}
+.notebook{position:relative;height:100%;width:100%;border:3px solid color-mix(in oklab,var(--stroke),#fff 20%);border-radius:12px;background:var(--paper);padding:18px 18px 12px;overflow:hidden}
+.notebook:before{content:"";position:absolute;inset:12px;border:2px dashed var(--dash);border-radius:12px;pointer-events:none}
+
+.band {
+  /* 기존 그리드 구조 제거 */
+  display: block;
+  height: 60px;
+
+  /* 오른쪽 월별 탭 영역 제외한 폭으로 */
+  width: calc(100% - var(--tabs-w) - 20px);
+  margin-bottom: 12px;
+  margin-right: auto;
+
+  /* 스타일 그대로 유지 */
+  background: var(--panel);
+  border: 2px solid var(--stroke);
+  border-radius: 12px;
+  box-shadow: inset 0 0 0 3px var(--panel-soft);
+}
+
+.band>div{background:var(--panel);border:2px solid var(--stroke);border-radius:12px;height:60px;box-shadow:inset 0 0 0 3px var(--panel-soft)}
+
+/* pages grid: left | rings | right | month sidebar */
+.pages{position:relative;display:grid;grid-template-columns:1fr 24px 1fr var(--tabs-w);height:calc(100% - 90px)}
+
+.page{background:var(--paper);border:3px solid var(--stroke);border-radius:16px;position:relative;overflow:hidden;box-shadow:inset 0 0 0 4px var(--panel-soft);margin:0 6px}
+.page .inner{
+    position:absolute;
+    inset:16px;
+    border:2px solid var(--inner-stroke);
+    border-radius:10px;
+    background:var(--paper);
+    overflow:hidden;
+    padding:16px
+}
+
+.pane{display:none}
+.pane.active{display:block}
+
+/* Rings */
+.rings{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:70px}
+.ring{width:24px;height:12px;border:3px solid var(--ring-mid);border-bottom:6px solid var(--ring-dark);border-radius:10px 10px 16px 16px/10px 10px 18px 18px;background:var(--ring-fill)}
+.rings:before,.rings:after{content:"";width:3px;flex:1;background:var(--ring-spine)}
+
+/* ===================== RIGHT SIDEBAR (Year + Month Tabs) ===================== */
+.righttabs{display:flex;flex-direction:column;gap:8px;padding-left:10px;width:var(--tabs-w)}
+.year-select,.tab-btn{width:100%;box-sizing:border-box}
+
+.year-select{
+  margin-bottom:8px;padding:8px;border-radius:6px;
+  border:2px solid var(--tab-border);
+  background:var(--tab);color:var(--tab-text);
+  font-weight:700;cursor:pointer
+}
+
+/* base tab */
+.tab-btn{
+  position:relative;              /* for active indicator */
+  padding:10px 10px;
+  border:2px solid var(--tab-border); border-right-width:6px;
+  border-radius:14px 10px 10px 14px;
+  background:var(--tab); color:var(--tab-text); font-weight:700;
+  cursor:pointer; text-align:left;
+  box-shadow:0 2px 0 color-mix(in oklab,var(--tab-border),#000 10%);
+  transition:background .2s, transform .06s, box-shadow .2s, color .2s, border-color .2s;
+}
+.tab-btn:hover{filter:brightness(1.06)}
+.tab-btn:active{transform:translateY(1px)}
+
+/* active tab — much brighter, protruding, with indicator bar */
+.tab-btn.active{
+  background:var(--tab-active);
+  color:#fff;
+  border-color:color-mix(in oklab,var(--tab-border),#fff 25%);
+  box-shadow:
+    0 0 0 2px color-mix(in oklab,var(--paper),var(--tab-active) 40%),
+    0 6px 14px color-mix(in oklab,var(--tab-active),#000 70% / 18%);
+  transform:translateX(-2px);
+  font-weight:800;
+}
+.tab-btn.active::before{
+  content:""; position:absolute; left:-6px; top:6px; bottom:6px;
+  width:4px; border-radius:2px;
+  background:var(--tab-active);
+  box-shadow:0 0 0 2px var(--paper);
+}
+
+/* keyboard focus visibility */
+.tab-btn:focus-visible{
+  outline:3px solid color-mix(in oklab,var(--tab-active),#fff 35%);
+  outline-offset:2px;
+}
+
+/* ===================== THEME SWITCHER ===================== */
+.theme-switcher{position:absolute;top:8px;right:12px;display:flex;gap:8px}
+.theme-btn{padding:6px 10px;border:none;border-radius:6px;cursor:pointer;font-weight:600}
+.theme-btn[data-theme="pink"]{background:#ff9dbd;color:white}
+.theme-btn[data-theme="blue"]{background:#7ec0df;color:white}
+.theme-btn[data-theme="black"]{background:#444;color:white}
+
+/* ===================== RESPONSIVE (sidebar hides under ~980px) ===================== */
+@media (max-width:980px){
+  .pages{grid-template-columns:1fr 24px 1fr}
+  .righttabs{display:none}
+}
+
+/*--DIARY SECTION--*/
+.my-diary-list{
+    display:flex;
+    flex-direction:column;
+    gap:8px;
+    padding:4px;
+    height:100%;
+    overflow-y:auto;
+    overflow-x:hidden;
+}
+
+.diary-items{
+    display:flex;
+    align-items:center;
+    border:1px solid var(--inner-stroke);
+    border-radius:10px;
+    padding:8px 10px;
+    background:color-mix(in oklab, var(--paper), var(--panel-soft) 8%);
+    box-shadow:inset 0 0 0 2px var(--panel-soft);
+    transition:transform 0.2s ease, box-shadow 0.2s ease;
+    cursor:pointer;
+}
+
+.diary-items:hover{
+    transform:translateY(-2px);
+    box-shadow:0 2px 8px color-mix(in oklab, var(--stroke), #000 10%);
+}
+
+.diary-date{
+    flex:0 0 100px;
+    font-size:14px;
+    color:color-mix(in oklab, var(--text), #000 40%);
+}
+
+.diary-title{
+    flex:0 0 150px;
+    font-weight:700;
+    font-size:14px;
+    overflow:hidden;
+    text-overflow:ellipsis;
+    white-space:nowrap;
+}
+
+.diary-content{
+    flex:1;
+    font-size:14px;
+    overflow:hidden;
+    text-overflow:ellipsis;
+    white-space:nowrap;
+}
+
+.head-container{
+    width:100%;
+    height:40px;
+    display:flex;
+    flex-direction:column;
+    margin:5px 0;
+    padding:2px 10px;
+    border-bottom:3px double var(--inner-stroke);
+}
+
+.diary-header{
+    font-weight:700;
+    font-size:24px;
+    margin-top:0;
+    color:var(--panel);
+}
+
+/*-- 일기 읽는 페이지 --*/
+.title_box, .time_box{
+    display:flex;
+    align-items:center;
+    border:2px solid var(--inner-stroke);
+    border-radius:10px;
+    margin:6px 0;
+    padding:2px 10px;
+    background:color-mix(in oklab, var(--paper), var(--panel-soft) 8%);
+    box-shadow:inset 0 0 0 2px var(--panel-soft);
+}
+
+.title_ment, .time_ment{
+    font-size:14px;
+    font-weight:700;
+    min-width:50px;
+    color: var(--tab-active);
+}
+.content_ment{
+    font-size:14px;
+    font-weight:700;
+    min-width:100px;
+    color: var(--tab-active);
+}
+
+.content_ment{
+    margin:10px 0 6px;
+}
+
+.content_box{
+    position:relative;
+    flex:1;
+    border:2px dashed var(--inner-stroke);
+    display:block;
+    border-radius:12px;
+    padding:10px 18px;
+    background:color-mix(in iklab, var(--paper), var(--panel-soft) 8%);
+    box-shadow:inset 0 0 0 2px var(--panel-soft);
+}
+
+.read_content{
+    text-align:left;
+    word-break:break-word;
+    font-size:14px;
+    white-space:pre-wrap;
+    overflow-wrap:break-word;
+    line-height:1.7;
+    margin:0;
+    padding:0;
+    color:var(--text);
+}
+
+.read_content p{
+    margin:0 0 10px;
+}
+
+#leftPane{
+    display:flex;
+    flex-direction:column;
+}
+
+.head-container{
+    border-bottom:3px double var(--inner-stroke);
+    margin-bottom:16px;
+}
+
+.diary-header{
+    font-weight:700;
+    color:var(--panel);
+}
+
+.read_title, .read_time{
+    text-align:center;
+    font-size:16px;
+}
+
+/*--- button ---*/
+.btn_to_diary {
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+}
+
+.back-btn {
+  background: var(--tab-active);
+  color: #fff;
+  border: none;
+  padding: 12px 28px;
+  border-radius: 30px;
+  font-size: 15px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 10px color-mix(in oklab, var(--tab-active), #000 40% / 20%);
+}
+
+.back-btn:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 6px 12px color-mix(in oklab, var(--tab-active), #000 50% / 25%);
+  background: color-mix(in oklab, var(--tab-active), white 10%);
+}
+
+.back-btn:active {
+  transform: scale(0.96);
+  background: color-mix(in oklab, var(--tab-active), black 10%);
+}
+
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(15px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.back-btn-container {
+  animation: fadeInUp 0.6s ease forwards;
+}
