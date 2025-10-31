@@ -86,7 +86,7 @@ async def login(user_data: UserLogin, response: Response):
         refresh_expires_in=settings.JWT_REFRESH_DAYS * 24 * 60 * 60,
     )
 
-@router.get("/logout")
+@router.post("/logout")
 async def logout():
     response = RedirectResponse(url="/",status_code=302)
     response.delete_cookie(key="access_token")
