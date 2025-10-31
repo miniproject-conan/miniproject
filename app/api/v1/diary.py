@@ -105,15 +105,14 @@ async def create_diary_endpoint(
     return post
 
 
-# 일기 목록 조회 (월별/주별)
+# 일기 목록 조회 (월별)
 @router.get("", response_model=List[DiaryResponse])
 async def get_diaries_endpoint(
     current_user: User = Depends(get_current_user),
     month: Optional[int] = Query(None, ge=1, le=12),
-    year: Optional[int] = Query(None, ge=2000),
-    week: Optional[int] = Query(None, ge=1, le=53)
+    year: Optional[int] = Query(None, ge=2000)
 ):
-    posts = await get_diaries(current_user, month=month, year=year, week=week)
+    posts = await get_diaries(current_user, month=month, year=year)
     return posts
 
 #일기 리스트

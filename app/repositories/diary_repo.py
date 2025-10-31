@@ -29,15 +29,11 @@ async def get_diary(post_id: int, user: User) -> Optional[Post]:
     return await Post.filter(id=post_id, author=user).prefetch_related('question').first()
 
 # 일기 목록 조회 (월별/주별)
-async def get_diaries(user: User, month: Optional[int] = None, year: Optional[int] = None, week: Optional[int] = None) -> List[Post]:
+async def get_diaries(user: User, month: Optional[int] = None, year: Optional[int] = None) -> List[Post]:
     query = Post.filter(author=user)
 
     if year and month:
         query = query.filter(date__year=year, date__month=month)
-    elif year and week:
-        first_day = date.fromisocalendar(year, week, 1)
-        last_day = first_day + timedelta(days=6)
-        query = query.filter(date__gte=first_day, date__lte=last_day)
 
     return await query.order_by("-date").prefetch_related("question").all()
 
