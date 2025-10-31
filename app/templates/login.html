@@ -15,7 +15,15 @@
       </div>
       <div class="desk">
         <div class="notebook">
-          <div class="band"><span class="diary_title">{{ username }}의 일기장</span></div>
+          <div class="band">
+            <span class="diary_title">
+                {% if username %}
+                  {{ username }}의 일기장
+                {% else %}
+                  누군가의 일기장
+                {% endif %}
+              </span>
+            </div>
           <div class="pages">
             <section class="page">
               <div class="inner">

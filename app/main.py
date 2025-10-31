@@ -51,10 +51,16 @@ async def render_index(request: Request):
         payload = jwt.decode(token, settings.JWT_SECRET_KEY, algorithms=[settings.JWT_ALGORITHM])
         user_id = int(payload.get("sub"))
         user = await User.get_or_none(id=user_id)
-        username = user.username if user else "누군가"
+
+        if not user:
+            print("no user")
+            return RedirectResponse(url="/api/v1/auth/login", status_code=303)
+
+        username = user.username
+
     except JWTError:
         print("invalid token")
-        return RedirectResponse(url="/api/v1/auth/login")
+        return RedirectResponse(url="/api/v1/auth/login", status_code=303)
 
     return templates.TemplateResponse("index.html", {"request": request, "username": username})
 
