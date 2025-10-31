@@ -8,8 +8,7 @@ class Post(Model):
     date = fields.DateField(null=True)
     content = fields.TextField()
     author = fields.ForeignKeyField("models.User", related_name="posts")
-
-    question: fields.OneToOneRelation["Question"]
+    question = fields.OneToOneField("models.Question", related_name="post", null=True)
 
     created_at = fields.DatetimeField(auto_now_add=True)
     class Meta:

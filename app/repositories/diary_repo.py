@@ -9,24 +9,22 @@ from app.models.questions import Questions
 # 일기 생성
 async def create_diary(user: User, title: str, content: str, question_id: int, question_answer: str) -> Post:
     pool_q = await Questions.get(id=question_id)
-    post = await Post.create(
-        title=title,
-        content=content,
-        date=datetime.now(),
-        author=user
-    )
-    await Question.create(
-        content=pool_q.content,
-        answer=question_answer,
-        post=post
-    )
+
+    # 질문 생성
+    question = await Question.create(content=pool_q.content, answer=question_answer)
+
+    # Post 생성 시 question을 연결
+    post = await Post.create(title=title, content=content, date=datetime.now(), author=user, question=question)
+
+    # 사용자 게시글 수 업데이트
     user.number_of_posts += 1
     await user.save()
     return post
 
 # 특정 일기 조회
 async def get_diary(post_id: int, user: User) -> Optional[Post]:
-    return await Post.filter(id=post_id, author=user).prefetch_related('question').first()
+    post = await Post.filter(id=post_id, author=user).select_related("question").first()
+    return post
 
 # 일기 목록 조회 (월별/주별)
 async def get_diaries(user: User, month: Optional[int] = None, year: Optional[int] = None) -> List[Post]:
