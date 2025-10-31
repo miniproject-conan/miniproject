@@ -44,12 +44,7 @@ async def signup(user_data: UserCreate):
 @router.post("/login", response_model=TokenResponse)
 async def login(user_data: UserLogin):
     try:
-        if user_data.login_id:
-            user = await User.get(login_id=user_data.login_id)
-        elif user_data.username:
-            user = await User.get(username=user_data.username)
-        else:
-            raise DoesNotExist
+        user = await User.get(login_id=user_data.login_id)
     except DoesNotExist:
         raise HTTPException(status_code=400, detail="Invalid username or login_id")
 
@@ -58,6 +53,7 @@ async def login(user_data: UserLogin):
 
     access_token = create_access_token(user.id)
     refresh_token = create_refresh_token(user.id)
+
     response = RedirectResponse(url="/", status_code=303)
     response.set_cookie(
         key="access_token",
