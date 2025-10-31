@@ -4,7 +4,8 @@ from starlette.responses import RedirectResponse
 from starlette.staticfiles import StaticFiles
 from starlette.templating import Jinja2Templates
 import uvicorn
-
+from jose import jwt, JWTError
+from app.models.user import User
 from app.core.config import settings
 from app.db.session import init_db, close_db
 from app.api.v1 import router as api_v1_router
@@ -45,8 +46,17 @@ async def render_index(request: Request):
     if not token:
         print("no token")
         return RedirectResponse(url="/api/v1/auth/login")
-    print("token", token)
-    return templates.TemplateResponse("index.html", {"request": request})
+
+    try:
+        payload = jwt.decode(token, settings.JWT_SECRET_KEY, algorithms=[settings.JWT_ALGORITHM])
+        user_id = int(payload.get("sub"))
+        user = await User.get_or_none(id=user_id)
+        username = user.username if user else "누군가"
+    except JWTError:
+        print("invalid token")
+        return RedirectResponse(url="/api/v1/auth/login")
+
+    return templates.TemplateResponse("index.html", {"request": request, "username": username})
 
 
 def custom_openapi():
