@@ -7,8 +7,6 @@ class Question(Model):
     content = fields.TextField()
     answer = fields.TextField(null = True)
 
-    post = fields.OneToOneField("models.Post", related_name="question", on_delete="CASCADE")
-
     class Meta:
         table = "question"
 
