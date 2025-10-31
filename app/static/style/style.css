@@ -176,7 +176,7 @@ body{
   min-height:220px;
 }
 .quote-area h2 {font-size:20px;margin-bottom:16px;font-weight:700;}
-.quote-area p {font-size:17px;line-height:1.8;margin:8px 0;}
+.quote-area p {font-size:18px;line-height:1.8;margin:8px 0;}
 .quote-area p:last-child {margin-top:12px;font-style:italic;}
 
 /* 북마크 */
@@ -195,7 +195,7 @@ body{
   min-height:220px;
   flex-shrink: 0;
 }
-.bookmark-area h2 {font-size:18px;margin-bottom:4px;}
+.bookmark-area h2 {font-size:20px;margin-bottom:4px;}
 .bookmark-area hr {
   width:90%;
   border:none;
@@ -238,17 +238,22 @@ body{
   padding:18px 26px;
   font-size:18px;
   font-weight:700;
-  border:3px solid var(--tab-border);
+  border:none;
   background:var(--tab-active);
   color:white;
-  border-radius:12px;
+  border-radius:30px;
   cursor:pointer;
-  box-shadow:0 4px 10px rgba(0,0,0,0.1);
+  box-shadow:0 4px 10px color-mix(in oklab,var(--tab-active),#000 40% / 20%);
   transition:all .25s ease;
 }
-.diary-btn:hover {
-  transform:translateY(-2px);
-  background:color-mix(in oklab,var(--tab-active),#fff 15%);
+.diary-btn:hover{
+  transform:translateY(-3px);
+  box-shadow:0 6px 12px color-mix(in oklab,var(--tab-active),#000 50% / 25%);
+  background:color-mix(in oklab,var(--tab-active),white 10%);
+}
+.diary-btn:active{
+  transform:scale(0.96);
+  background:color-mix(in oklab,var(--tab-active),black 10%);
 }
 
 /* ===================== RIGHT SIDEBAR (Year + Month Tabs) ===================== */
