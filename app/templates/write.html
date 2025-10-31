@@ -64,6 +64,9 @@
                   {{ post.question.content if post and post.question else (questions.content if questions else "오늘 가장 감사한 일은 무엇인가요?") }}                  </div>
                 </div>
 
+                <!-- ✅ 질문 ID hidden 저장 -->
+                <input type="hidden" id="questionId" data-id="{{ post.question.id if post and post.question else (question.id if question else 1) }}">
+
                 <!-- ✅ 질문 텍스트 hidden 저장 -->
                 <input type="hidden" id="questionContent" value="{{ question.content if question else '' }}">
 
@@ -131,7 +134,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const id = document.getElementById("diaryId").value;
     const title = document.getElementById("diaryTitle").value.trim();
     const content = document.getElementById("diaryContent").value.trim();
-    const question_content = document.getElementById("questionContent").value;
+    const question_id = Number(document.getElementById("questionId")?.dataset.id);
     const question_answer = document.getElementById("questionAnswer").value.trim();
 
     if (!title || !content || !question_answer) {
@@ -149,7 +152,7 @@ document.addEventListener("DOMContentLoaded", () => {
       body: JSON.stringify({
         title,
         content,
-        question_content,
+        question_id,
         question_answer
       })
     });
