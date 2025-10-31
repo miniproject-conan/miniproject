@@ -5,17 +5,22 @@ from starlette.staticfiles import StaticFiles
 from starlette.templating import Jinja2Templates
 import uvicorn
 
-from app.api.v1.auth import login
-
 from app.core.config import settings
 from app.db.session import init_db, close_db
 from app.api.v1 import router as api_v1_router
-
 from fastapi.openapi.utils import get_openapi
-
-from app.models import User
+from fastapi.middleware.cors import CORSMiddleware
 
 app = FastAPI(title=settings.PROJECT_NAME, version="1.0.0")
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["http://127.0.0.1:8000", "http://localhost:8000","http://teamconan.duckdns.org/"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
 app.include_router(api_v1_router, prefix="/api/v1")
 
 app.mount("/static", StaticFiles(directory="app/static"), name="static")
