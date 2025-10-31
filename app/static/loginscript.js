@@ -46,10 +46,10 @@ function debugResponse(where, res, body) {
 // ----- 로그인 -----
 async function handleLogin(e) {
   e.preventDefault();
-  const name = document.getElementById('name').value.trim();
+  // const name = document.getElementById('name').value.trim();
   const id = document.getElementById('id').value.trim();
   const pw = document.getElementById('pw').value.trim();
-  if (!id || !pw || !name) return alert('아이디와 비밀번호를 입력하세요.');
+  if (!id || !pw) return alert('아이디와 비밀번호를 입력하세요.');
 
   try {
     const res = await fetch('/api/v1/auth/login', {

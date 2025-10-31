@@ -7,7 +7,7 @@ from selenium.webdriver.chrome.options import Options
 from webdriver_manager.chrome import ChromeDriverManager
 
 from tortoise import Tortoise
-from app.models.questions import Question
+from app.models.questions import Questions
 from app.core.config import settings
 
 # import os, sys
@@ -45,7 +45,7 @@ async def scrape_questions():
 
     inserted, skipped = 0, 0
     for text in questions:
-        _, created = await Question.get_or_create(content=text)
+        _, created = await Questions.get_or_create(content=text)
         if created:
             inserted += 1
         else:
