@@ -6,10 +6,14 @@
   <title>{% block title %}My name is CONAN - DiARy{% endblock %}</title>
   <link rel="stylesheet" href="{{ url_for('static', path='style/style.css') }}">
   <link rel="stylesheet" href="{{ url_for('static', path='style/diary.css') }}">
+  <script>
+    const savedTheme = localStorage.getItem("theme") || "pink";
+    document.documentElement.dataset.theme = savedTheme;
+  </script>
   <script src="https://kit.fontawesome.com/2271afb610.js" crossorigin="anonymous"></script>
 </head>
 
-<body data-theme="pink">
+<body>
   <div class="stage">
     <div class="window">
       <!-- Top Title Bar -->
@@ -100,6 +104,7 @@
   </div>
 
   <!-- Scripts -->
+  <script src="{{ url_for('static', path='theme-manager.js') }}" defer></script>
   <script src="{{ url_for('static', path='script.js') }}"></script>
   <script src="{{ url_for('static', path='quote.js') }}"></script>
   <script src="{{ url_for('static', path='bookmark.js') }}"></script>

@@ -30,9 +30,3 @@ yearSelect.addEventListener('change', () => {
   currentYear = yearSelect.value;
   show(currentYear, currentMonth);
 });
-
-document.querySelectorAll('.theme-btn').forEach(btn => {
-  btn.addEventListener('click', () => {
-    document.body.dataset.theme = btn.dataset.theme;
-  });
-});

@@ -7,13 +7,6 @@ window.addEventListener('error', (e) => {
 });
 
 document.addEventListener('DOMContentLoaded', () => {
-  // 테마 버튼
-  document.querySelectorAll('.theme-btn')?.forEach(b => {
-    b.addEventListener('click', () => {
-      document.body.dataset.theme = b.dataset.theme;
-    });
-  });
-
   const form = document.querySelector('form');
   if (!form) return;
 

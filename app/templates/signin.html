@@ -4,9 +4,13 @@
   <meta charset="utf-8" />
   <title>Sign Up | Team Conan</title>
   <link rel="stylesheet" href="{{ url_for('static', path='style/loginstyle.css') }}">
+  <script>
+    const savedTheme = localStorage.getItem("theme") || "pink";
+    document.documentElement.dataset.theme = savedTheme;
+  </script>
   <script src="{{ url_for('static', path='loginscript.js') }}" defer></script>
 </head>
-<body data-theme="pink">
+<body>
   <div class="stage">
     <div class="window">
       <div class="titlebar">
@@ -34,5 +38,6 @@
       </div>
     </div>
   </div>
+<script src="{{ url_for('static', path='theme-manager.js') }}" defer></script>
 </body>
 </html>

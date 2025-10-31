@@ -6,10 +6,14 @@
   <title>{{ "일기 수정" if post else "일기 작성" }} — My name is Conan</title>
 
   <link rel="stylesheet" href="{{ url_for('static', path='style/write.css') }}">
+  <script>
+    const savedTheme = localStorage.getItem("theme") || "pink";
+    document.documentElement.dataset.theme = savedTheme;
+  </script>
   <script src="{{ url_for('static', path='write.js') }}" defer></script>
   <script src="https://kit.fontawesome.com/2271afb610.js" crossorigin="anonymous"></script>
 </head>
-<body data-theme="pink">
+<body>
   <div class="stage">
     <div class="window">
       <div class="titlebar">
@@ -118,6 +122,7 @@
   </div>
 
 <!-- ✅ SCRIPT -->
+<script src="{{ url_for('static', path='theme-manager.js') }}" defer></script>
 <script>
 document.addEventListener("DOMContentLoaded", () => {
 
