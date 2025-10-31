@@ -23,7 +23,7 @@
 
       <div class="desk">
         <div class="notebook">
-          <div class="band"><span class="diary_title">{{ username }}의 일기장</span></div>
+          <div class="band"><span class="diary_title" style="padding-left: 3em;">{{ username }}의 일기장</span></div>
 
           <div class="pages">
             <!-- Left Page (Diary list OR Diary read) -->
@@ -64,7 +64,7 @@
                     type="button"
                     id="writeDiaryBtn"
                     class="diary-btn"
-                    value="일기 작성하러가기"
+                    value="일기 쓰기"
                     onclick="window.location.href='{{ url_for('render_write') }}'"
                   >
                 </div>
