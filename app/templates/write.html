@@ -3,11 +3,10 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>일기 작성 — My name is Conan</title>
+  <title>{{ "일기 수정" if post else "일기 작성" }} — My name is Conan</title>
 
   <link rel="stylesheet" href="{{ url_for('static', path='style/write.css') }}">
   <script src="{{ url_for('static', path='write.js') }}" defer></script>
-
   <script src="https://kit.fontawesome.com/2271afb610.js" crossorigin="anonymous"></script>
 </head>
 <body data-theme="pink">
@@ -17,7 +16,6 @@
         <div class="traffic"><span class="dot"></span><span class="dot"></span><span class="dot"></span></div>
         <div>My name is Conan, and I'm a detective.</div>
 
-        <!-- ✅ 로그인 유저 표시 -->
         <div style="margin-left:auto;display:flex;align-items:center;gap:10px;">
           <span id="userDisplay" style="font-weight:600;"></span>
         </div>
@@ -28,24 +26,27 @@
           <div class="band"><span class="diary_title">{{ user.username }}의 일기장</span></div>
 
           <div class="pages">
-            <!-- ✅ 왼쪽 PAGE (일기 입력) -->
+            <!-- LEFT PAGE -->
             <section class="page left">
               <div class="inner" id="leftPane">
-
                 <div class="diary-container">
-                    <div class="diary-header">오늘의 일기</div>
+                  <div class="diary-header">{{ "일기 수정" if post else "오늘의 일기" }}</div>
 
-                    <div class="diary-field">
-                        <label class="diary-label">제목</label>
-                        <input id="diaryTitle" type="text" class="diary-input" placeholder="제목을 입력하세요.">
-                    </div>
+                  <input type="hidden" id="diaryId" value="{{ post.id if post else '' }}">
 
-                    <div class="diary-field">
-                        <label class="diary-label">내용</label>
-                        <textarea id="diaryContent" class="diary-content-input" placeholder="오늘 어떤 일이 있었나요?"></textarea>
-                    </div>
+                  <div class="diary-field">
+                      <label class="diary-label">제목</label>
+                      <input id="diaryTitle" type="text" class="diary-input"
+                        placeholder="제목을 입력하세요."
+                        value="{{ post.title if post else '' }}">
+                  </div>
+
+                  <div class="diary-field">
+                      <label class="diary-label">내용</label>
+                      <textarea id="diaryContent" class="diary-content-input"
+                        placeholder="오늘 어떤 일이 있었나요?">{{ post.content if post else '' }}</textarea>
+                  </div>
                 </div>
-
               </div>
             </section>
 
@@ -53,32 +54,35 @@
               <span class="ring"></span><span class="ring"></span><span class="ring"></span>
             </div>
 
-            <!-- ✅ 오른쪽 PAGE (질문 + 버튼) -->
+            <!-- RIGHT PAGE -->
             <section class="page right">
               <div class="inner" id="rightPane">
 
                 <div class="question-container">
                   <div class="question-header">오늘의 질문</div>
                   <div class="question-field" id="dbQuestion">
-                    당신이 오늘 가장 감사한 일은 무엇인가요?
+                      {{ post.question.content if post.question else "오늘 가장 감사한 일은 무엇인가요?" }}
                   </div>
                 </div>
 
+                <!-- ✅ 질문 텍스트 hidden 저장 -->
+                <input type="hidden" id="questionId" value="{{ questions.id if questions else '' }}">
+
                 <div class="question-answer-area">
                   <textarea id="questionAnswer" class="question-answer-input"
-                            placeholder="답변을 입력하세요."></textarea>
+                    placeholder="답변을 입력하세요."> {{ post.question.answer if post.question else "" }}</textarea>
                 </div>
 
-                <!-- ✅ 오른쪽 하단 버튼 영역 -->
                 <div class="write-btn-wrapper">
-                  <button id="saveDiaryBtn" class="upload-btn">저장하기</button>
+                  <button id="saveDiaryBtn" class="upload-btn">
+                    {{ "수정하기" if post else "저장하기" }}
+                  </button>
                   <button id="backBtn" class="upload-btn back-btn">돌아가기</button>
                 </div>
 
               </div>
             </section>
 
-            <!-- ✅ 월/년 선택 -->
             <aside class="righttabs">
               <select class="year-select" id="yearSelect">
                 <option value="2024">2024</option>
@@ -92,7 +96,6 @@
           </div>
         </div>
 
-        <!-- ✅ 테마 변경 + 로그아웃 -->
         <div class="theme-switcher">
           <button class="theme-btn" data-theme="pink">핑크톤</button>
           <button class="theme-btn" data-theme="blue">블루톤</button>
@@ -105,7 +108,7 @@
     </div>
   </div>
 
-<!-- ✅ 로그인검증 + 저장/뒤로가기 + 로그아웃 -->
+<!-- ✅ SCRIPT -->
 <script>
 document.addEventListener("DOMContentLoaded", () => {
 
@@ -126,39 +129,45 @@ document.addEventListener("DOMContentLoaded", () => {
   const backBtn = document.getElementById("backBtn");
 
   saveDiaryBtn.addEventListener("click", async () => {
+    const id = document.getElementById("diaryId").value;
     const title = document.getElementById("diaryTitle").value.trim();
     const content = document.getElementById("diaryContent").value.trim();
+    const question_id = document.getElementById("questionId").value;          // ✅ 여기
+    const question_answer = document.getElementById("questionAnswer").value.trim();
 
-    if (!title || !content) {
-      alert("제목과 내용을 입력해주세요.");
+    if (!title || !content || !question_answer) {
+      alert("제목, 내용, 질문 답변을 입력해주세요.");
       return;
     }
 
-    const res = await fetch("/api/v1/diary/write", {
-      method: "POST",
+    const url = id ? `/api/v1/diary/${id}` : "/api/v1/diary/write";
+    const method = id ? "PUT" : "POST";
+
+    const res = await fetch(url, {
+      method,
       credentials: "include",
-      headers: {"Content-Type":"application/json"},
-      body: JSON.stringify({ title, content })
+      headers: { "Content-Type":"application/json" },
+      body: JSON.stringify({
+        title,
+        content,
+        question_id,
+        question_answer
+      })
     });
 
     if (res.ok) {
-      alert("일기가 저장되었습니다!");
-      window.location.href = "/";
+      alert(id ? "일기가 수정되었습니다!" : "일기가 저장되었습니다!");
+      window.location.href = id ? `/api/v1/diary/read/${id}` : "/";
     } else {
-      alert("저장 실패! 다시 시도해주세요.");
+      alert("처리 실패! 다시 시도해주세요.");
     }
   });
 
-  backBtn.addEventListener("click", () => {
-    window.location.href = "/";
-  });
+  backBtn.addEventListener("click", () => window.location.href = "/");
 
   document.getElementById("logoutBtn").addEventListener("click", async () => {
     try {
-      await fetch("/api/v1/auth/logout", {
-        method: "POST",
-        credentials: "include"
-      });
+      await fetch("/api/v1/auth/logout", { method:"POST", credentials:"include" });
     } catch {}
     alert("로그아웃 되었습니다.");
     window.location.href = "/api/v1/auth/login";

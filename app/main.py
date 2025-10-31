@@ -1,5 +1,6 @@
 from fastapi import FastAPI, Request, Depends
 from fastapi.responses import HTMLResponse
+from fastapi.middleware.cors import CORSMiddleware
 from starlette.responses import RedirectResponse
 from starlette.staticfiles import StaticFiles
 from starlette.templating import Jinja2Templates
@@ -16,6 +17,14 @@ from fastapi.openapi.utils import get_openapi
 from app.models import User
 
 app = FastAPI(title=settings.PROJECT_NAME, version="1.0.0")
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["http://127.0.0.1:8000", "http://localhost:8000","http://teamconan.duckdns.org/"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 app.include_router(api_v1_router, prefix="/api/v1")
 
 app.mount("/static", StaticFiles(directory="app/static"), name="static")

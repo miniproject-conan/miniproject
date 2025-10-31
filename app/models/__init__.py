@@ -5,5 +5,6 @@ from .question import Question
 from .quote import Quote
 from .user import User
 from .bookmark import Bookmark
+from .questions import Questions
 
-__all__ = ["User", "Post", "Quote", "Bookmark", "Question"]
+__all__ = ["User", "Post", "Quote", "Bookmark", "Question" ,"Questions"]

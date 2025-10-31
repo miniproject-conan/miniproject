@@ -6,6 +6,10 @@ from selenium import webdriver
 from selenium.webdriver.chrome.service import Service
 from webdriver_manager.chrome import ChromeDriverManager
 
+import os, sys
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "..")))
+
+
 driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()))
 
 url = "https://quotes-site-xi.vercel.app/"

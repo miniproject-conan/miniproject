@@ -42,7 +42,9 @@ async function fetchBookmarks() {
         (b) => `
         <li>
           <span>“${b.quote.message}” — ${b.quote.author}</span>
-          <button class="bookmark-remove" onclick="removeBookmark(${b.quote.id})">삭제</button>
+          <button class="bookmark-remove" onclick="removeBookmark(${b.quote.id})">
+            <i class="heart-icon fa-solid fa-heart"></i>
+          </button>
         </li>
         `
       )

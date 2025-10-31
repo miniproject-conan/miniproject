@@ -9,16 +9,23 @@ let currentQuote = null;
 
 async function fetchRandomQuote() {
   try {
+    bookmarkBtn.classList.remove("active");
+    const icon = bookmarkBtn.querySelector(".heart-icon");
+    if (icon) icon.classList.replace("fa-solid", "fa-regular");
+
     quoteMessage.innerHTML = '<span class="loading-text"><i class="fa-solid fa-spinner fa-spin"></i> 불러오는 중...</span>';
     quoteAuthor.textContent = "";
 
     const res = await fetch(`${API_BASE}/quote`);
     const data = await res.json();
     currentQuote = data.data;
+
     quoteMessage.textContent = `"${currentQuote.message}"`;
     quoteAuthor.textContent = `– ${currentQuote.author}`;
 
+    // ✅ 여기서 북마크 여부 다시 확인
     await checkIfBookmarked();
+
   } catch {
     quoteMessage.textContent = "명언을 불러오지 못했습니다.";
   }
@@ -68,14 +75,19 @@ async function toggleBookmark(e) {
 }
 
 async function checkIfBookmarked() {
-  if (!TOKEN || !currentQuote) return;
+  if (!currentQuote) return;
+
   try {
-    const res = await fetch(`${API_BASE}/bookmark`, {
-      headers: { Authorization: `Bearer ${TOKEN}` },
-    });
+    const res = await fetch(`/api/v1/bookmark`, { credentials: "include" });
+    if (!res.ok) return;
+
     const data = await res.json();
-    const found = data.some(b => b.quote.id === currentQuote.id);
+    const items = data.items ?? [];
+
+    const found = items.some(b => b.quote.id === currentQuote.id);
+
     const icon = bookmarkBtn.querySelector(".heart-icon");
+
     if (found) {
       bookmarkBtn.classList.add("active");
       icon.classList.replace("fa-regular", "fa-solid");
@@ -83,7 +95,7 @@ async function checkIfBookmarked() {
       bookmarkBtn.classList.remove("active");
       icon.classList.replace("fa-solid", "fa-regular");
     }
-  } catch {}
+  } catch (e) {}
 }
 
 refreshBtn.addEventListener("click", fetchRandomQuote);

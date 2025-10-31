@@ -7,15 +7,19 @@ from selenium.webdriver.chrome.options import Options
 from webdriver_manager.chrome import ChromeDriverManager
 
 from tortoise import Tortoise
-from app.models.question import Question
+from app.models.questions import Question
 from app.core.config import settings
+
+# import os, sys
+# sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "..")))
+
 
 async def scrape_questions():
 
     # db 초기화 먼저
     await Tortoise.init(
         db_url=settings.DATABASE_URL,
-        modules={"models": ["app.models.question"]},
+        modules={"models": ["app.models.questions"]},
     )
     await Tortoise.generate_schemas()
 
@@ -37,7 +41,7 @@ async def scrape_questions():
     soup = BeautifulSoup(driver.page_source, "html.parser")
     driver.quit()
 
-    questions = [li.get_text(strip=True) for li in soup.select("li") if li.get_text(strip=True)]
+    questions = [li.get_text(strip=True) for li in soup.select(".question-text") if li.get_text(strip=True)]
 
     inserted, skipped = 0, 0
     for text in questions:
