@@ -31,7 +31,6 @@ async function toggleBookmark(e) {
 
   try {
     if (!isActive) {
-      // ✅ 북마크 추가 (백엔드 라우터 실행)
       const res = await fetch(`${API_BASE}/bookmark`, {
         method: "POST",
         headers: {
@@ -42,13 +41,13 @@ async function toggleBookmark(e) {
       });
 
       if (res.status === 201) {
-        // ✅ UI 업데이트 (페이지 이동 없음)
         bookmarkBtn.classList.add("active");
         icon.classList.replace("fa-regular", "fa-solid");
+
+        if (typeof fetchBookmarks === "function") fetchBookmarks();
       }
 
     } else {
-      // ✅ 북마크 취소 (백엔드 라우터 실행)
       const res = await fetch(`${API_BASE}/bookmark/${currentQuote.id}`, {
         method: "DELETE",
         headers: {
@@ -57,9 +56,10 @@ async function toggleBookmark(e) {
       });
 
       if (res.status === 204) {
-        // ✅ UI 업데이트
         bookmarkBtn.classList.remove("active");
         icon.classList.replace("fa-solid", "fa-regular");
+
+        if (typeof fetchBookmarks === "function") fetchBookmarks();
       }
     }
   } catch (err) {

@@ -13,7 +13,7 @@ templates = Jinja2Templates(directory="app/templates")
 
 
 # HTML 렌더링 추가 -----------------------
-@router.get("", name=List[DiaryResponse])
+@router.get("", response_model=List[DiaryResponse], name="list_diaries")
 async def get_diaries_endpoint(current_user: User = Depends(get_current_user)):
     posts = await get_diaries(current_user)
     return posts
@@ -24,16 +24,26 @@ async def render_diary_detail(request: Request, diary_id: int, current_user: Use
     if not post:
         raise HTTPException(status_code=404, detail="해당 일기를 찾을 수 없습니다.")
     return templates.TemplateResponse(
-        "diary_read.html",
+        "index.html",
         {"request": request, "post": post, "username": current_user.username},
     )
 
 # -----------------------------------
-# 일기 작성
-@router.post("", name="render_write", response_model=DiaryResponse)
-async def create_diary_endpoint(diary: DiaryCreate, current_user: User = Depends(get_current_user)):
+# 일기작성 (로드)
+@router.get("/write", name="render_write")
+async def render_write(request: Request, current_user: User = Depends(get_current_user)):
+    return templates.TemplateResponse("write.html", {"request": request, "user": current_user})
+
+# 일기 작성 (진짜 작성)
+@router.post("/write", name="create_diary", response_model=DiaryResponse)
+async def create_diary_endpoint(
+    diary: DiaryCreate,
+    current_user: User = Depends(get_current_user),
+):
     post = await create_diary(current_user, diary.title, diary.content)
-    return templates.TemplateResponse("write.html", {"request": request, "post": post})
+    print(post)
+    return post
+
 
 # 일기 목록 조회 (월별/주별)
 @router.get("", response_model=List[DiaryResponse])
@@ -45,6 +55,21 @@ async def get_diaries_endpoint(
 ):
     posts = await get_diaries(current_user, month=month, year=year, week=week)
     return posts
+
+#일기 리스트
+@router.get("/list", name="render_diary_list")
+async def render_diary_list(
+    request: Request,
+    current_user: User = Depends(get_current_user),
+    month: Optional[int] = Query(None, ge=1, le=12),
+    year: Optional[int] = Query(None, ge=2000),
+    week: Optional[int] = Query(None, ge=1, le=53)
+):
+    posts = await get_diaries(current_user, month=month, year=year, week=week)
+    return templates.TemplateResponse(
+        "diary_list.html",
+            {"request": request, "posts": posts, "user": current_user}
+    )
 
 # 특정 일기 조회
 @router.get("/{diary_id}", response_model=DiaryResponse)

@@ -6,7 +6,7 @@ from starlette.templating import Jinja2Templates
 import uvicorn
 
 from app.api.v1.auth import get_current_user
-
+from app.repositories.diary_repo import get_diaries
 from app.core.config import settings
 from app.db.session import init_db, close_db
 from app.api.v1 import router as api_v1_router
@@ -39,7 +39,9 @@ async def render_index(request: Request, current_user = Depends(get_current_user
     token = request.cookies.get("access_token")
     if not token:
         return RedirectResponse(url="/api/v1/auth/login")
-    return templates.TemplateResponse("index.html", {"request": request, "username": current_user.username})
+    posts = await get_diaries(current_user)
+    return templates.TemplateResponse("index.html", {"request": request, "username": current_user.username, "posts": posts})
+
 
 
 def custom_openapi():
@@ -67,3 +69,8 @@ app.openapi = custom_openapi
 
 if __name__ == "__main__":
     uvicorn.run("app.main:app", host=settings.HOST, port=settings.PORT, reload=settings.DEBUG_MODE)
+
+# 스웨거 오류잡기
+# for r in app.routes:
+#     if hasattr(r, "name") and not isinstance(r.name, str):
+#         print("[OPENAPI-NAME-TYPE-ERROR]", type(r.name), getattr(r, "path", "?"), r.name)

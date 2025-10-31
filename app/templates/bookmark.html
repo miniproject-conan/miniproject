@@ -8,5 +8,21 @@
 <style>
 .bookmarks-section h2{margin-top:0; margin-bottom:8px}
 .bookmarks-section ul{list-style:none;padding:0;margin:0}
-.bookmarks-section li{padding:6px 0;border-bottom:1px dashed var(--dash)}
+.bookmarks-section li{
+  padding:6px 0;
+  border-bottom:1px dashed var(--dash);
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+}
+.bookmark-remove{
+  background:none;
+  border:none;
+  color:#ff4d4d;
+  cursor:pointer;
+  font-size:12px;
+}
+.bookmark-remove:hover{
+  color:#d00000;
+}
 </style>

@@ -36,12 +36,3 @@ document.querySelectorAll('.theme-btn').forEach(btn => {
     document.body.dataset.theme = btn.dataset.theme;
   });
 });
-//
-// const writeBtn = document.getElementById('writeDiaryBtn');
-//
-// if (writeBtn) {
-//   writeBtn.addEventListener('click', () => {
-//
-//     window.location.href = '/api/v1/diary';
-//   });
-// }
