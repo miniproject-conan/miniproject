@@ -107,8 +107,9 @@ async def render_edit_page(
     if not post:
         raise HTTPException(status_code=404, detail="일기를 찾을 수 없습니다.")
 
-    print("🧩 post.id:", post.id)
-    print("🧩 post.question:", post.question.content if post.question else None)
+    # 디버깅용
+    # print("post.id:", post.id)
+    # print("post.question:", post.question.content if post.question else None)
 
 
     return templates.TemplateResponse(

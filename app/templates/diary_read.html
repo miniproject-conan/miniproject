@@ -1,32 +1,45 @@
-<div class="title_box">
-  <div class="title_ment">제목 :</div>
-  <div class="read_title">{{ post.title }}</div>
+<div class="diary-area">
+  <div class="header_box">
+      <div class="title_ment" style="padding-left: 0.5em">{{ post.title }}</div>
+    <div class="read_time"><span class="time_ment"> | </span>{{ post.created_at.strftime('%Y-%m-%d') }}</div>
+  </div>
+
+<!--  <div class="content_ment">내용</div>-->
+
+  <div class="content_box">
+    <div class="read_content">{{ post.content }}</div>
+  </div>
+
+  <div class="btn_to_diary" style="margin-top:20px; display:flex; gap:10px;">
+    <button class="back-btn" onclick="window.location.href='/'"><i class="fa-solid fa-list"></i></button>
+    <button class="edit-btn" onclick="window.location.href='/api/v1/diary/edit/{{ post.id }}'"><i class="fa-solid fa-pencil"></i></button>
+    <button class="delete-btn" onclick="deleteDiary('{{ post.id }}')"><i class="fa-solid fa-trash"></i></button>
+  </div>
 </div>
 
-<div class="time_box">
-  <div class="time_ment">날짜 :</div>
-  <div class="read_time">{{ post.created_at.strftime('%Y-%m-%d') }}</div>
-</div>
-
-<div class="content_ment">내용</div>
-
-<div class="content_box">
-  <div class="read_content">{{ post.content }}</div>
-</div>
-
-<div class="btn_to_diary" style="margin-top:20px; display:flex; gap:10px;">
-  <button class="back-btn" onclick="window.location.href='/'">← 목록</button>
-
-  <!-- ✅ 수정 버튼 -->
-  <button class="edit-btn" onclick="window.location.href='/api/v1/diary/edit/{{ post.id }}'">✏ 수정</button>
-  <!-- ✅ 삭제 버튼 -->
-  <button class="delete-btn" onclick="deleteDiary('{{ post.id }}')">🗑 삭제</button>
+<div class="question-area">
+    <div class="question_box">
+      <i class="fa-solid fa-quote-left"></i>
+        <div class="question-field" id="dbQuestion">
+          {% if post and post.question %}
+            {{ post.question.content }}
+          {% elif questions is defined and questions %}
+            {{ questions.content }}
+          {% else %}
+            오늘 가장 감사한 일은 무엇인가요?
+          {% endif %}
+        </div>
+        <hr>
+      <div class="question-answer" id="dbAnswer">
+        {{ post.question.answer if post.question else "" }}
+      </div>
+    </div>
 </div>
 
 <script>
-  // ✅ 삭제 기능
+  // 삭제 기능
   async function deleteDiary(id) {
-      if (!confirm("ㄹㅇ 삭제?")) return;
+      if (!confirm("삭제하시겠습니까?")) return;
 
       const res = await fetch(`/api/v1/diary/${id}`, {
         method: "DELETE",
@@ -41,7 +54,7 @@
       }
     }
 
-  // ✅ URL 파라미터로 접근 시 (기존 기능 유지)
+  // URL 파라미터로 접근 시 (기존 기능 유지)
   const params = new URLSearchParams(window.location.search);
   const date = params.get("date");
   const title = params.get("title");
