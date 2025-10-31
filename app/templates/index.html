@@ -68,13 +68,13 @@
     </div>
   </div>
 
-  <script src="{{ url_for('static', path='script.js') }}"></script>
-  <script src="{{ url_for('static', path='quote.js') }}"></script>
-  <script src="{{ url_for('static', path='bookmark.js') }}"></script>
+<script src="{{ url_for('static', path='script.js') }}"></script>
+<script src="{{ url_for('static', path='quote.js') }}"></script>
+<script src="{{ url_for('static', path='bookmark.js') }}"></script>
 
   <script>
     // ===== 로그인 상태 확인 =====
-    const TOKEN = localStorage.getItem("access_token");
+    // const TOKEN = localStorage.getItem("access_token");
 
     async function checkLogin() {
       if (!TOKEN) {

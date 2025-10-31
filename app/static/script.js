@@ -1,5 +1,5 @@
 const API_BASE = "/api/v1";
-const TOKEN = localStorage.getItem("access_token") || "";
+let TOKEN = localStorage.getItem("access_token") || "";
 
 const panes = document.querySelectorAll('.pane');
 const monthButtons = document.querySelectorAll('[data-month-btn]');
