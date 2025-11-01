@@ -321,19 +321,19 @@ body {
   background: var(--tab);
   color: var(--tab-text);
   font-weight: 700;
-  cursor: pointer;
+  /*cursor: pointer;*/
   text-align: left;
   box-shadow: 0 2px 0 color-mix(in oklab, var(--tab-border), #000 10%);
-  transition: background .2s, transform .06s, box-shadow .2s, color .2s, border-color .2s;
+  /*transition: background .2s, transform .06s, box-shadow .2s, color .2s, border-color .2s;*/
   }
 
-.tab-btn:hover {
-  filter: brightness(1.06)
-  }
+/*.tab-btn:hover {*/
+/*  filter: brightness(1.06)*/
+/*  }*/
 
-.tab-btn:active {
-  transform: translateY(1px)
-  }
+/*.tab-btn:active {*/
+/*  transform: translateY(1px)*/
+/*  }*/
 
 
 .tab-btn.active {
