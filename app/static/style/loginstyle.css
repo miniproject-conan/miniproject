@@ -28,7 +28,7 @@
   --text: #3b2530;
   --ui-scale: .75;
   --tabs-w: 192px;
-}
+  }
 
 /* Blue Theme */
 body[data-theme="blue"] {
@@ -57,7 +57,7 @@ body[data-theme="blue"] {
   --ring-spine: #9fb6c8;
   --shadow: 0 10px 26px rgba(20, 30, 40, .18);
   --text: #1e2a33;
-}
+  }
 
 /* Black Theme */
 body[data-theme="black"] {
@@ -86,7 +86,7 @@ body[data-theme="black"] {
   --ring-spine: #4a4a4a;
   --shadow: 0 10px 26px rgba(0, 0, 0, .4);
   --text: #ddd;
-}
+  }
 
 
 /* ===== Base ===== */
