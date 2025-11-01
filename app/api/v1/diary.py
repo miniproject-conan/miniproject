@@ -54,7 +54,7 @@ async def render_diary_list(
 ):
     posts = await get_diaries(current_user, month=month, year=year)
     return templates.TemplateResponse(
-        "index.html", {"request": request, "posts": posts, "user": current_user}
+        "index.html", {"request": request, "username": current_user.username, "posts": posts, "user": current_user}
     )
 
 
