@@ -1,6 +1,8 @@
 from datetime import datetime
 from typing import List, Optional
 
+from pytz import timezone
+
 from app.models.diary import Post
 from app.models.question import Question
 from app.models.questions import Questions
@@ -43,12 +45,15 @@ async def get_diaries(
     month: Optional[int] = None,
     year: Optional[int] = None,
 ) -> List[Post]:
-    query = Post.filter(author=user)
 
-    if year:
-        query = query.filter(created_at__year=year)
-    if month:
-        query = query.filter(created_at__month=month)
+    now = datetime.now(timezone("Asia/Seoul"))
+    target_year = year or now.year
+    target_month = month
+
+    query = Post.filter(author=user, created_at__year=target_year)
+
+    if target_month:
+        query = query.filter(created_at__month=target_month)
 
     return await query.order_by("-created_at").prefetch_related("question").all()
 

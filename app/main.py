@@ -1,8 +1,18 @@
+# ruff: noqa: E402
+import os
+import time
+
+os.environ["TZ"] = "Asia/Seoul"
+time.tzset()
+
+from datetime import datetime
+
 from fastapi import FastAPI, Request
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.openapi.utils import get_openapi
 from fastapi.responses import HTMLResponse
 from jose import JWTError
+from pytz import timezone
 from starlette.responses import RedirectResponse
 from starlette.staticfiles import StaticFiles
 from starlette.templating import Jinja2Templates
@@ -52,7 +62,6 @@ async def shutdown():
 @app.get("/", response_class=HTMLResponse)
 async def render_index(request: Request):
     token = request.cookies.get("access_token")
-
     if not token:
         return RedirectResponse(url="/api/v1/auth/login")
     try:
@@ -61,10 +70,19 @@ async def render_index(request: Request):
     except JWTError:
         return RedirectResponse(url="/api/v1/auth/login")
 
-    posts = await get_diaries(current_user)
+    now = datetime.now(timezone("Asia/Seoul"))
+    selected_year = now.year  # ✅ 현재 연도 (2025)
+    posts = await get_diaries(current_user, year=selected_year)
+
     return templates.TemplateResponse(
         "index.html",
-        {"request": request, "username": current_user.username, "posts": posts},
+        {
+            "request": request,
+            "username": current_user.username,
+            "posts": posts,
+            "user": current_user,
+            "selected_year": selected_year,
+        },
     )
 
 

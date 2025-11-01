@@ -76,9 +76,9 @@
           <!-- Year / Month Navigation -->
           <aside class="righttabs">
             <select class="year-select" id="yearSelect">
-              <option value="2024">2024</option>
-              <option value="2025" selected>2025</option>
-              <option value="2026">2026</option>
+              {% for y in range(2024, 2027) %}
+              <option value="{{ y }}" {% if y== selected_year %}selected{% endif %}>{{ y }}</option>
+              {% endfor %}
             </select>
 
             {% for month in range(1, 13) %}
@@ -145,32 +145,32 @@
   });
 </script>
 <script>
-document.addEventListener("DOMContentLoaded", () => {
-  const yearSelect = document.getElementById("yearSelect");
-  const buttons = document.querySelectorAll(".tab-btn");
+  document.addEventListener("DOMContentLoaded", () => {
+    const yearSelect = document.getElementById("yearSelect");
+    const buttons = document.querySelectorAll(".tab-btn");
 
-  // 월 버튼 클릭 시 이동
-  window.goToMonth = function(month) {
-    const year = yearSelect.value;
-    window.location.href = `/api/v1/diary/month?year=${year}&month=${month}`;
-  };
+    // 월 버튼 클릭 시 이동
+    window.goToMonth = function (month) {
+      const year = yearSelect.value;
+      window.location.href = `/api/v1/diary/month?year=${year}&month=${month}`;
+    };
 
-  // 현재 URL 기준으로 활성화 버튼 표시
-  const params = new URLSearchParams(window.location.search);
-  const month = params.get("month");
-  const buttonsArr = Array.from(buttons);
-  buttonsArr.forEach(btn => btn.classList.remove("active"));
+    // 현재 URL 기준으로 활성화 버튼 표시
+    const params = new URLSearchParams(window.location.search);
+    const month = params.get("month");
+    const buttonsArr = Array.from(buttons);
+    buttonsArr.forEach(btn => btn.classList.remove("active"));
 
-  let activeBtn;
-  if (month) {
-    activeBtn = document.querySelector(`[data-month-btn="${month}"]`);
-  } else {
-    // month 파라미터가 없는 경우 = 전체(/)로 들어온 경우
-    activeBtn = document.querySelector(`[data-month-btn="all"]`);
-  }
+    let activeBtn;
+    if (month) {
+      activeBtn = document.querySelector(`[data-month-btn="${month}"]`);
+    } else {
+      // month 파라미터가 없는 경우 = 전체(/)로 들어온 경우
+      activeBtn = document.querySelector(`[data-month-btn="all"]`);
+    }
 
-  if (activeBtn) activeBtn.classList.add("active");
-});
+    if (activeBtn) activeBtn.classList.add("active");
+  });
 </script>
 </body>
 </html>
