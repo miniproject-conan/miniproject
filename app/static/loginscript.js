@@ -7,13 +7,6 @@ window.addEventListener('error', (e) => {
 });
 
 document.addEventListener('DOMContentLoaded', () => {
-  // 테마 버튼
-  document.querySelectorAll('.theme-btn')?.forEach(b => {
-    b.addEventListener('click', () => {
-      document.body.dataset.theme = b.dataset.theme;
-    });
-  });
-
   const form = document.querySelector('form');
   if (!form) return;
 
@@ -30,7 +23,7 @@ async function readBodySafely(res) {
     } catch (err) {
       // 혹시나 서버가 content-type은 json인데 실제로는 html/text를 보낸 경우 방어
       const text = await res.text();
-      return { __nonJson__: true, raw: text };
+      return {__nonJson__: true, raw: text};
     }
   }
   return await res.text();
@@ -46,17 +39,17 @@ function debugResponse(where, res, body) {
 // ----- 로그인 -----
 async function handleLogin(e) {
   e.preventDefault();
-  const name = document.getElementById('name').value.trim();
+  // const name = document.getElementById('name').value.trim();
   const id = document.getElementById('id').value.trim();
   const pw = document.getElementById('pw').value.trim();
-  if (!id || !pw || !name) return alert('아이디와 비밀번호를 입력하세요.');
+  if (!id || !pw) return alert('아이디와 비밀번호를 입력하세요.');
 
   try {
     const res = await fetch('/api/v1/auth/login', {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+      headers: {'Content-Type': 'application/json', 'Accept': 'application/json'},
       credentials: 'include', // 백엔드가 쿠키로 토큰 관리한다 했으니 필수
-      body: JSON.stringify({ login_id: id, password: pw }),
+      body: JSON.stringify({login_id: id, password: pw}),
     });
 
     const body = await readBodySafely(res);
@@ -90,9 +83,9 @@ async function handleSignup(e) {
   try {
     const res = await fetch('/api/v1/auth/signup', {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+      headers: {'Content-Type': 'application/json', 'Accept': 'application/json'},
       credentials: 'include',
-      body: JSON.stringify({ username: name, login_id: id, password: pw }),
+      body: JSON.stringify({username: name, login_id: id, password: pw}),
     });
 
     const body = await readBodySafely(res);

@@ -1,7 +1,7 @@
 /* ===================== THEME VARIABLES (Default: Pink) ===================== */
 :root {
   color-scheme: light dark; /* 시스템 다크모드 대응용: 깜빡임 완화 */
-  --theme: pink; /* fallback 변수 */
+  --theme: pink;
   --bg: #f8f5f7;
   --grid: #e7dfe4;
   --window-bg: #f2eef1;
@@ -88,6 +88,7 @@ body[data-theme="black"] {
   --text: #ddd;
   }
 
+
 /* ===================== BASE ===================== */
 * {
   box-sizing: border-box
@@ -118,7 +119,7 @@ body {
 
 .window {
   width: 1380px;
-  min-height: 900px; /* original design size */
+  height: 900px; /* original design size */
   transform: scale(var(--ui-scale)); /* 75% scale */
   transform-origin: top center;
   background: var(--window-bg);
@@ -216,11 +217,10 @@ body {
   letter-spacing: 1px;
   }
 
-/* pages grid: left | rings | right | month sidebar */
 .pages {
   position: relative;
   display: grid;
-  grid-template-columns: 1fr 24px 1fr calc(var(--tabs-w) + 8px);
+  grid-template-columns:1fr 24px 1fr var(--tabs-w);
   height: calc(100% - 90px)
   }
 
@@ -252,7 +252,6 @@ body {
   display: block
   }
 
-/* Rings */
 .rings {
   display: flex;
   flex-direction: column;
@@ -275,175 +274,6 @@ body {
   width: 3px;
   flex: 1;
   background: var(--ring-spine)
-  }
-
-/* ===================== RIGHT PAGE ===================== */
-.page.right .inner {
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  padding: 24px 28px;
-  box-sizing: border-box;
-  overflow: hidden;
-  }
-
-.right-content {
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
-  flex: 1;
-  overflow-y: auto;
-  padding-right: 6px;
-  }
-
-.right-content::-webkit-scrollbar {
-  width: 8px;
-  }
-
-.right-content::-webkit-scrollbar-thumb {
-  background: var(--tab-active);
-  border-radius: 6px;
-  }
-
-.right-content::-webkit-scrollbar-track {
-  background: var(--panel-soft);
-  border-radius: 6px;
-  }
-
-/* 명언 */
-.quote-area {
-  position: relative;
-  border: 2px solid var(--inner-stroke);
-  border-radius: 12px;
-  background: color-mix(in oklab, var(--paper), var(--panel-soft) 10%);
-  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.08);
-  padding: 22px 26px;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  text-align: center;
-  min-height: 220px;
-  overflow-wrap: break-word;
-  overflow: hidden;
-  word-break: break-word;
-  white-space: normal;
-  }
-
-.quote-area h2 {
-  font-size: clamp(0.9rem, 2vw, 1.2rem);
-  margin-bottom: 16px;
-  font-weight: 700;
-  }
-
-.quote-area p {
-  font-size: clamp(0.9rem, 2vw, 1rem);
-  line-height: 1.8;
-  margin: 8px 0;
-  }
-
-.quote-area p:last-child {
-  margin-top: 12px;
-  font-style: italic;
-  }
-
-/* 북마크 */
-.bookmark-area {
-  border: 2px solid var(--inner-stroke);
-  border-radius: 12px;
-  background: color-mix(in oklab, var(--paper), var(--panel-soft) 10%);
-  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.08);
-  padding: 22px 26px;
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-start;
-  align-items: center;
-  text-align: center;
-  gap: 8px;
-  min-height: 220px;
-  flex-shrink: 0;
-  overflow-wrap: break-word;
-  overflow: hidden;
-  word-break: break-word;
-  white-space: normal;
-  }
-
-.bookmark-area h2 {
-  font-size: clamp(0.9rem, 2vw, 1.2rem);
-  margin-bottom: 4px;
-  }
-
-.bookmark-area hr {
-  width: 90%;
-  border: none;
-  border-top: 1.5px dashed var(--inner-stroke);
-  margin: 6px auto;
-  }
-
-.bookmark-area p {
-  margin-top: 8px;
-  font-size: clamp(0.9rem, 2vw, 1rem);
-  color: var(--text);
-  }
-
-/* 북마크 내부 스크롤 적용 */
-.bookmarks-section {
-  flex: 1;
-  width: 100%;
-  max-height: 150px;
-  overflow-y: auto;
-  padding-right: 0;
-  margin-right: -4px;
-  }
-
-.bookmarks-section::-webkit-scrollbar {
-  width: 8px;
-  }
-
-.bookmarks-section::-webkit-scrollbar-thumb {
-  background: var(--tab-active);
-  border-radius: 6px;
-  }
-
-.bookmarks-section::-webkit-scrollbar-track {
-  background: var(--panel-soft);
-  /*border-radius:6px;*/
-  margin-left: 4px;
-  }
-
-/* 일기 버튼 */
-.diary-button-area {
-  margin-top: 24px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  padding-bottom: 10px;
-  }
-
-.diary-btn {
-  width: 100%;
-  max-width: 420px;
-  padding: 18px 26px;
-  font-size: 18px;
-  font-weight: 700;
-  border: none;
-  background: var(--tab-active);
-  color: white;
-  border-radius: 30px;
-  cursor: pointer;
-  box-shadow: 0 4px 10px color-mix(in oklab, var(--tab-active), #000 40% / 20%);
-  transition: all .25s ease;
-  }
-
-.diary-btn:hover {
-  transform: translateY(-3px);
-  box-shadow: 0 6px 12px color-mix(in oklab, var(--tab-active), #000 50% / 25%);
-  background: color-mix(in oklab, var(--tab-active), white 10%);
-  }
-
-.diary-btn:active {
-  transform: scale(0.96);
-  background: color-mix(in oklab, var(--tab-active), black 10%);
   }
 
 /* ===================== RIGHT SIDEBAR (Year + Month Tabs) ===================== */
@@ -471,9 +301,8 @@ body {
   cursor: pointer
   }
 
-/* base tab */
 .tab-btn {
-  position: relative; /* for active indicator */
+  position: relative;
   padding: 10px 10px;
   border: 2px solid var(--tab-border);
   border-right-width: 6px;
@@ -481,18 +310,8 @@ body {
   background: var(--tab);
   color: var(--tab-text);
   font-weight: 700;
-  cursor: pointer;
   text-align: left;
   box-shadow: 0 2px 0 color-mix(in oklab, var(--tab-border), #000 10%);
-  transition: background .2s, transform .06s, box-shadow .2s, color .2s, border-color .2s;
-  }
-
-.tab-btn:hover {
-  filter: brightness(1.06)
-  }
-
-.tab-btn:active {
-  transform: translateY(1px)
   }
 
 .tab-btn.active {
@@ -515,11 +334,6 @@ body {
   border-radius: 2px;
   background: var(--tab-active);
   box-shadow: 0 0 0 2px var(--paper);
-  }
-
-.tab-btn:focus-visible {
-  outline: 3px solid color-mix(in oklab, var(--tab-active), #fff 35%);
-  outline-offset: 2px;
   }
 
 /* ===================== THEME SWITCHER ===================== */
@@ -554,7 +368,7 @@ body {
   color: white
   }
 
-/* ===================== RESPONSIVE (sidebar hides under ~980px) ===================== */
+/* ===================== RESPONSIVE ===================== */
 @media (max-width: 980px) {
   .pages {
     grid-template-columns:1fr 24px 1fr
@@ -564,3 +378,208 @@ body {
     display: none
     }
   }
+
+/* ===================== LEFT PANE ===================== */
+.diary-container {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  justify-content: flex-start;
+  }
+
+.diary-input {
+  border: 2px solid var(--inner-stroke);
+  border-radius: 10px;
+  padding: 10px;
+  font-size: 1rem;
+  }
+
+.diary-header {
+  text-align: center;
+  font-size: 1.4rem;
+  font-weight: 800;
+  color: var(--tab);
+  padding: 1em;
+  }
+
+.diary-field {
+  display: flex;
+  flex-direction: column;
+  margin: 1em 4px;
+  }
+
+.diary-label {
+  font-weight: 700;
+  font-size: 1em;
+  padding-top: 0.5em;
+  }
+
+.title-field {
+  display: flex;
+  flex-wrap: nowrap;
+  gap: 0.5em;
+  width: 100%;
+  }
+
+.title-field .diary-input {
+  flex: 1;
+  width: 100%;
+  min-width: 0;
+  border: 2px solid var(--inner-stroke);
+  border-radius: 10px;
+  padding: 1.2em;
+  background: color-mix(in oklab, var(--paper), var(--panel-soft) 8%);
+  box-shadow: inset 0 0 0 2px var(--panel-soft);
+  min-height: 10px;
+  height: 20px;
+  font-size: 1rem;
+  resize: none;
+  }
+
+hr {
+  border: none;
+  height: 2px;
+  background: color-mix(in srgb, var(--inner-stroke), transparent 30%);
+  border-radius: 2px;
+  width: 70%;
+  margin: 16px auto;
+  }
+
+.diary-content-input {
+  border: 2px dashed var(--inner-stroke);
+  border-radius: 10px;
+  padding: 1.2em;
+  background: color-mix(in oklab, var(--paper), var(--panel-soft) 8%);
+  box-shadow: inset 0 0 0 2px var(--panel-soft);
+  min-height: 360px;
+  font-size: 1rem;
+  resize: none;
+  }
+
+/* ===================== RIGHT PANE ===================== */
+.question-container {
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  margin-top: 1.2em;
+  padding-top: 1.3em;
+  align-items: center;
+  text-align: center;
+  min-height: 200px;
+  }
+
+.question-header i {
+  border: none;
+  background: none;
+  color: var(--tab-active);
+  cursor: pointer;
+  transition: transform 0.15s ease, color 0.2s ease;
+  font-size: 1.5em;
+  }
+
+.question-field {
+  margin-top: 1em;
+  margin-bottom: 10px;
+  text-align: center;
+  }
+
+.question-field {
+  font-size: 1.2rem;
+  font-weight: 600;
+  font-style: italic;
+  padding: 12px;
+  background: none;
+  }
+
+.question-answer-area {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  }
+
+.question-answer-input {
+  width: 100%;
+  border: 2px dashed var(--dash);
+  border-radius: 10px;
+  padding: 1.5em;
+  font-size: 1rem;
+  resize: none;
+  min-height: 300px;
+  margin-bottom: 12px;
+  }
+
+
+.write-btn-wrapper {
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+  }
+
+/* 버튼 스타일 */
+.upload-btn {
+  background: var(--tab-active);
+  color: #fff;
+  border: none;
+  padding: 12px 28px;
+  margin-right: 10px;
+  border-radius: 30px;
+  font-size: 15px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 10px color-mix(in oklab, var(--tab-active), #000 40% / 20%);
+  }
+
+.back-btn {
+  background: #666;
+  color: #fff;
+  border: none;
+  padding: 12px 28px;
+  margin-left: 10px;
+  border-radius: 30px;
+  font-size: 15px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 10px color-mix(in oklab, var(--tab-active), #000 40% / 20%);
+  }
+
+.back-btn:hover, .upload-btn:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 6px 12px color-mix(in oklab, var(--tab-active), #000 50% / 25%);
+  background: color-mix(in oklab, var(--tab-active), white 10%);
+  }
+
+.back-btn:active, .upload-btn:active {
+  transform: scale(0.96);
+  background: color-mix(in oklab, var(--tab-active), black 10%);
+  }
+
+
+/*.upload-btn {*/
+/*  background: var(--tab-active);*/
+/*  color: white;*/
+/*  border: none;*/
+/*  border-radius: 8px;*/
+/*  padding: 10px 20px;*/
+/*  font-weight: 700;*/
+/*  cursor: pointer;*/
+/*  align-self: flex-end;*/
+/*}*/
+
+/*.upload-btn:hover {*/
+/*  filter: brightness(1.1);*/
+/*}*/
+
+/*.write-btn-wrapper {*/
+/*  position: absolute;*/
+/*  bottom: 20px;*/
+/*  right: 20px;*/
+/*  display: flex;*/
+/*  gap: 10px;*/
+/*}*/
+
+/*.back-btn {*/
+/*  margin-bottom: 0;*/
+/*  background-color: #666;*/
+/*}*/

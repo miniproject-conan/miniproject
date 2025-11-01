@@ -1,5 +1,6 @@
 from app.repositories.quote_repo import QuoteRepository
-from app.schemas.quote import RandomQuoteResponse, QuoteRead
+from app.schemas.quote import QuoteRead, RandomQuoteResponse
+
 
 class QuoteService:
     @staticmethod

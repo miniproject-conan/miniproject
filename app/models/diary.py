@@ -7,8 +7,10 @@ class Post(Model):
     title = fields.CharField(max_length=100)
     date = fields.DateField(null=True)
     content = fields.TextField()
-    created_at = fields.DatetimeField(auto_now_add=True)
     author = fields.ForeignKeyField("models.User", related_name="posts")
+    question = fields.OneToOneField("models.Question", related_name="post", null=True)
+
+    created_at = fields.DatetimeField(auto_now_add=True)
 
     class Meta:
         table = "post"

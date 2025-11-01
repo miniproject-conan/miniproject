@@ -1,71 +1,262 @@
 /* ===================== DIARY LIST ===================== */
-.my-diary-list{
-  display:flex;flex-direction:column;gap:8px;padding:4px;height:100%;
-  overflow-y:auto;overflow-x:hidden;
-}
-.diary-items{
-  display:flex;align-items:center;border:1px solid var(--inner-stroke);
-  border-radius:10px;padding:8px 10px;
-  background:color-mix(in oklab,var(--paper),var(--panel-soft) 8%);
-  box-shadow:inset 0 0 0 2px var(--panel-soft);
-  transition:transform 0.2s ease, box-shadow 0.2s ease;
-  cursor:pointer;
-}
-.diary-items:hover{
-  transform:translateY(-2px);
-  box-shadow:0 2px 8px color-mix(in oklab, var(--stroke), #000 10%);
-}
-.diary-date{flex:0 0 100px;font-size:14px;color:color-mix(in oklab, var(--text), #000 40%)}
-.diary-title{flex:0 0 150px;font-weight:700;font-size:14px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.diary-content{flex:1;font-size:14px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.my-diary-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 4px;
+  height: 100%;
+  overflow-y: auto;
+  overflow-x: hidden;
+  }
 
-.head-container{width:100%;height:40px;display:flex;flex-direction:column;margin:5px 0;padding:2px 10px;border-bottom:3px double var(--inner-stroke)}
-.diary-header{font-weight:700;font-size:24px;color:var(--panel)}
+.diary-items {
+  display: flex;
+  align-items: center;
+  border: 1px solid var(--inner-stroke);
+  border-radius: 10px;
+  padding: 8px 10px;
+  background: color-mix(in oklab, var(--paper), var(--panel-soft) 8%);
+  box-shadow: inset 0 0 0 2px var(--panel-soft);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  cursor: pointer;
+  }
+
+.diary-items:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 2px 8px color-mix(in oklab, var(--stroke), #000 10%);
+  }
+
+.diary-date {
+  flex: 0 0 100px;
+  font-size: 14px;
+  color: color-mix(in oklab, var(--text), #000 40%)
+  }
+
+.diary-title {
+  flex: 0 0 150px;
+  font-weight: 700;
+  font-size: 14px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap
+  }
+
+.diary-content {
+  flex: 1;
+  font-size: 14px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap
+  }
+
+.head-container {
+  width: 100%;
+  height: 40px;
+  display: flex;
+  flex-direction: column;
+  margin: 5px 0;
+  padding: 2px 10px;
+  border-bottom: 3px double var(--inner-stroke)
+  }
+
+.diary-header {
+  font-weight: 700;
+  font-size: 24px;
+  color: var(--panel)
+  }
 
 /* ===================== DIARY READ ===================== */
-.title_box, .time_box{
-  display:flex;align-items:center;
-  border:2px solid var(--inner-stroke);border-radius:10px;margin:6px 0;
-  padding:2px 10px;background:color-mix(in oklab, var(--paper), var(--panel-soft) 8%);
-  box-shadow:inset 0 0 0 2px var(--panel-soft);
-}
-.title_ment, .time_ment{font-size:14px;font-weight:700;min-width:50px;color:var(--tab-active)}
-.content_ment{font-size:14px;font-weight:700;min-width:100px;color:var(--tab-active);margin:10px 0 6px}
+.header_box {
+  display: flex;
+  align-items: center;
+  border: 2px solid var(--inner-stroke);
+  border-radius: 10px;
+  margin: 6px 0 20px 0;
+  padding: 2px 10px;
+  background: color-mix(in oklab, var(--paper), var(--panel-soft) 8%);
+  box-shadow: inset 0 0 0 2px var(--panel-soft);
+  height: 50px;
+  }
 
-.content_box{
-  border:2px dashed var(--inner-stroke);border-radius:12px;padding:10px 18px;
-  background:color-mix(in oklab,var(--paper),var(--panel-soft) 8%);
-  box-shadow:inset 0 0 0 2px var(--panel-soft);
-}
-.read_content{
-  word-break:break-word;font-size:14px;white-space:pre-wrap;
-  line-height:1.7;color:var(--text);
-}
-.btn_to_diary{display:flex;justify-content:center;margin-top:20px}
+.read_time {
+  margin-left: auto;
+  font-size: 15px;
+  }
+
+.title_ment, .time_ment {
+  font-size: 16px;
+  font-weight: 700;
+  min-width: 50px;
+  color: var(--tab-active)
+  }
+
+.content_ment {
+  font-size: 16px;
+  font-weight: 700;
+  min-width: 100px;
+  color: var(--tab-active);
+  margin: 20px 0 6px
+  }
+
+.content_box {
+  border: 2px dashed var(--inner-stroke);
+  border-radius: 12px;
+  padding: 10px 18px;
+  background: color-mix(in oklab, var(--paper), var(--panel-soft) 8%);
+  box-shadow: inset 0 0 0 2px var(--panel-soft);
+  min-height: 220px;
+  }
+
+/* 일기 내용 내부 스크롤 적용 */
+.content_box {
+  flex: 1;
+  width: 100%;
+  max-height: 150px;
+  overflow-y: auto;
+  padding-right: 0;
+  margin-right: -4px;
+  }
+
+.content_box::-webkit-scrollbar {
+  width: 8px;
+  }
+
+.content_box::-webkit-scrollbar-thumb {
+  background: var(--tab-active);
+  border-radius: 6px;
+  }
+
+.content_box::-webkit-scrollbar-track {
+  background: var(--panel-soft);
+  margin-left: 4px;
+  }
+
+.read_content {
+  word-break: break-word;
+  font-size: 14px;
+  white-space: pre-wrap;
+  line-height: 1.7;
+  color: var(--text);
+  }
+
+.btn_to_diary {
+  display: flex;
+  justify-content: center;
+  margin-top: 20px
+  }
 
 /* 버튼 스타일 */
-.back-btn, .save-btn{
-  background:var(--tab-active);color:#fff;border:none;
-  padding:12px 28px;border-radius:30px;font-size:15px;font-weight:700;
-  cursor:pointer;transition:all 0.3s ease;
-  box-shadow:0 4px 10px color-mix(in oklab,var(--tab-active),#000 40% / 20%);
-}
-.back-btn:hover, .save-btn:hover{
-  transform:translateY(-3px);
-  box-shadow:0 6px 12px color-mix(in oklab,var(--tab-active),#000 50% / 25%);
-  background:color-mix(in oklab,var(--tab-active),white 10%);
-}
-.back-btn:active, .save-btn:active{
-  transform:scale(0.96);
-  background:color-mix(in oklab,var(--tab-active),black 10%);
-}
+.back-btn, .save-btn, .edit-btn, .delete-btn {
+  background: var(--tab-active);
+  color: #fff;
+  border: none;
+  padding: 12px 28px;
+  border-radius: 30px;
+  font-size: 15px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 10px color-mix(in oklab, var(--tab-active), #000 40% / 20%);
+  }
+
+.back-btn:hover, .save-btn:hover, .edit-btn:hover, .delete-btn:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 6px 12px color-mix(in oklab, var(--tab-active), #000 50% / 25%);
+  background: color-mix(in oklab, var(--tab-active), white 10%);
+  }
+
+.back-btn:active, .save-btn:active, .edit-btn:active, .delete-btn:active {
+  transform: scale(0.96);
+  background: color-mix(in oklab, var(--tab-active), black 10%);
+  }
 
 /* ===================== DIARY WRITE ===================== */
-.write-form{display:flex;flex-direction:column;gap:14px}
-.write_title{
-  border:none;font-size:16px;padding:6px 10px;background:transparent;outline:none;
-}
-.write_content{
-  width:100%;height:360px;border:none;resize:none;background:transparent;
-  font-size:15px;line-height:1.7;color:var(--text);outline:none;
-}
+.write-form {
+  display: flex;
+  flex-direction: column;
+  gap: 14px
+  }
+
+.write_title {
+  border: none;
+  font-size: 16px;
+  padding: 6px 10px;
+  background: transparent;
+  outline: none;
+  }
+
+.write_content {
+  width: 100%;
+  height: 360px;
+  border: none;
+  resize: none;
+  background: transparent;
+  font-size: 15px;
+  line-height: 1.7;
+  color: var(--text);
+  outline: none;
+  }
+
+/* ===================== 오늘의 질문 ===================== */
+.question-area {
+  position: relative;
+  border: 2px solid var(--inner-stroke);
+  border-radius: 10px;
+  background: color-mix(in oklab, var(--paper), var(--panel-soft) 8%);
+  box-shadow: inset 0 0 0 2px var(--panel-soft);
+  margin-top: 1.5em;
+  padding-top: 1.3em;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  min-height: 200px;
+  }
+
+
+.fa-quote-left {
+  color: var(--tab-active);
+  font-size: 1.4em;
+  }
+
+.question-area #dbQuestion {
+  font-size: 1.2em;
+  line-height: 1.8;
+  margin: 8px 0;
+  font-style: italic;
+  }
+
+.question-area #dbAnswer {
+  margin-top: 2em;
+  }
+
+.question-area hr {
+  width: 90%;
+  border: none;
+  border-top: 1.5px dashed var(--inner-stroke);
+  margin: 6px auto;
+  }
+
+/* 일기 내용 내부 스크롤 적용 */
+.question_box {
+  flex: 1;
+  width: 100%;
+  max-height: 150px;
+  overflow-y: auto;
+  padding-right: 0;
+  margin-right: -4px;
+  }
+
+.question_box::-webkit-scrollbar {
+  width: 8px;
+  }
+
+.question_box::-webkit-scrollbar-thumb {
+  background: var(--tab-active);
+  border-radius: 6px;
+  }
+
+.question_box::-webkit-scrollbar-track {
+  background: var(--panel-soft);
+  margin-left: 4px;
+  }

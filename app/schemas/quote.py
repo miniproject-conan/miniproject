@@ -1,4 +1,5 @@
-from pydantic import BaseModel, Field, ConfigDict
+from pydantic import BaseModel, ConfigDict, Field
+
 
 class QuoteRead(BaseModel):
     id: int = Field(..., ge=1)
@@ -8,8 +9,8 @@ class QuoteRead(BaseModel):
 
     model_config = ConfigDict(from_attributes=True)
 
+
 class RandomQuoteResponse(BaseModel):
     data: QuoteRead
 
     model_config = ConfigDict(from_attributes=True)
-    

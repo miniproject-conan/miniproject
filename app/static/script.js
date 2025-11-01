@@ -1,38 +1,40 @@
-const API_BASE = "/api/v1";
-const TOKEN = localStorage.getItem("access_token") || "";
+document.addEventListener("DOMContentLoaded", () => {
 
-const panes = document.querySelectorAll('.pane');
-const monthButtons = document.querySelectorAll('[data-month-btn]');
-const yearSelect = document.getElementById('yearSelect');
+  const API_BASE = "/api/v1";
+  const TOKEN = localStorage.getItem("access_token") || "";
 
-let currentYear = yearSelect.value;
-let currentMonth = new Date().getMonth() + 1;
+  const panes = document.querySelectorAll('.pane');
+  const monthButtons = document.querySelectorAll('[data-month-btn]');
+  const yearSelect = document.getElementById('yearSelect');
 
-function show(year, month) {
-  panes.forEach(p => {
-    const ok = p.dataset.year === String(year) && p.dataset.month === String(month);
-    p.classList.toggle('active', ok);
-  });
-  monthButtons.forEach(b => b.classList.toggle('active', b.dataset.monthBtn === String(month)));
-  document.getElementById('leftPane').scrollTop = 0;
-  document.getElementById('rightPane').scrollTop = 0;
-}
+  let currentYear = yearSelect.value;
+  let currentMonth = new Date().getMonth() + 1;
 
-if (currentMonth < 1 || currentMonth > 12) currentMonth = 1;
-show(currentYear, currentMonth);
+  const params = new URLSearchParams(window.location.search);
+  if (params.get("month")) currentMonth = params.get("month");
+  if (params.get("year")) currentYear = params.get("year");
 
-monthButtons.forEach(btn => btn.addEventListener('click', () => {
-  currentMonth = btn.dataset.monthBtn;
+  function show(year, month) {
+    panes.forEach(p => {
+      const ok = p.dataset.year === String(year) && p.dataset.month === String(month);
+      p.classList.toggle('active', ok);
+    });
+    monthButtons.forEach(b => b.classList.toggle('active', b.dataset.monthBtn === String(month)));
+    document.getElementById('leftPane').scrollTop = 0;
+    document.getElementById('rightPane').scrollTop = 0;
+  }
+
+  if (currentMonth < 1 || currentMonth > 12) currentMonth = 1;
   show(currentYear, currentMonth);
-}));
 
-yearSelect.addEventListener('change', () => {
-  currentYear = yearSelect.value;
-  show(currentYear, currentMonth);
-});
+  monthButtons.forEach(btn => btn.addEventListener('click', () => {
+    currentMonth = btn.dataset.monthBtn;
+    show(currentYear, currentMonth);
+  }));
 
-document.querySelectorAll('.theme-btn').forEach(btn => {
-  btn.addEventListener('click', () => {
-    document.body.dataset.theme = btn.dataset.theme;
+  yearSelect.addEventListener('change', () => {
+    currentYear = yearSelect.value;
+    show(currentYear, currentMonth);
   });
+
 });

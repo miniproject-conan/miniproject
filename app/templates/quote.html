@@ -5,7 +5,10 @@
       <i class="fa-solid fa-arrows-rotate"></i>
     </button>
     <button id="bookmarkBtn" class="icon-btn bookmark-btn" title="북마크">
+      <!-- 빈 하트 (기본) -->
       <i class="fa-regular fa-heart heart-icon"></i>
+      <!-- 채워진 하트 (hover 시 보임) -->
+      <i class="fa-solid fa-heart heart-icon-filled"></i>
     </button>
   </div>
 </div>
@@ -18,11 +21,86 @@
 </div>
 
 <style>
-.quotes-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px}
-.quote-actions{display:flex;align-items:center;gap:10px;position:absolute;top:10px;right:10px;}
-.icon-btn{width:42px;height:42px;border-radius:50%;border:2px solid var(--tab-border);background:color-mix(in oklab,var(--paper),var(--panel-soft) 25%);display:flex;align-items:center;justify-content:center;cursor:pointer;transition:all .2s ease;box-shadow:0 2px 6px rgba(0,0,0,.15)}
-.icon-btn:hover{transform:scale(1.07);box-shadow:0 4px 10px rgba(0,0,0,.25)}
-.icon-btn i{font-size:18px;color:var(--tab-border)}
-.bookmark-btn.active i{color:var(--tab-active)}
-.loading-text{display:flex;align-items:center;gap:6px;color:var(--stroke)}
+  .quotes-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 12px;
+    }
+
+  .quote-actions {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    }
+
+  /* 버튼 기본 상태 */
+  .icon-btn {
+    width: 42px;
+    height: 42px;
+    border-radius: 50%;
+    border: 2px solid var(--tab-border);
+    background: color-mix(in oklab, var(--paper), var(--panel-soft) 25%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all .25s ease;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, .15);
+    position: relative;
+    }
+
+  /* hover 시 버튼 확대 */
+  .icon-btn:hover {
+    transform: scale(1.07);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, .25);
+    }
+
+  /* 기본 하트 아이콘 */
+  .icon-btn i {
+    font-size: 18px;
+    color: var(--tab-border);
+    transition: color .25s ease, transform .25s ease, opacity .25s ease;
+    }
+
+  /* ----- hover 시 채워진 하트로 전환 ----- */
+  /* 기본: 빈 하트 */
+  .heart-icon-filled {
+    display: none;
+    position: absolute;
+    opacity: 0;
+    }
+
+  /* hover 시: 빈 하트 숨기고 채워진 하트 표시 */
+  .bookmark-btn:hover .heart-icon {
+    display: none;
+    }
+
+  .bookmark-btn:hover .heart-icon-filled {
+    display: inline;
+    color: var(--tab-active);
+    opacity: 1;
+    transform: scale(1.15);
+    }
+
+  /* 클릭 시 살짝 눌리는 피드백 */
+  .bookmark-btn:active {
+    transform: scale(0.95);
+    transition: transform .1s ease;
+    }
+
+  /* 기타 */
+  .loading-text {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    color: var(--stroke);
+    }
+
+  .quote-box {
+    width: 80%;
+    }
 </style>

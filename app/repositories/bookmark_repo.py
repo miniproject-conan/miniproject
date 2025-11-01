@@ -1,6 +1,8 @@
-from tortoise.exceptions import IntegrityError, DoesNotExist
+from tortoise.exceptions import IntegrityError
+
 from app.models.bookmark import Bookmark
 from app.models.quote import Quote
+
 
 class BookmarkRepository:
     @staticmethod
@@ -19,7 +21,11 @@ class BookmarkRepository:
 
     @staticmethod
     async def list_with_quotes(user_id: int, offset=0, limit=20):
-        qs = Bookmark.filter(user_id=user_id).select_related("quote").order_by("-created_at")
+        qs = (
+            Bookmark.filter(user_id=user_id)
+            .select_related("quote")
+            .order_by("-created_at")
+        )
         total = await qs.count()
         items = await qs.offset(offset).limit(limit)
         return total, list(items)
