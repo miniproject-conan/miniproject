@@ -4,6 +4,7 @@ from typing import List, Optional
 from fastapi import APIRouter, Depends, HTTPException, Query, Request
 from fastapi.responses import HTMLResponse
 from fastapi.templating import Jinja2Templates
+from pytz import timezone
 
 from app.core.security import get_current_user
 from app.models.user import User
@@ -22,15 +23,6 @@ templates = Jinja2Templates(directory="app/templates")
 
 
 # HTML 렌더링 추가 -----------------------
-
-
-# 전체 일기 조회
-@router.get("", response_model=List[DiaryResponse], name="list_diaries")
-async def get_all_diaries(current_user: User = Depends(get_current_user)):
-    posts = await get_diaries(current_user)
-    return posts
-
-
 # 일기 상세 페이지
 @router.get("/read/{diary_id}", response_class=HTMLResponse)
 async def render_diary_detail(
@@ -39,9 +31,18 @@ async def render_diary_detail(
     post = await get_diary(diary_id, current_user)
     if not post:
         raise HTTPException(status_code=404, detail="해당 일기를 찾을 수 없습니다.")
+
+    now = datetime.now(timezone("Asia/Seoul"))
+    selected_year = now.year
+
     return templates.TemplateResponse(
         "index.html",
-        {"request": request, "post": post, "username": current_user.username},
+        {
+            "request": request,
+            "post": post,
+            "username": current_user.username,
+            "selected_year": selected_year,
+        },
     )
 
 
@@ -67,6 +68,13 @@ async def render_diary_list(
 
 
 # -----------------------------------
+
+
+# 전체 일기 조회
+@router.get("", response_model=List[DiaryResponse], name="list_diaries")
+async def get_all_diaries(current_user: User = Depends(get_current_user)):
+    posts = await get_diaries(current_user)
+    return posts
 
 
 # 일기작성 (로드)
