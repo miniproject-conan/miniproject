@@ -3,15 +3,15 @@ console.log("[loaded] quote.js");
 window.API_BASE = window.API_BASE || "/api/v1";
 
 const quoteMessage = document.getElementById("quoteMessage");
-const quoteAuthor  = document.getElementById("quoteAuthor");
-const bookmarkBtn  = document.getElementById("bookmarkBtn");
-const refreshBtn   = document.getElementById("refreshBtn");
+const quoteAuthor = document.getElementById("quoteAuthor");
+const bookmarkBtn = document.getElementById("bookmarkBtn");
+const refreshBtn = document.getElementById("refreshBtn");
 
 let currentQuote = null;
 
 // ------------------- 공통 fetch (자동 재발급 포함 가능) -------------------
 async function apiFetch(url, options = {}) {
-  const res = await fetch(url, { ...options, credentials: "include" }); // 쿠키 포함
+  const res = await fetch(url, {...options, credentials: "include"}); // 쿠키 포함
   if (res.status === 401) {
     const data = await res.json().catch(() => ({}));
     if (data.detail === "Access token expired") {
@@ -63,8 +63,8 @@ async function addBookmark() {
     const res = await apiFetch(`${API_BASE}/bookmark`, {
       method: "POST",
       credentials: "include",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ quote_id: currentQuote.id }),
+      headers: {"Content-Type": "application/json"},
+      body: JSON.stringify({quote_id: currentQuote.id}),
     });
 
     if (res.status === 201) {

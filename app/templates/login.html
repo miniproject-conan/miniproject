@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-  <meta charset="utf-8" />
+  <meta charset="utf-8"/>
   <title>Login | Team Conan</title>
   <link rel="stylesheet" href="{{ url_for('static', path='style/loginstyle.css') }}">
   <script>
@@ -11,41 +11,41 @@
   <script src="{{ url_for('static', path='loginscript.js') }}" defer></script>
 </head>
 <body>
-  <div class="stage">
-    <div class="window">
-      <div class="titlebar">
-        <div class="traffic"><span class="dot"></span><span class="dot"></span><span class="dot"></span></div>
-        <div>My name is Conan, and I'm a detective.</div>
-      </div>
-      <div class="desk">
-        <div class="notebook">
-          <div class="band"><span class="diary_title" style="padding-left: 3em;">누군가의 일기장</span></div>
-          <div class="pages">
-            <section class="page">
-              <div class="inner">
-                <form id="loginForm">
-                  <div class="input_row">
-<!--                    <label for="name">이름 </label>-->
-<!--                    <input type="text" id="name" placeholder="이름을 입력해주세요" />-->
-<!--                  </div>-->
-<!--                  <div class="input_row">-->
-                    <label>아이디</label>
-                    <input type="text" id="id" placeholder="아이디를 입력해주세요" />
-                  </div>
-                  <div class="input_row">
-                    <label>비밀번호</label>
-                    <input type="password" id="pw" placeholder="비밀번호를 입력해주세요" />
-                  </div>
-                  <input type="submit" value="로그인">
-                  <input type="button" value="회원가입" onclick="window.location.href='{{ url_for('render_signin') }}'">
-                </form>
-              </div>
-            </section>
-          </div>
+<div class="stage">
+  <div class="window">
+    <div class="titlebar">
+      <div class="traffic"><span class="dot"></span><span class="dot"></span><span class="dot"></span></div>
+      <div>My name is Conan, and I'm a detective.</div>
+    </div>
+    <div class="desk">
+      <div class="notebook">
+        <div class="band"><span class="diary_title" style="padding-left: 3em;">누군가의 일기장</span></div>
+        <div class="pages">
+          <section class="page">
+            <div class="inner">
+              <form id="loginForm">
+                <div class="input_row">
+                  <!--                    <label for="name">이름 </label>-->
+                  <!--                    <input type="text" id="name" placeholder="이름을 입력해주세요" />-->
+                  <!--                  </div>-->
+                  <!--                  <div class="input_row">-->
+                  <label>아이디</label>
+                  <input type="text" id="id" placeholder="아이디를 입력해주세요"/>
+                </div>
+                <div class="input_row">
+                  <label>비밀번호</label>
+                  <input type="password" id="pw" placeholder="비밀번호를 입력해주세요"/>
+                </div>
+                <input type="submit" value="로그인">
+                <input type="button" value="회원가입" onclick="window.location.href='{{ url_for('render_signin') }}'">
+              </form>
+            </div>
+          </section>
         </div>
       </div>
     </div>
   </div>
+</div>
 <script src="{{ url_for('static', path='theme-manager.js') }}" defer></script>
 </body>
 </html>

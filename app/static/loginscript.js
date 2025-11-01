@@ -23,7 +23,7 @@ async function readBodySafely(res) {
     } catch (err) {
       // 혹시나 서버가 content-type은 json인데 실제로는 html/text를 보낸 경우 방어
       const text = await res.text();
-      return { __nonJson__: true, raw: text };
+      return {__nonJson__: true, raw: text};
     }
   }
   return await res.text();
@@ -47,9 +47,9 @@ async function handleLogin(e) {
   try {
     const res = await fetch('/api/v1/auth/login', {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+      headers: {'Content-Type': 'application/json', 'Accept': 'application/json'},
       credentials: 'include', // 백엔드가 쿠키로 토큰 관리한다 했으니 필수
-      body: JSON.stringify({ login_id: id, password: pw }),
+      body: JSON.stringify({login_id: id, password: pw}),
     });
 
     const body = await readBodySafely(res);
@@ -83,9 +83,9 @@ async function handleSignup(e) {
   try {
     const res = await fetch('/api/v1/auth/signup', {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+      headers: {'Content-Type': 'application/json', 'Accept': 'application/json'},
       credentials: 'include',
-      body: JSON.stringify({ username: name, login_id: id, password: pw }),
+      body: JSON.stringify({username: name, login_id: id, password: pw}),
     });
 
     const body = await readBodySafely(res);
