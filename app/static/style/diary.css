@@ -105,7 +105,6 @@
   background: color-mix(in oklab, var(--paper), var(--panel-soft) 8%);
   box-shadow: inset 0 0 0 2px var(--panel-soft);
   min-height: 220px;
-
   }
 
 /* 일기 내용 내부 스크롤 적용 */
@@ -216,11 +215,12 @@
 
 
 .fa-quote-left {
-  font-size: 26px
+  color: var(--tab-active);
+  font-size: 1.4em;
   }
 
 .question-area #dbQuestion {
-  font-size: 18px;
+  font-size: 1.2em;
   line-height: 1.8;
   margin: 8px 0;
   font-style: italic;

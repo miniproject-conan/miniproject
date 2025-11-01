@@ -39,13 +39,14 @@
                 <input type="hidden" id="diaryId" value="{{ post.id if post else '' }}">
 
                 <div class="diary-field">
-                  <label class="diary-label">제목</label>
-                  <input id="diaryTitle" type="text" class="diary-input" placeholder="제목을 입력하세요."
-                    value="{{ post.title if post else '' }}">
+                  <div class="title-field">
+                    <label class="diary-label">제목: </label>
+                    <input id="diaryTitle" type="text" class="diary-input" placeholder="제목을 입력하세요."
+                      value="{{ post.title if post else '' }}">
+                  </div>
                 </div>
 
                 <div class="diary-field">
-                  <label class="diary-label">내용</label>
                   <textarea id="diaryContent" class="diary-content-input"
                     placeholder="오늘 어떤 일이 있었나요?">{{ post.content if post else '' }}</textarea>
                 </div>
@@ -60,9 +61,8 @@
           <!-- RIGHT PAGE -->
           <section class="page right">
             <div class="inner" id="rightPane">
-
               <div class="question-container">
-                <div class="question-header">오늘의 질문</div>
+                <div class="question-header"><i class="fa-solid fa-quote-left"></i></div>
                 <div class="question-field" id="dbQuestion">
                   {% if post and post.question %}
                   {{ post.question.content }}
