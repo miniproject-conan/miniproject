@@ -1,5 +1,7 @@
 console.log("[loaded] bookmark.js");
 
+// API_BASE는 /api/v1 로 고정 (백엔드 prefix)
+const API_BASE = "/api/v1";
 const bookmarkList = document.getElementById("bookmarkList");
 
 async function fetchBookmarks() {
@@ -37,7 +39,6 @@ async function fetchBookmarks() {
       )
       .join("");
 
-    // 삭제 버튼 이벤트 연결
     document.querySelectorAll(".remove-btn").forEach(btn => {
       btn.addEventListener("click", async e => {
         const li = e.target.closest("li");

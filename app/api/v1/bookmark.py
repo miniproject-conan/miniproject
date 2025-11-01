@@ -5,10 +5,10 @@ from app.models.user import User
 from app.schemas.bookmark import BookmarkCreate, BookmarkListResponse, BookmarkRead
 from app.services.bookmark_service import BookmarkService
 
-router = APIRouter(tags=["Bookmark"])
+router = APIRouter(prefix="/bookmark", tags=["Bookmark"])
 
 
-@router.get("", response_model=BookmarkListResponse)
+@router.get("/", response_model=BookmarkListResponse)
 async def list_bookmarks(
     offset: int = Query(0, ge=0),
     limit: int = Query(20, ge=1, le=100),
@@ -17,7 +17,7 @@ async def list_bookmarks(
     return await BookmarkService.list(current_user.id, offset, limit)
 
 
-@router.post("", response_model=BookmarkRead, status_code=status.HTTP_201_CREATED)
+@router.post("/", response_model=BookmarkRead, status_code=status.HTTP_201_CREATED)
 async def add_bookmark(
     payload: BookmarkCreate, current_user: User = Depends(get_current_user)
 ):

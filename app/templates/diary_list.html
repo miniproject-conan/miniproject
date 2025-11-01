@@ -1,7 +1,7 @@
 <div class="my-diary-list">
   {% if posts %}
   {% for diary in posts %}
-  <div class="diary-items" onclick="window.location.href='/api/v1/diary/read/{{ diary.id }}'">
+  <div class="diary-items" onclick="window.location.href='/diary/read/{{ diary.id }}'">
     <div class="diary-date">{{ diary.created_at.strftime('%Y-%m-%d') }}</div>
     <div class="diary-title">{{ diary.title }}</div>
     <div class="diary-content">
