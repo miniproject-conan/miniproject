@@ -186,12 +186,19 @@ body {
   pointer-events: none
   }
 
+.header-notebook {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 12px;
+  }
+
 .band {
   display: block;
   height: 60px;
-  width: calc(100% - var(--tabs-w) - 10px);
-  margin-bottom: 12px;
-  margin-right: auto;
+  width: calc(100% - 186px);
+  margin: 10px 18px 5px 10px;
   background: var(--panel);
   border: 2px solid var(--stroke);
   border-radius: 12px;
@@ -220,8 +227,9 @@ body {
 .pages {
   position: relative;
   display: grid;
-  grid-template-columns: 1fr 24px 1fr calc(var(--tabs-w) + 8px);
-  height: calc(100% - 90px)
+  grid-template-columns: 1.2fr 24px 1.2fr 170px;
+  height: calc(100% - 100px);
+  margin-bottom: 15px;
   }
 
 .page {
@@ -320,15 +328,17 @@ body {
   padding: 22px 26px;
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  justify-content: flex-start;
   align-items: center;
   text-align: center;
   min-height: 220px;
-  overflow-wrap: break-word;
-  overflow: hidden;
+  max-height: 220px;
+  overflow-y: auto;
+  overflow-x: hidden;
   word-break: break-word;
   white-space: normal;
-  }
+}
+
 
 .quote-area h2 {
   font-size: clamp(0.9rem, 2vw, 1.2rem);
@@ -346,6 +356,17 @@ body {
   margin-top: 12px;
   font-style: italic;
   }
+
+.quote-area::-webkit-scrollbar {
+  width: 8px;
+}
+.quote-area::-webkit-scrollbar-thumb {
+  background: var(--tab-active);
+  border-radius: 6px;
+}
+.quote-area::-webkit-scrollbar-track {
+  background: var(--panel-soft);
+}
 
 /* 북마크 */
 .bookmark-area {
@@ -448,28 +469,34 @@ body {
 
 /* ===================== RIGHT SIDEBAR (Year + Month Tabs) ===================== */
 .righttabs {
+  padding-top: 1em;
   display: flex;
   flex-direction: column;
   gap: 8px;
   padding-left: 10px;
-  width: var(--tabs-w)
+  width: 160px
   }
 
-.year-select, .tab-btn {
+.tab-btn {
   width: 100%;
   box-sizing: border-box
   }
 
 .year-select {
-  margin-bottom: 8px;
-  padding: 8px;
+  width: 140px;
+  padding: 8px 12px;
+  margin-right: 18px;
+  margin-top: 8px;
   border-radius: 6px;
   border: 2px solid var(--tab-border);
-  background: var(--tab);
-  color: var(--tab-text);
+  background: var(--traffic-dot);
+  color: var(--text);
   font-weight: 700;
-  cursor: pointer
+  text-align: center;
+  cursor: pointer;
+  box-sizing: border-box;
   }
+
 
 /* base tab */
 .tab-btn {
