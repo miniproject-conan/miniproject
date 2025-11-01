@@ -31,8 +31,15 @@
 
     <div class="desk">
       <div class="notebook">
-        <div class="band"><span class="diary_title" style="padding-left: 3em;">{{ user.username }}의 일기장</span></div>
-
+        <div class="header-notebook">
+          <div class="band"><span class="diary_title" style="padding-left: 3em;">{{ user.username }}의 일기장</span></div>
+          <select class="year-select" id="yearSelect" disabled>
+            <option selected hidden>연도 선택</option>
+            {% for y in range(2024, 2027) %}
+            <option value="{{ y }}" {% if y== selected_year %}selected{% endif %}>{{ y }}</option>
+            {% endfor %}
+          </select>
+        </div>
         <div class="pages">
           <!-- LEFT PAGE -->
           <section class="page left">
@@ -102,12 +109,6 @@
           </section>
 
           <aside class="righttabs">
-            <select class="year-select" id="yearSelect" disabled>
-              <option selected hidden>연도 선택</option>
-              {% for y in range(2024, 2027) %}
-              <option value="{{ y }}" {% if y== selected_year %}selected{% endif %}>{{ y }}</option>
-              {% endfor %}
-            </select>
             {% for month in range(1, 13) %}
             <button class="tab-btn" data-month-btn="{{ month }}" disabled>{{ month }}월</button>
             {% endfor %}
@@ -134,7 +135,7 @@
 
     async function checkLogin() {
       try {
-        const res = await fetch("/api/v1/auth/me", { credentials: "include" });
+        const res = await fetch("/api/v1/auth/me", {credentials: "include"});
         if (!res.ok) throw new Error();
         const user = await res.json();
         document.getElementById("userDisplay").textContent = `${user.username}님`;
@@ -168,7 +169,7 @@
       const res = await fetch(url, {
         method,
         credentials: "include",
-        headers: { "Content-Type": "application/json" },
+        headers: {"Content-Type": "application/json"},
         body: JSON.stringify({
           title,
           content,
@@ -191,8 +192,9 @@
 
     document.getElementById("logoutBtn").addEventListener("click", async () => {
       try {
-        await fetch("/api/v1/auth/logout", { method: "POST", credentials: "include" });
-      } catch {}
+        await fetch("/api/v1/auth/logout", {method: "POST", credentials: "include"});
+      } catch {
+      }
       alert("로그아웃 되었습니다.");
       // view 라우터 기준
       window.location.href = "/login";

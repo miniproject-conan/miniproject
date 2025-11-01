@@ -178,21 +178,19 @@ body {
   overflow: hidden
   }
 
-.notebook:before {
-  content: "";
-  position: absolute;
-  inset: 12px;
-  border: 2px dashed var(--dash);
-  border-radius: 12px;
-  pointer-events: none
+.header-notebook {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 12px;
   }
 
 .band {
   display: block;
   height: 60px;
-  width: calc(100% - var(--tabs-w) - 10px);
-  margin-bottom: 12px;
-  margin-right: auto;
+  width: calc(100% - 120px);
+  margin: 5px 18px 5px 10px;
   background: var(--panel);
   border: 2px solid var(--stroke);
   border-radius: 12px;
@@ -220,7 +218,7 @@ body {
 .pages {
   position: relative;
   display: grid;
-  grid-template-columns:1fr 24px 1fr var(--tabs-w);
+  grid-template-columns: 1.2fr 24px 1.2fr 170px;
   height: calc(100% - 90px)
   }
 
@@ -278,27 +276,32 @@ body {
 
 /* ===================== RIGHT SIDEBAR (Year + Month Tabs) ===================== */
 .righttabs {
+  padding-top: 1em;
   display: flex;
   flex-direction: column;
   gap: 8px;
   padding-left: 10px;
-  width: var(--tabs-w)
+  width: 160px
   }
 
-.year-select, .tab-btn {
+.tab-btn {
   width: 100%;
   box-sizing: border-box
   }
 
 .year-select {
-  margin-bottom: 8px;
-  padding: 8px;
+  width: 140px;
+  padding: 8px 12px;
+  margin-right: 18px;
+  margin-top: 8px;
   border-radius: 6px;
   border: 2px solid var(--tab-border);
-  background: var(--tab);
-  color: var(--tab-text);
+  background: var(--traffic-dot);
+  color: var(--text);
   font-weight: 700;
-  cursor: pointer
+  text-align: center;
+  cursor: pointer;
+  box-sizing: border-box;
   }
 
 .tab-btn {
