@@ -6,6 +6,7 @@ from app.services.question_service import get_all_question, get_random_question
 
 router = APIRouter(prefix="/question", tags=["Question"])
 
+
 @router.get("/random")
 async def get_random_self_reflection_question():
     question = await get_random_question()

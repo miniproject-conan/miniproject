@@ -124,12 +124,3 @@ app.openapi = custom_openapi
 for route in app.routes:
     if hasattr(route, "methods"):
         print(route.path, route.methods)
-
-
-
-
-
-
-
-
-
