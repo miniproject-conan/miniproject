@@ -21,7 +21,6 @@ async function readBodySafely(res) {
     try {
       return await res.json();
     } catch (err) {
-      // 혹시나 서버가 content-type은 json인데 실제로는 html/text를 보낸 경우 방어
       const text = await res.text();
       return {__nonJson__: true, raw: text};
     }
@@ -39,7 +38,6 @@ function debugResponse(where, res, body) {
 // ----- 로그인 -----
 async function handleLogin(e) {
   e.preventDefault();
-  // const name = document.getElementById('name').value.trim();
   const id = document.getElementById('id').value.trim();
   const pw = document.getElementById('pw').value.trim();
   if (!id || !pw) return alert('아이디와 비밀번호를 입력하세요.');
@@ -48,7 +46,7 @@ async function handleLogin(e) {
     const res = await fetch('/api/v1/auth/login', {
       method: 'POST',
       headers: {'Content-Type': 'application/json', 'Accept': 'application/json'},
-      credentials: 'include', // 백엔드가 쿠키로 토큰 관리한다 했으니 필수
+      credentials: 'include',
       body: JSON.stringify({login_id: id, password: pw}),
     });
 
@@ -63,6 +61,7 @@ async function handleLogin(e) {
     }
 
     alert('로그인 성공!');
+    // 로그인 성공 후 /로 리다이렉트 (view router)
     window.location.href = '/';
   } catch (err) {
     alert(err?.message || '로그인 중 오류가 발생했습니다.');
@@ -99,7 +98,8 @@ async function handleSignup(e) {
     }
 
     alert('회원가입 완료!');
-    window.location.href = '/api/v1/auth/login';
+    // 회원가입 후 로그인 페이지로 (view router 기준)
+    window.location.href = '/login';
   } catch (err) {
     alert(err?.message || '회원가입 중 오류가 발생했습니다.');
   }

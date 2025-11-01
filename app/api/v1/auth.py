@@ -1,9 +1,7 @@
 # app/api/v1/auth.py
 # 회원가입 / 로그인 / 현재 사용자 조회
 
-from fastapi import APIRouter, Depends, HTTPException, Request, Response
-from fastapi.responses import HTMLResponse
-from fastapi.templating import Jinja2Templates
+from fastapi import APIRouter, Depends, HTTPException, Response
 from starlette.responses import RedirectResponse
 from tortoise.exceptions import DoesNotExist
 
@@ -18,19 +16,7 @@ from app.models.user import User
 from app.schemas.token import TokenRefreshRequest, TokenResponse
 from app.schemas.user import UserCreate, UserLogin, UserResponse
 
-router = APIRouter(tags=["Auth"])
-templates = Jinja2Templates(directory="app/templates")
-
-
-# ------------------ 로그인 / 회원가입 화면 ------------------
-@router.get("/login", response_class=HTMLResponse)
-async def render_login(request: Request):
-    return templates.TemplateResponse("login.html", {"request": request})
-
-
-@router.get("/signin", response_class=HTMLResponse)
-async def render_signin(request: Request):
-    return templates.TemplateResponse("signin.html", {"request": request})
+router = APIRouter(prefix="/auth", tags=["Auth"])
 
 
 # ------------------ 회원가입 / 로그인 / 토큰 ------------------
@@ -50,12 +36,6 @@ async def signup(user_data: UserCreate):
 @router.post("/login", response_model=TokenResponse)
 async def login(user_data: UserLogin, response: Response):
     try:
-        # if user_data.login_id:
-        #     user = await User.get(login_id=user_data.login_id)
-        # elif user_data.username:
-        #     user = await User.get(username=user_data.username)
-        # else:
-        #     raise DoesNotExist
         user = await User.get(login_id=user_data.login_id)
     except DoesNotExist:
         raise HTTPException(status_code=400, detail="Invalid username or login_id")

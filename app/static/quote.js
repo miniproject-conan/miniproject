@@ -1,5 +1,6 @@
 console.log("[loaded] quote.js");
 
+// API prefix는 고정: 백엔드 구조에 맞게 /api/v1
 window.API_BASE = window.API_BASE || "/api/v1";
 
 const quoteMessage = document.getElementById("quoteMessage");
@@ -9,9 +10,9 @@ const refreshBtn = document.getElementById("refreshBtn");
 
 let currentQuote = null;
 
-// ------------------- 공통 fetch (자동 재발급 포함 가능) -------------------
+// ------------------- 공통 fetch -------------------
 async function apiFetch(url, options = {}) {
-  const res = await fetch(url, {...options, credentials: "include"}); // 쿠키 포함
+  const res = await fetch(url, { ...options, credentials: "include" }); // 쿠키 포함
   if (res.status === 401) {
     const data = await res.json().catch(() => ({}));
     if (data.detail === "Access token expired") {
@@ -25,6 +26,7 @@ async function apiFetch(url, options = {}) {
         return apiFetch(url, options);
       } else {
         alert("세션이 만료되었습니다. 다시 로그인해주세요.");
+        // view 라우터 기준: /login 으로 이동
         window.location.href = "/login";
         return;
       }
@@ -63,8 +65,8 @@ async function addBookmark() {
     const res = await apiFetch(`${API_BASE}/bookmark`, {
       method: "POST",
       credentials: "include",
-      headers: {"Content-Type": "application/json"},
-      body: JSON.stringify({quote_id: currentQuote.id}),
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ quote_id: currentQuote.id }),
     });
 
     if (res.status === 201) {

@@ -10,7 +10,7 @@ from datetime import datetime
 from fastapi import FastAPI, Request
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.openapi.utils import get_openapi
-from fastapi.responses import HTMLResponse
+from fastapi.responses import HTMLResponse, JSONResponse
 from jose import JWTError
 from pytz import timezone
 from starlette.responses import RedirectResponse
@@ -23,6 +23,7 @@ from app.core.security import decode_token
 from app.db.session import close_db, init_db
 from app.models import User
 from app.repositories.diary_repo import get_diaries
+from app.views import html_router
 
 app = FastAPI(title=settings.PROJECT_NAME, version="1.0.0")
 
@@ -38,13 +39,13 @@ app.add_middleware(
     allow_headers=["*"],
 )
 app.include_router(api_v1_router, prefix="/api/v1")
-
+app.include_router(html_router, prefix="")
 app.mount("/static", StaticFiles(directory="app/static"), name="static")
 
 templates = Jinja2Templates(directory="app/templates")
 
 
-@app.get("/health")
+@app.get("/health", response_class=JSONResponse)
 async def health_check():
     return {"status": "ok"}
 
@@ -63,15 +64,15 @@ async def shutdown():
 async def render_index(request: Request):
     token = request.cookies.get("access_token")
     if not token:
-        return RedirectResponse(url="/api/v1/auth/login")
+        return RedirectResponse(url="/login")
     try:
         user_id = decode_token(token)
         current_user = await User.get(id=user_id)
     except JWTError:
-        return RedirectResponse(url="/api/v1/auth/login")
+        return RedirectResponse(url="/login")
 
     now = datetime.now(timezone("Asia/Seoul"))
-    selected_year = now.year  # ✅ 현재 연도 (2025)
+    selected_year = now.year  # 현재 연도 (2025)
     posts = await get_diaries(current_user, year=selected_year)
 
     return templates.TemplateResponse(
@@ -119,3 +120,16 @@ app.openapi = custom_openapi
 # for r in app.routes:
 #     if hasattr(r, "name") and not isinstance(r.name, str):
 #         print("[OPENAPI-NAME-TYPE-ERROR]", type(r.name), getattr(r, "path", "?"), r.name)
+
+for route in app.routes:
+    if hasattr(route, "methods"):
+        print(route.path, route.methods)
+
+
+
+
+
+
+
+
+
