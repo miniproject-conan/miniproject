@@ -3,11 +3,16 @@
 <head>
   <meta charset="utf-8"/>
   <title>Login | Team Conan</title>
-  <link rel="stylesheet" href="{{ url_for('static', path='style/loginstyle.css') }}">
+
   <script>
     const savedTheme = localStorage.getItem("theme") || "pink";
-    document.documentElement.dataset.theme = savedTheme;
+    document.documentElement.style.setProperty("color-scheme", savedTheme === "black" ? "dark" : "light");
+    document.addEventListener("DOMContentLoaded", () => {
+      document.body.dataset.theme = savedTheme;
+    });
   </script>
+
+  <link rel="stylesheet" href="{{ url_for('static', path='style/loginstyle.css') }}">
   <script src="{{ url_for('static', path='loginscript.js') }}" defer></script>
 </head>
 <body>
