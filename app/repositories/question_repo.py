@@ -1,7 +1,9 @@
 import random
+
 from app.models.questions import Questions
 
-#DB에서 무작위 1개
+
+# DB에서 무작위 1개
 async def get_random_question_from_db():
 
     try:
@@ -20,14 +22,10 @@ async def get_random_question_from_db():
         return None
 
 
-
-
-#DB에서 가져오는거
+# DB에서 가져오는거
 async def get_all_questions_from_db():
     question = await Questions.all()
     return question
 
 
-
-    
 # 3. DB에서 무작위 1개를 질문을 선택해서 반환

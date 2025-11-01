@@ -1,42 +1,65 @@
-from datetime import datetime, date, timedelta
+from datetime import datetime
 from typing import List, Optional
 
 from app.models.diary import Post
-from app.models.user import User
 from app.models.question import Question
 from app.models.questions import Questions
+from app.models.user import User
+
 
 # 일기 생성
-async def create_diary(user: User, title: str, content: str, question_id: int, question_answer: str) -> Post:
+async def create_diary(
+    user: User, title: str, content: str, question_id: int, question_answer: str
+) -> Post:
     pool_q = await Questions.get(id=question_id)
 
     # 질문 생성
     question = await Question.create(content=pool_q.content, answer=question_answer)
 
     # Post 생성 시 question을 연결
-    post = await Post.create(title=title, content=content, date=datetime.now(), author=user, question=question)
+    post = await Post.create(
+        title=title,
+        content=content,
+        date=datetime.now(),
+        author=user,
+        question=question,
+    )
 
     # 사용자 게시글 수 업데이트
     user.number_of_posts += 1
     await user.save()
     return post
 
+
 # 특정 일기 조회
 async def get_diary(post_id: int, user: User) -> Optional[Post]:
     post = await Post.filter(id=post_id, author=user).select_related("question").first()
     return post
 
-# 일기 목록 조회 (월별/주별)
-async def get_diaries(user: User, month: Optional[int] = None, year: Optional[int] = None) -> List[Post]:
+
+# 일기 목록 조회 (월별/연도별)
+async def get_diaries(
+    user: User,
+    month: Optional[int] = None,
+    year: Optional[int] = None,
+) -> List[Post]:
     query = Post.filter(author=user)
 
-    if year and month:
-        query = query.filter(date__year=year, date__month=month)
+    if year:
+        query = query.filter(created_at__year=year)
+    if month:
+        query = query.filter(created_at__month=month)
 
-    return await query.order_by("-date").prefetch_related("question").all()
+    return await query.order_by("-created_at").prefetch_related("question").all()
+
 
 # 일기 수정
-async def update_diary(post: Post, title: Optional[str] = None, content: Optional[str] = None, question_answer: Optional[str] = None) -> Post:
+async def update_diary(
+    post: Post,
+    title: Optional[str] = None,
+    content: Optional[str] = None,
+    question_answer: Optional[str] = None,
+) -> Post:
     if title is not None:
         post.title = title
     if content is not None:
@@ -51,6 +74,7 @@ async def update_diary(post: Post, title: Optional[str] = None, content: Optiona
             await question.save()
 
     return post
+
 
 # 일기 삭제
 async def delete_diary(post: Post, user: User):

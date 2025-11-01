@@ -5,7 +5,7 @@ from tortoise.models import Model
 class Question(Model):
     id = fields.IntField(pk=True)
     content = fields.TextField()
-    answer = fields.TextField(null = True)
+    answer = fields.TextField(null=True)
 
     class Meta:
         table = "question"

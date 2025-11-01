@@ -1,28 +1,28 @@
-from fastapi import FastAPI, Request, Depends
-from fastapi.responses import HTMLResponse
+from fastapi import FastAPI, Request
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.openapi.utils import get_openapi
+from fastapi.responses import HTMLResponse
 from jose import JWTError
 from starlette.responses import RedirectResponse
 from starlette.staticfiles import StaticFiles
 from starlette.templating import Jinja2Templates
-import uvicorn
 
-from app.api.v1.auth import get_current_user
-from app.core.security import decode_token
-from app.repositories.diary_repo import get_diaries
-from app.core.config import settings
-from app.db.session import init_db, close_db
 from app.api.v1 import router as api_v1_router
-
-from fastapi.openapi.utils import get_openapi
-
+from app.core.config import settings
+from app.core.security import decode_token
+from app.db.session import close_db, init_db
 from app.models import User
+from app.repositories.diary_repo import get_diaries
 
 app = FastAPI(title=settings.PROJECT_NAME, version="1.0.0")
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://127.0.0.1:8000", "http://localhost:8000","http://teamconan.duckdns.org/"],
+    allow_origins=[
+        "http://127.0.0.1:8000",
+        "http://localhost:8000",
+        "http://teamconan.duckdns.org/",
+    ],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
@@ -33,17 +33,21 @@ app.mount("/static", StaticFiles(directory="app/static"), name="static")
 
 templates = Jinja2Templates(directory="app/templates")
 
+
 @app.get("/health")
 async def health_check():
     return {"status": "ok"}
+
 
 @app.on_event("startup")
 async def startup():
     await init_db(settings.DATABASE_URL)
 
+
 @app.on_event("shutdown")
 async def shutdown():
     await close_db()
+
 
 @app.get("/", response_class=HTMLResponse)
 async def render_index(request: Request):
@@ -58,8 +62,10 @@ async def render_index(request: Request):
         return RedirectResponse(url="/api/v1/auth/login")
 
     posts = await get_diaries(current_user)
-    return templates.TemplateResponse("index.html", {"request": request, "username": current_user.username, "posts": posts})
-
+    return templates.TemplateResponse(
+        "index.html",
+        {"request": request, "username": current_user.username, "posts": posts},
+    )
 
 
 def custom_openapi():
@@ -72,7 +78,9 @@ def custom_openapi():
         routes=app.routes,
     )
 
-    openapi_schema.setdefault("components", {}).setdefault("securitySchemes", {})["BearerAuth"] = {
+    openapi_schema.setdefault("components", {}).setdefault("securitySchemes", {})[
+        "BearerAuth"
+    ] = {
         "type": "http",
         "scheme": "bearer",
         "bearerFormat": "JWT",
@@ -83,10 +91,11 @@ def custom_openapi():
     app.openapi_schema = openapi_schema
     return app.openapi_schema
 
+
 app.openapi = custom_openapi
 
-if __name__ == "__main__":
-    uvicorn.run("app.main:app", host=settings.HOST, port=settings.PORT, reload=settings.DEBUG_MODE)
+# if __name__ == "__main__":
+#     uvicorn.run("app.main:app", host=settings.HOST, port=settings.PORT, reload=settings.DEBUG_MODE)
 
 # 스웨거 오류잡기
 # for r in app.routes:

@@ -11,6 +11,7 @@ class Post(Model):
     question = fields.OneToOneField("models.Question", related_name="post", null=True)
 
     created_at = fields.DatetimeField(auto_now_add=True)
+
     class Meta:
         table = "post"
 
