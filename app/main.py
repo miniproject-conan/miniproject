@@ -121,6 +121,7 @@ app.openapi = custom_openapi
 #     if hasattr(r, "name") and not isinstance(r.name, str):
 #         print("[OPENAPI-NAME-TYPE-ERROR]", type(r.name), getattr(r, "path", "?"), r.name)
 
-for route in app.routes:
-    if hasattr(route, "methods"):
-        print(route.path, route.methods)
+# 메소드 인식 오류 디버깅
+# for route in app.routes:
+#     if hasattr(route, "methods"):
+#         print(route.path, route.methods)
