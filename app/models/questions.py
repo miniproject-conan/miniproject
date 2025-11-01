@@ -2,13 +2,11 @@ from tortoise import fields
 from tortoise.models import Model
 
 
-class Question(Model):
-    id = fields.IntField(pk=True)
+class Questions(Model):
     content = fields.TextField()
-    answer = fields.TextField(null=True)
 
     class Meta:
-        table = "question"
+        table = "questions"
 
     def __str__(self):
         return self.content[:30]

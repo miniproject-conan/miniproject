@@ -13,6 +13,7 @@ TORTOISE_ORM = {
                 "app.models.diary",
                 "app.models.quote",
                 "app.models.question",
+                "app.models.questions",
                 "aerich.models",
             ],
             "default_connection": "default",

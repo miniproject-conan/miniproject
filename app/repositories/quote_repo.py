@@ -1,5 +1,7 @@
 import random
+
 from app.models.quote import Quote
+
 
 class QuoteRepository:
     @staticmethod
@@ -9,4 +11,3 @@ class QuoteRepository:
             return None
         offset = random.randint(0, total - 1)
         return await Quote.all().offset(offset).limit(1).first()
-

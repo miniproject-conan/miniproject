@@ -1,14 +1,17 @@
 import json
+from copy import deepcopy
+
 from tortoise import Tortoise, run_async
+
+from app.db.config import TORTOISE_ORM
 from app.models.quote import Quote
-from app.core.config import settings
 
 
 async def init():
-    await Tortoise.init(
-        db_url=settings.DATABASE_URL,
-        modules={"models": ["app.models.quote"]},
-    )
+    orm_config = deepcopy(TORTOISE_ORM)
+    orm_config["apps"]["models"]["models"] = ["app.models.quote"]
+
+    await Tortoise.init(config=orm_config)
     await Tortoise.generate_schemas()
 
 
@@ -22,7 +25,7 @@ async def load_quotes_from_json(file_path: str):
         quote, created = await Quote.get_or_create(
             author=q["author"].strip(),
             author_profile=q.get("authorProfile", "").strip(),
-            message=q["message"].strip()
+            message=q["message"].strip(),
         )
 
         if created:
