@@ -86,8 +86,9 @@
               {{ month }}월
             </button>
             {% endfor %}
-            <button class="tab-btn" data-month-btn="all" onclick="goToAll()">전체</button>
-
+            <a href="/" class="tab-link">
+              <button class="tab-btn" data-month-btn="all">전체</button>
+            </a>
           </aside>
         </div>
       </div>
@@ -144,16 +145,32 @@
   });
 </script>
 <script>
-  function goToMonth(month) {
-    const year = document.getElementById('yearSelect').value;
+document.addEventListener("DOMContentLoaded", () => {
+  const yearSelect = document.getElementById("yearSelect");
+  const buttons = document.querySelectorAll(".tab-btn");
+
+  // 월 버튼 클릭 시 이동
+  window.goToMonth = function(month) {
+    const year = yearSelect.value;
     window.location.href = `/api/v1/diary/month?year=${year}&month=${month}`;
+  };
+
+  // 현재 URL 기준으로 활성화 버튼 표시
+  const params = new URLSearchParams(window.location.search);
+  const month = params.get("month");
+  const buttonsArr = Array.from(buttons);
+  buttonsArr.forEach(btn => btn.classList.remove("active"));
+
+  let activeBtn;
+  if (month) {
+    activeBtn = document.querySelector(`[data-month-btn="${month}"]`);
+  } else {
+    // month 파라미터가 없는 경우 = 전체(/)로 들어온 경우
+    activeBtn = document.querySelector(`[data-month-btn="all"]`);
   }
 
-  function goToAll() {
-    const year = document.getElementById('yearSelect').value;
-    window.location.href = `/api/v1/diary/month?year=${year}`;
-  }
+  if (activeBtn) activeBtn.classList.add("active");
+});
 </script>
-
 </body>
 </html>
