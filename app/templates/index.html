@@ -80,15 +80,15 @@
               <option value="{{ y }}" {% if y== selected_year %}selected{% endif %}>{{ y }}</option>
               {% endfor %}
             </select>
-
+            <a href="/" class="tab-link">
+              <button class="tab-btn" data-month-btn="all">전체</button>
+            </a>
             {% for month in range(1, 13) %}
             <button class="tab-btn" data-month-btn="{{ month }}" onclick="goToMonth({{ month }})">
               {{ month }}월
             </button>
             {% endfor %}
-            <a href="/" class="tab-link">
-              <button class="tab-btn" data-month-btn="all">전체</button>
-            </a>
+
           </aside>
         </div>
       </div>
