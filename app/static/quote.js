@@ -9,6 +9,8 @@ const bookmarkBtn = document.getElementById("bookmarkBtn");
 const refreshBtn = document.getElementById("refreshBtn");
 
 let currentQuote = null;
+window.bookmarkBtn = bookmarkBtn;        // 하트 버튼 전역 노출
+window.currentQuote = null;              // 현재 명언 전역 노출
 
 // ------------------- 공통 fetch -------------------
 async function apiFetch(url, options = {}) {
@@ -16,7 +18,7 @@ async function apiFetch(url, options = {}) {
   if (res.status === 401) {
     const data = await res.json().catch(() => ({}));
     if (data.detail === "Access token expired") {
-      console.warn("⏳ Access 토큰 만료 → Refresh 요청 중...");
+      console.warn("Access 토큰 만료 → Refresh 요청 중...");
       const refreshRes = await fetch(`${API_BASE}/auth/refresh`, {
         method: "POST",
         credentials: "include",
@@ -26,7 +28,6 @@ async function apiFetch(url, options = {}) {
         return apiFetch(url, options);
       } else {
         alert("세션이 만료되었습니다. 다시 로그인해주세요.");
-        // view 라우터 기준: /login 으로 이동
         window.location.href = "/login";
         return;
       }
@@ -46,6 +47,7 @@ async function fetchRandomQuote() {
     if (!res.ok) throw new Error(`HTTP ${res.status}`);
     const data = await res.json();
     currentQuote = data.data;
+    window.currentQuote = currentQuote; // 전역 갱신
 
     quoteMessage.textContent = `"${currentQuote.message}"`;
     quoteAuthor.textContent = `– ${currentQuote.author}`;
@@ -64,7 +66,6 @@ async function addBookmark() {
   try {
     const res = await apiFetch(`${API_BASE}/bookmark`, {
       method: "POST",
-      credentials: "include",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ quote_id: currentQuote.id }),
     });
@@ -74,7 +75,6 @@ async function addBookmark() {
       icon.classList.replace("fa-regular", "fa-solid");
       console.log("북마크 추가 완료");
 
-      // 0.3초 후 북마크 목록 강제 갱신
       setTimeout(() => {
         if (typeof window.fetchBookmarks === "function") {
           console.log("[자동 새로고침] fetchBookmarks()");
@@ -82,14 +82,49 @@ async function addBookmark() {
         }
       }, 300);
     } else if (res.status === 409) {
-      alert("이미 북마크된 명언입니다!");
+      console.log("이미 북마크된 명언입니다.");
     } else {
       throw new Error(`HTTP ${res.status}`);
     }
   } catch (err) {
     console.error("북마크 추가 오류:", err);
-    alert("북마크 추가 중 문제가 발생했습니다.");
   }
+}
+
+// ------------------- 북마크 취소 -------------------
+async function removeBookmark(quoteId) {
+  try {
+    const res = await apiFetch(`${API_BASE}/bookmark/${quoteId}`, {
+      method: "DELETE",
+    });
+
+    if (res.status === 204) {
+      console.log("북마크 취소 완료:", quoteId);
+      bookmarkBtn.classList.remove("active");
+      const icon = bookmarkBtn.querySelector(".heart-icon");
+      icon.classList.replace("fa-solid", "fa-regular");
+
+      if (typeof window.fetchBookmarks === "function") {
+        window.fetchBookmarks();
+      }
+    } else {
+      throw new Error(`HTTP ${res.status}`);
+    }
+  } catch (err) {
+    console.error("북마크 취소 실패:", err);
+  }
+}
+
+// ------------------- 토글 (추가 ↔ 취소) -------------------
+async function toggleBookmark() {
+  if (!currentQuote) return;
+
+  if (bookmarkBtn.classList.contains("active")) {
+    await removeBookmark(currentQuote.id);
+  } else {
+    await addBookmark();
+  }
+  await checkIfBookmarked();
 }
 
 // ------------------- 북마크 여부 확인 -------------------
@@ -120,5 +155,5 @@ async function checkIfBookmarked() {
 
 // ------------------- 이벤트 연결 -------------------
 refreshBtn.addEventListener("click", fetchRandomQuote);
-bookmarkBtn.addEventListener("click", addBookmark);
+bookmarkBtn.addEventListener("click", toggleBookmark);
 window.addEventListener("DOMContentLoaded", fetchRandomQuote);
