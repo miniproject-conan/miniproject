@@ -497,7 +497,6 @@ body {
   transform: translateY(1px)
   }
 
-/* active tab much brighter, protruding, with indicator bar */
 .tab-btn.active {
   background: var(--tab-active);
   color: #fff;
@@ -520,7 +519,6 @@ body {
   box-shadow: 0 0 0 2px var(--paper);
   }
 
-/* keyboard focus visibility */
 .tab-btn:focus-visible {
   outline: 3px solid color-mix(in oklab, var(--tab-active), #fff 35%);
   outline-offset: 2px;

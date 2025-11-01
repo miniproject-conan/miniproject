@@ -1,3 +1,5 @@
+document.addEventListener("DOMContentLoaded", () => {
+
 const API_BASE = "/api/v1";
 const TOKEN = localStorage.getItem("access_token") || "";
 
@@ -7,6 +9,10 @@ const yearSelect = document.getElementById('yearSelect');
 
 let currentYear = yearSelect.value;
 let currentMonth = new Date().getMonth() + 1;
+
+const params = new URLSearchParams(window.location.search);
+if (params.get("month")) currentMonth = params.get("month");
+if (params.get("year")) currentYear = params.get("year");
 
 function show(year, month) {
   panes.forEach(p => {
@@ -29,4 +35,6 @@ monthButtons.forEach(btn => btn.addEventListener('click', () => {
 yearSelect.addEventListener('change', () => {
   currentYear = yearSelect.value;
   show(currentYear, currentMonth);
+});
+
 });
